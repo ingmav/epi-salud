@@ -1,0 +1,257 @@
+<section fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="start" style="padding:10px; height: 100%; overflow: auto; flex: 1 1 0%;">
+    <div class="form-loading-shade" *ngIf="isLoading"><mat-spinner></mat-spinner></div>
+
+    <!-- <section fxFlex fxLayout="row">
+        <mat-card fxFlex="50" fxLayout="column" >
+
+            <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px" fxLayoutAlign="center center">
+                <div>
+                    <img style="width:50%" src="assets/icons/logo.jpeg" alt="">
+                </div>
+                <div></div>
+                <div>
+                    <img style="width:50%" src="assets/icons/cetra.jpeg" alt="">
+                </div>
+            </div>
+    
+        </mat-card>
+
+    </section> -->
+
+
+    <section fxFlex fxLayout="row">
+
+        <section fxFlex></section>
+
+        <mat-card fxFlex="75" fxLayout="column">
+
+            <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px" fxLayoutAlign="space-around center">
+                <div fxLayoutAlign="start center">
+                    <img style="width:35%" src="assets/icons/logo.jpeg" alt="">
+                </div>
+                <div fxFlex></div>
+                <div fxFlex></div>
+                <div fxLayoutAlign="end center">
+                    <img style="width:35%" src="assets/icons/cetra.png" alt="">
+                </div>
+            </div>
+            <br>
+            
+            <!-- <section fxFlex="none" fxLayout="row">
+
+                <div fxFlex></div>
+                <mat-form-field fxFlex="60" appearance="outline" [floatLabel]="'always'">
+                    <mat-label>CURP</mat-label>
+                    <input matInput #curpInput placeholder="Por favor, teclee su CURP" type="text" maxlength="18" [(ngModel)]="CURP" (keyup.enter)="validarCurp()" autocomplete="off" [disabled]="isValidatingCURP">
+                    <button *ngIf="curpInput.value.length == 18" matSuffix mat-icon-button aria-label="Clear" (click)="validarCurp()" [class.button-spinner]="isValidatingCURP" [disabled]="isValidatingCURP">
+                        <mat-icon *ngIf="!isValidatingCURP">input</mat-icon>
+                        <mat-icon *ngIf="isValidatingCURP" class="material-icons-outlined">pending</mat-icon>
+                    </button>
+                    <button *ngIf="isValidatingCURP" mat-icon-button matPrefix (click)="validarCurp()"><mat-icon>clear</mat-icon></button>
+                    <mat-hint align="end">{{curpInput.value.length}} / 18</mat-hint>
+                </mat-form-field>
+                <div fxFlex></div>
+                
+            </section> -->
+            
+            <section fxflex="none" fxLayout="column" [formGroup]="donadoresForm">
+
+                <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px">
+
+                    <mat-form-field fxFlex  appearance="fill">
+                        <mat-label>CURP</mat-label>
+                        <input matInput #curpInput id="curp" formControlName="curp" placeholder="CURP">
+                        <mat-hint align="end">{{curpInput.value.length}} / 18</mat-hint>
+
+                        <mat-error *ngIf="donadoresForm.get('curp').invalid && (donadoresForm.get('curp').dirty || donadoresForm.get('curp').touched)">
+                            <span *ngIf="donadoresForm.get('curp').hasError('pattern')">La CURP con un documento oficial...</span>
+                        </mat-error>
+
+                    </mat-form-field>
+
+                </div>
+
+                <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px">
+                    
+                    <mat-form-field appearance="fill" fxFlex >
+                        <mat-label>Nombre(s)</mat-label>
+                        <input matInput id="nombre" formControlName="nombre" placeholder="Nombre" required>
+                        <mat-error *ngIf="donadoresForm.get('nombre').invalid && (donadoresForm.get('nombre').dirty || donadoresForm.get('nombre').touched)">
+                            <span *ngIf="donadoresForm.get('nombre').errors.required">El Nombre es obligatorio</span>
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field  appearance="fill" fxFlex>
+                        <mat-label>Apellido Paterno</mat-label>
+                        <input matInput id="apellido_paterno" formControlName="apellido_paterno" placeholder="Apellido Paterno">
+                    </mat-form-field>
+
+                    <mat-form-field  appearance="fill" fxFlex>
+                        <mat-label>Apellido Materno</mat-label>
+                        <input matInput id="apellido_materno" formControlName="apellido_materno" placeholder="Apellido Materno">
+                    </mat-form-field>
+                </div>
+
+                <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px">
+
+                    <mat-form-field  appearance="fill" fxFlex>
+
+                        <mat-label>Fecha de Nacimiento: </mat-label>
+
+                        <input type="date" matInput (change)="calcularEdad()" formControlName="fecha_nacimiento" placeholder="Año/Mes/Día" required>
+
+                        <mat-error *ngIf="donadoresForm.get('fecha_nacimiento').hasError('isValidDate')">La fecha no es valida</mat-error>
+                        <mat-error *ngIf="donadoresForm.get('fecha_nacimiento').hasError('required')">Este campo es requerido</mat-error>
+
+                    </mat-form-field>
+
+                    <!-- <mat-form-field  appearance="fill" fxFlex>
+
+                        <mat-label>Fecha de Nacimiento: </mat-label>
+                        <input matInput (dateChange)="calcularEdad()" [matDatepicker]="picker2" formControlName="fecha_nacimiento" placeholder="Fecha de Nacimiento" required>
+                        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                        <mat-datepicker #picker2></mat-datepicker>
+
+                        <mat-error *ngIf="donadoresForm.get('fecha_nacimiento').invalid && (donadoresForm.get('fecha_nacimiento').dirty || donadoresForm.get('fecha_nacimiento').touched)">
+                            <span *ngIf="donadoresForm.get('fecha_nacimiento').errors.required">La Fecha de Nacimiento es obligatoria</span>
+                        </mat-error>
+
+                    </mat-form-field> -->
+
+                    <mat-form-field  appearance="fill" fxFlex>
+                        <mat-label>Edad: </mat-label>
+                        <input matInput formControlName="edad" placeholder="Edad" readonly>
+                        <mat-error *ngIf="donadoresForm.get('edad').invalid && (donadoresForm.get('edad').dirty || donadoresForm.get('edad').touched)">
+                            <span *ngIf="donadoresForm.get('edad').errors.required">La edad se calcula capturando la fecha de nacimiento</span>
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field  appearance="fill" fxFlex>
+                        <mat-label>Sexo</mat-label>
+                        <mat-select formControlName="sexo">
+                            <mat-option value="M">Masculino</mat-option>
+                            <mat-option value="F">Femenino</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="donadoresForm.get('sexo').invalid && (donadoresForm.get('sexo').dirty || donadoresForm.get('sexo').touched)">
+                            <span *ngIf="donadoresForm.get('sexo').errors.required">El sexo es obligatorio</span>
+                        </mat-error>
+                    </mat-form-field>
+
+                </div>
+
+
+                <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px">
+
+                    <!-- <mat-form-field  appearance="fill" fxFlex>
+                        <mat-label>Estado</mat-label>
+                        <mat-select formControlName="entidad_federativa_id">
+                            <mat-option value="1">Estados</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="donadoresForm.get('entidad_federativa_id').invalid && (donadoresForm.get('entidad_federativa_id').dirty || donadoresForm.get('entidad_federativa_id').touched)">
+                            <span *ngIf="donadoresForm.get('entidad_federativa_id').errors.required">El sexo es obligatorio</span>
+                        </mat-error>
+                    </mat-form-field> -->
+
+                    <mat-form-field fxFlex appearance="fill"  *ngIf="!catalogos['estados']">
+                        <mat-label>Entidad Federativa de Nacimiento: </mat-label>
+                        <input matInput formControlName="entidad_federativa">
+                        <mat-hint>Escribe el nombre de la Entidad Federativa de Nacimiento</mat-hint>
+                        <mat-error *ngIf="donadoresForm.get('entidad_federativa').hasError('required')">Este campo es obligatorio</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field fxFlex appearance="fill" *ngIf="catalogos['estados']">
+                        <mat-label>Entidad Federativa de Nacimiento: </mat-label>
+                        <input type="text" aria-label="entidad_federativa_id" matInput formControlName="entidad_federativa_id" [matAutocomplete]="entidadFederativaAutocomplete" required>
+                        <mat-autocomplete #entidadFederativaAutocomplete="matAutocomplete" [displayWith]="getDisplayFn('nombre')">
+                            <mat-option *ngFor="let item of filteredCatalogs['estados'] | async" [value]="item">
+                                {{item.nombre}}
+                            </mat-option>
+                        </mat-autocomplete>
+
+                        <mat-hint *ngIf="!donadoresForm.get('entidad_federativa_id').value">Seleccione un Entidad Federativa de la lista</mat-hint>
+                        <mat-hint [style.text-align]="'start'" *ngIf="donadoresForm.get('entidad_federativa_id').value">Clave: [{{donadoresForm.get('entidad_federativa_id').value.clave}}]</mat-hint>
+                        <mat-error *ngIf="donadoresForm.get('entidad_federativa_id').hasError('required')">Este campo es obligatorio</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field  appearance="fill" fxFlex>
+                        <mat-label>Ciudad</mat-label>
+                        <input matInput id="ciudad" formControlName="ciudad" placeholder="Ciudad">
+                        
+                        <mat-error *ngIf="donadoresForm.get('ciudad').invalid && (donadoresForm.get('ciudad').dirty || donadoresForm.get('ciudad').touched)">
+                            <span *ngIf="donadoresForm.get('ciudad').errors.required">La Cuidad es obligatoria</span>
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field  appearance="fill" fxFlex>
+                        <mat-label>Código Postal</mat-label>
+                        <input matInput (keypress)="soloNumeros($event)" id="codigo_postal" formControlName="codigo_postal" placeholder="Código Postal">
+
+                        <mat-error *ngIf="donadoresForm.get('codigo_postal').invalid && (donadoresForm.get('codigo_postal').dirty || donadoresForm.get('codigo_postal').touched)">
+                            <span *ngIf="donadoresForm.get('codigo_postal').errors.required">El Código Postal es obligatorio</span>
+                        </mat-error>
+                    </mat-form-field>
+
+                </div>
+                <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px">
+                    <mat-form-field  appearance="fill" fxFlex>
+                        <mat-label>Correo Electrónico: </mat-label>
+                        <input matInput type="email" id="email" formControlName="email" placeholder="Correo Electrónico">
+
+                        <mat-error *ngIf="donadoresForm.get('email').invalid && (donadoresForm.get('email').dirty || donadoresForm.get('email').touched)">
+                            <span *ngIf="donadoresForm.get('email').errors.required">El Correo es obligatorio</span>
+                            <span *ngIf="donadoresForm.get('email').errors.email">Escriba un Correo Electrónico Valido</span>
+                        </mat-error>
+
+                    </mat-form-field>
+                    <mat-form-field  appearance="fill" fxFlex>
+                        <mat-label>Teléfono de Contacto</mat-label>
+                        <input matInput (keypress)="soloNumeros($event)" id="telefono_contacto" formControlName="telefono_contacto" placeholder="Telefono de Contacto">
+                    </mat-form-field>
+                </div>
+
+                <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px">
+
+                    <mat-form-field fxFlex appearance="fill"  *ngIf="!catalogos['seguros']">
+                        <mat-label>Derechohabiencia: </mat-label>
+                        <input matInput formControlName="seguro">
+                        <mat-hint>Escribe el nombre del Estado</mat-hint>
+                        <mat-error *ngIf="donadoresForm.get('seguro').hasError('required')">Este campo es obligatorio</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field fxFlex appearance="fill" *ngIf="catalogos['seguros']">
+                        <mat-label>Derechohabiencia: </mat-label>
+                        <input type="text" aria-label="seguro_id" matInput formControlName="seguro_id" [matAutocomplete]="municipioAutocomplete" required>
+                        <mat-autocomplete #municipioAutocomplete="matAutocomplete" [displayWith]="getDisplayFn('descripcion')">
+                            <mat-option *ngFor="let item of filteredCatalogs['seguros'] | async" [value]="item">
+                                {{item.descripcion}}
+                            </mat-option>
+                        </mat-autocomplete>
+
+                        <mat-hint *ngIf="!donadoresForm.get('seguro_id').value">Seleccione una Derechohabiencia de la lista</mat-hint>
+                        <mat-hint [style.text-align]="'start'" *ngIf="donadoresForm.get('seguro_id').value">Nombre: [{{donadoresForm.get('seguro_id').value.descripcion}}]</mat-hint>
+                        <mat-error *ngIf="donadoresForm.get('seguro_id').hasError('required')">Este campo es obligatorio</mat-error>
+                    </mat-form-field>
+
+                    <!-- <mat-form-field  appearance="fill" fxFlex>
+                        <mat-label>Otra Derechohabiencia ó Seguro:</mat-label>
+                        <input matInput id="seguro_otro" formControlName="seguro_otro" placeholder="Otra Derechohabiencia ó Seguro">
+                    </mat-form-field> -->
+
+                </div>
+            </section>
+            <section fxFlex="none" fxLayout="row" fxLayoutGap="5px">
+                <div fxFlex></div>
+                <!-- <div fxFlex="none">
+                    <button mat-button>Cancelar</button>
+                </div> -->
+                <div fxFlex="none">
+                    <button mat-raised-button color="primary" (click)="guardarDonante()" [disabled]="!donadoresForm.valid || isLoading"><mat-icon>save</mat-icon> Guardar</button>
+                    <!-- (click)="registroDonante(null,null)" !donadoresForm.valid ||  -->
+                </div>
+            </section>
+            
+        </mat-card>
+        <section fxFlex></section>
+    </section>
+
+</section>
