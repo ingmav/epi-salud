@@ -1,8 +1,8 @@
 <section class="login" >
   
   <form fxLayout fxLayoutAlign="center center" [formGroup]="loginForm" fxFlex="100" (ngSubmit)="onSubmit()">
-    <mat-card fxFlex.xs="100%" fxFlex="60" style="padding: 0;">
-      <mat-card-title fxLayoutAlign="center"> <span *ngIf="!isLoading">Bienvenido</span> <span *ngIf="isLoading">Conectando...</span></mat-card-title>
+    <mat-card class="boder_card" fxFlex.xs="100%" fxFlex="35">
+      <mat-card-title fxLayoutAlign="center" class="welcome"> <span *ngIf="!isLoading">Bienvenido</span> <span *ngIf="isLoading">Conectando...</span></mat-card-title>
       <!-- <div><img style="width:100%"src="assets/profile-icon.svg" alt=""></div> -->
       <mat-divider></mat-divider>
       <mat-progress-bar mode="indeterminate" *ngIf="isLoading" ></mat-progress-bar>

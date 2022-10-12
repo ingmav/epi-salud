@@ -2,11 +2,11 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { UntypedFormBuilder, FormGroup, UntypedFormControl, Validators } from '@angular/forms';
 import { SharedService } from 'src/app/shared/shared.service';
 import { UsersService } from '../users.service';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmPasswordDialogComponent } from '../confirm-password-dialog/confirm-password-dialog.component';
-import { Observable, combineLatest, of, forkJoin } from 'rxjs';
-import { startWith, map } from 'rxjs/operators';
+import { Observable, of, forkJoin } from 'rxjs';
+import { startWith, map, combineLatestWith } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/auth.service';
 import { User } from '../../auth/models/user';
 import { AVATARS } from '../../avatars';
@@ -25,6 +25,7 @@ export class FormComponent implements OnInit {
     private authService: AuthService, 
     private route: ActivatedRoute, 
     private fb: UntypedFormBuilder,
+    public router: Router,
     public dialog: MatDialog
   ) { }
 
@@ -112,7 +113,7 @@ export class FormComponent implements OnInit {
 
       this.isLoading = true;
 
-      //Calls: 0 => Roles, 1 => Permissions, 2 => Direcciones, 3 => User
+      //Calls: 0 => Roles, 1 => Permissions, 2 => User
       forkJoin(httpCalls).subscribe(
         results => {
           console.log(results);
@@ -120,7 +121,8 @@ export class FormComponent implements OnInit {
           //Starts: Roles
           this.catalogRoles = results[0].data;
           this.listOfRoles$ = of(this.catalogRoles);
-          this.filteredRoles$ = combineLatest(this.listOfRoles$,this.filterInputRoles$).pipe(
+          this.filteredRoles$ = this.listOfRoles$.pipe(
+            combineLatestWith(this.filterInputRoles$),
             map(
               ([roles,filterString]) => roles.filter(
                 role => (role.name.toLowerCase().indexOf(filterString.toLowerCase()) !== -1)
@@ -132,7 +134,8 @@ export class FormComponent implements OnInit {
           //Starts: Permissions
           this.catalogPermissions = results[1].data;
           this.listOfPermissions$ = of(this.catalogPermissions);
-          this.filteredPermissions$ = combineLatest(this.listOfPermissions$,this.filterInputPermissions$).pipe(
+          this.filteredPermissions$ = this.listOfPermissions$.pipe(
+            combineLatestWith(this.filterInputPermissions$),
             map(
               ([permissions,filterString]) => permissions.filter(
                 permission => (permission.description.toLowerCase().indexOf(filterString.toLowerCase()) !== -1) || (permission.group.toLowerCase().indexOf(filterString.toLowerCase()) !== -1)
@@ -140,18 +143,6 @@ export class FormComponent implements OnInit {
             )
           );
           //Ends: Permissions
-
-          //Starts: Roles
-          //this.catalogDirecciones = results[2].data;
-          //this.listOfDirecciones$ = of(this.catalogDirecciones);
-          this.filteredDirecciones$ = combineLatest(this.listOfDirecciones$,this.filterInputDirecciones$).pipe(
-            map(
-              ([direcciones,filterString]) => direcciones.filter(
-                direccion => (direccion.descripcion.toLowerCase().indexOf(filterString.toLowerCase()) !== -1)
-              )
-            )
-          );
-          //Ends: Roles
 
           //Starts: User
           if(results[2]){
@@ -523,7 +514,8 @@ export class FormComponent implements OnInit {
       this.usersService.updateUser(this.usuarioForm.value,this.usuario.id).subscribe(
         response=>{
           if(response.guardado){
-            this.sharedService.showSnackBar('Datos guardados con éxito', null, 3000);
+            this.sharedService.showSnackBar('¡Datos guardados con éxito!', 'Cerrar', 3000);
+            this.router.navigate(['/usuarios']);
             
             if(this.authUser.id == response.usuario.id){
               this.authService.updateUserData(response.usuario);
@@ -536,7 +528,8 @@ export class FormComponent implements OnInit {
     }else{
       this.usersService.createUser(this.usuarioForm.value).subscribe(
         response =>{
-          this.sharedService.showSnackBar('Datos guardados con éxito', null, 3000);
+          this.sharedService.showSnackBar('¡Datos guardados con éxito!', 'Cerrar', 3000);
+          this.router.navigate(['/usuarios']);
           this.usuario = response.data;
           this.isLoading = false;
         }

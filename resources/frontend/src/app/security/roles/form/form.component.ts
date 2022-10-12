@@ -1,11 +1,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { SharedService } from '../../../shared/shared.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormGroup, Validators, UntypedFormBuilder, UntypedFormControl } from '@angular/forms';
+import { Validators, UntypedFormBuilder, UntypedFormControl } from '@angular/forms';
 import { RolesService } from '../roles.service';
 import { CustomValidator } from '../../../utils/classes/custom-validator';
 import { PermissionsService } from '../../permissions/permissions.service';
-import { Observable, combineLatest, of } from 'rxjs';
-import { startWith, map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { startWith, map, combineLatestWith } from 'rxjs/operators';
 
 export interface FormDialogData {
   id: number;
@@ -23,6 +25,7 @@ export class FormComponent implements OnInit {
     private permissionsService: PermissionsService,
     public dialogRef: MatDialogRef<FormComponent>,
     private fb: UntypedFormBuilder,
+    public sharedService: SharedService,
     @Inject(MAT_DIALOG_DATA) public data: FormDialogData
   ) {}
   
@@ -47,21 +50,32 @@ export class FormComponent implements OnInit {
 
   ngOnInit() {
 
-    this.permissionsService.getAllPermissions().subscribe(
-      response => {
+    this.permissionsService.getAllPermissions().subscribe({
+
+      next:(response) => {
         this.catalogPermissions = response.data;
 
         this.listOfPermissions$ = of(this.catalogPermissions);
 
-        this.filteredPermissions$ = combineLatest(this.listOfPermissions$,this.filterInput$).pipe(
+        this.filteredPermissions$ = this.listOfPermissions$.pipe(
+          combineLatestWith(this.filterInput$),
           map(
             ([permissions,filterString]) => permissions.filter(
               permission => (permission.description.toLowerCase().indexOf(filterString.toLocaleLowerCase()) !== -1) || (permission.group.toLowerCase().indexOf(filterString.toLocaleLowerCase()) !== -1)
             )
           )
+          
         );
+      },
+      error:(error: HttpErrorResponse) => {
+        let errorMessage = Object.keys(error.error)[0];
+        if(error.status === 409){
+          
+          this.sharedService.showSnackBar("Status Code: "+error.status+', '+error.error[errorMessage].message, 'Cerrar', 5000);
+        }
+        this.isLoading = false;
       }
-    );
+    });
     
     let id = this.data.id;
     if(id){
@@ -105,26 +119,32 @@ export class FormComponent implements OnInit {
   saveRole(){
     this.isLoading = true;
     if(this.rol.id){
-      this.rolesService.updateRole(this.rol.id,this.rolForm.value).subscribe(
-        response =>{
+      this.rolesService.updateRole(this.rol.id,this.rolForm.value).subscribe({
+
+        next:(response) => {
           this.dialogRef.close(true);
           console.log(response);
           this.isLoading = false;
         },
-        errorResponse => {
-          console.log(errorResponse);
+        error:(error: HttpErrorResponse) => {
+          console.log(error);
           this.isLoading = false;
+        }
+
       });
     }else{
-      this.rolesService.createRole(this.rolForm.value).subscribe(
-        response =>{
+      this.rolesService.createRole(this.rolForm.value).subscribe({
+
+        next:(response) => {
           this.dialogRef.close(true);
           console.log(response);
           this.isLoading = false;
-      },
-        errorResponse => {
-          console.log(errorResponse);
+        },
+        error:(error: HttpErrorResponse) => {
+          console.log(error);
           this.isLoading = false;
+        }
+
       });
     }
   }

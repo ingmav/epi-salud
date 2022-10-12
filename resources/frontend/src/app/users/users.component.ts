@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { UsersService } from './users.service';
 import { SharedService } from '../shared/shared.service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
@@ -49,8 +50,10 @@ export class UsersComponent implements OnInit {
 
     params.query = this.searchQuery;
 
-    this.usersService.getUserList(params).subscribe(
-      response =>{
+    this.usersService.getUserList(params).subscribe({
+
+      next:(response) => {
+
         if(response.error) {
           let errorMessage = response.error.message;
           this.sharedService.showSnackBar(errorMessage, null, 3000);
@@ -63,16 +66,22 @@ export class UsersComponent implements OnInit {
           }
         }
         this.isLoading = false;
+
       },
-      errorResponse =>{
-        var errorMessage = "Ocurrió un error.";
-        if(errorResponse.status == 409){
-          errorMessage = errorResponse.error.message;
+      error:(error: HttpErrorResponse) => {
+
+        let errorMessage = Object.keys(error.error)[0];
+        if(error.status === 409){
+          
+          this.sharedService.showSnackBar("Status Code: "+error.status+', '+error.error[errorMessage].message, 'Cerrar', 5000);
         }
-        this.sharedService.showSnackBar(errorMessage, null, 3000);
         this.isLoading = false;
-      }
-    );
+      },
+      complete:() => {
+        this.sharedService.showSnackBar('¡Usuarios Cargados!', 'Cerrar', 3000);
+      },
+
+    });
     return event;
   }
 

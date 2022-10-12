@@ -1,4 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { SharedService } from '../../../shared/shared.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, Validators, UntypedFormBuilder } from '@angular/forms';
 import { PermissionsService } from '../permissions.service';
@@ -19,6 +21,7 @@ export class FormComponent implements OnInit {
     private permissionsService: PermissionsService,
     public dialogRef: MatDialogRef<FormComponent>,
     private fb: UntypedFormBuilder,
+    public sharedService: SharedService,
     @Inject(MAT_DIALOG_DATA) public data: FormDialogData
   ) {}
 
@@ -39,57 +42,67 @@ export class FormComponent implements OnInit {
     let id = this.data.id;
     if(id){
       this.isLoading = true;
-      this.permissionsService.getPermission(id).subscribe(
-        response => {
+      this.permissionsService.getPermission(id).subscribe({
+        
+        next:(response) => {
           this.permiso = response.data;
           this.permisoForm.patchValue(this.permiso);
           this.isLoading = false;
         },
-        errorResponse => {
-          console.log(errorResponse);
+        error:(error: HttpErrorResponse) => {
+          console.log(error);
           this.isLoading = false;
-          if(errorResponse.error){
-            if(errorResponse.error.validacion === false){
-              this.manageRepeatedIDError(errorResponse);
+          if(error.error){
+            if(error.error.validacion === false){
+              this.manageRepeatedIDError(error);
             }
           }
-        });
+        },
+        complete:() => {
+          this.sharedService.showSnackBar('¡Permiso Obtenido!', 'Cerrar', 3000);
+        },
+      });
     }
   }
 
   savePermission(){
     this.isLoading = true;
     if(this.permiso.id){
-      this.permissionsService.updatePermission(this.permiso.id,this.permisoForm.value).subscribe(
-        response =>{
+
+      this.permissionsService.updatePermission(this.permiso.id,this.permisoForm.value).subscribe({
+        next:(response) => {
           this.dialogRef.close(true);
           console.log(response);
           this.isLoading = false;
         },
-        errorResponse => {
-          console.log(errorResponse);
+        error:(error: HttpErrorResponse) => {
+          console.log(error);
           this.isLoading = false;
-          if(errorResponse.error){
-            if(errorResponse.error.validacion === false){
-              this.manageRepeatedIDError(errorResponse);
+          if(error.error){
+            if(error.error.validacion === false){
+              this.manageRepeatedIDError(error);
             }
           }
+        }
       });
     }else{
-      this.permissionsService.createPermission(this.permisoForm.value).subscribe(
-        response =>{
+      this.permissionsService.createPermission(this.permisoForm.value).subscribe({
+
+        next:(response) => {
           this.dialogRef.close(true);
           console.log(response);
           this.isLoading = false;
-      },
-        errorResponse => {
-          console.log(errorResponse);
+
+        },
+        error:(error: HttpErrorResponse) => {
+          console.log(error);
           this.isLoading = false;
-          if(errorResponse.error){
-            if(errorResponse.error.validacion === false){
-              this.manageRepeatedIDError(errorResponse);
+          if(error.error){
+            if(error.error.validacion === false){
+              this.manageRepeatedIDError(error);
             }
-          }
+          }          
+        }
       });
     }
   }
