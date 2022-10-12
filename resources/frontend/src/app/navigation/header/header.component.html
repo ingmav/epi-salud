@@ -3,7 +3,7 @@
       <mat-icon>home</mat-icon>
     </button-->
     <!--img src="{{(headerIcon)?headerIcon:'assets/logo-icon.svg'}}" alt="" style="height: 60%; width:auto;" fxHide.xs="true"-->
-    <img src="{{(headerIcon)?headerIcon:'assets/icons/users.svg'}}" alt="" style="height: 60%; width:auto;" fxHide.xs="true">
+    <img src="{{(headerIcon)?headerIcon:'assets/icons/users.svg'}}" alt="" style="height: 60%; width:auto;" >
     <span style="margin-left:10px" *ngIf="!selectedApp"><a routerLink="/">App</a></span> 
     <span class="header-links" *ngIf="selectedApp"><a *ngFor="let link of appHeaderLinks" routerLink="{{link.route}}">{{link.name}}</a></span>
 

@@ -22,7 +22,11 @@ export class DrawerListComponent implements OnInit {
   apps: App[];
   expandDrawer:boolean = true;
 
-  constructor(private authService:AuthService, private appsService: AppsListService, private router: Router) {
+  constructor(
+    private authService:AuthService,
+    private appsService: AppsListService,
+    private router: Router
+  ) {
     router.events.pipe(
       filter(event => event instanceof NavigationEnd)  
     ).subscribe((event: NavigationEnd) => {

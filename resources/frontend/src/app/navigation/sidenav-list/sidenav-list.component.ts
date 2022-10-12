@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { User } from 'src/app/auth/models/user';
 import { AuthService } from '../../auth/auth.service';
 import { AppsListService } from '../../apps-list/apps-list.service';
@@ -20,7 +20,10 @@ export class SidenavListComponent implements OnInit {
 
   authSubscription:Subscription;
 
-  constructor(private authService:AuthService, private appsService: AppsListService) { }
+  constructor(
+    private authService:AuthService,
+    private appsService: AppsListService
+  ) { }
 
   ngOnInit() {
     this.isAuthenticated = this.authService.isAuth();

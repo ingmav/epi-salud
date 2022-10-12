@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 import { SharedService } from 'src/app/shared/shared.service';
 import { AuthService } from '../auth.service';
@@ -15,7 +16,11 @@ export class LoginComponent implements OnInit {
 
   avatarPlaceholder = 'assets/profile-icon.svg';
 
-  constructor(private router: Router, private sharedService: SharedService, private authService: AuthService) { }
+  constructor(
+    private router: Router,
+    private sharedService: SharedService,
+    private authService: AuthService
+  ) { }
 
   ngOnInit() {
     this.loginForm = new UntypedFormGroup({
@@ -26,11 +31,12 @@ export class LoginComponent implements OnInit {
 
   onSubmit(){
     this.isLoading = true;
-    this.authService.logIn(this.loginForm.value.usuario, this.loginForm.value.password ).subscribe(
-      response => {
-        //this.isLoading = false;
-        console.log('resto');
-        console.log(response);
+    let usuario   = this.loginForm.value.usuario;
+    let password  = this.loginForm.value.password;
+
+    this.authService.logIn( usuario,password ).subscribe({
+
+      next:(response) => {
 
         let loginHistory:any = {};
         if(localStorage.getItem('loginHistory')){
@@ -40,16 +46,23 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('loginHistory',JSON.stringify(loginHistory));
 
         this.router.navigate(['/apps']);
-      }, error => {
-        console.log(error);
-        var errorMessage = "Error: Credenciales inválidas.";
+
+      },
+      error:(error: HttpErrorResponse) => {
+
+        let errorMessage =  Object.keys(error.error)[0];
+
         if(error.status != 401){
           errorMessage = "Ocurrió un error.";
         }
-        this.sharedService.showSnackBar(errorMessage, null, 3000);
+        this.sharedService.showSnackBar(error.error[errorMessage], 'Cerrar', 5000);
         this.isLoading = false;
-      }
-    );
+        
+      },
+      complete:() => {
+        this.sharedService.showSnackBar('¡Bienvenido al Sistema!', 'Cerrar', 3000);
+      },
+    });
   }
 
   checkAvatar(username){

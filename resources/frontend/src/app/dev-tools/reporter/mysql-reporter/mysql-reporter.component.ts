@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { ReporterService } from '../reporter.service';
+import { SharedService } from 'src/app/shared/shared.service';
 import { trigger, transition, style, animate } from '@angular/animations';
 import * as FileSaver from 'file-saver';
 
@@ -22,7 +24,10 @@ import * as FileSaver from 'file-saver';
 })
 export class MysqlReporterComponent implements OnInit {
 
-  constructor(private reporterService: ReporterService) { }
+  constructor(
+    private reporterService: ReporterService,
+    private sharedService: SharedService,
+  ) { }
 
   isLoading:boolean;
   isLoadingExcel:boolean = false;
@@ -68,12 +73,14 @@ export class MysqlReporterComponent implements OnInit {
   }
 
   executeQuery(){
+
     this.isLoading = true;
 
     this.clearResults(this.hideQuery);
-    
-    this.reporterService.ejecutarReporte({query: this.execQuery, limit: this.limitQuery}).subscribe(
-      response => {
+
+    this.reporterService.ejecutarReporte({query: this.execQuery, limit: this.limitQuery}).subscribe({
+
+      next:(response) => {
         console.log(response);
         this.displayedColumns = response.columns;
         this.totalColumns = response.columns.length;
@@ -87,30 +94,45 @@ export class MysqlReporterComponent implements OnInit {
           this.errorMessage = 'Son demasiados resultados para mostrarlos en el navegador';
         }
         
-
         this.isLoading = false;
       },
-      errorResponse =>{
-        this.errorMessage = errorResponse.error.error;
+
+      error:(error: HttpErrorResponse) => {
+
+        this.errorMessage = error.error.error;
+        this.sharedService.showSnackBar('Status:'+' '+error.status+': '+this.errorMessage, 'Cerrar', 5000);
+
         this.isLoading = false;
-      }
-    );
+
+      },
+
+      complete:() => {
+        this.sharedService.showSnackBar('¡Consulta Completada!', 'Cerrar', 3000);
+      },
+
+    });
+
   }
 
   downloadReport(){
+
     this.isLoadingExcel = true;
-    this.reporterService.exportarReporte({query: this.execQuery}).subscribe(
-      response => {
-        //FileSaver.saveAs(response);
+    this.reporterService.exportarReporte({query: this.execQuery}).subscribe({
+
+      next:(response) => {
         FileSaver.saveAs(response,'reporte');
         this.isLoadingExcel = false;
       },
-      errorResponse =>{
-        this.errorMessage = 'Ocurrio un error al intentar descargar el archivo';
+      error:(error: HttpErrorResponse) => {
+                this.errorMessage = 'Ocurrio un error al intentar descargar el archivo';
         this.isLoadingExcel = false;
-      }
-    );
-    console.log(this.execQuery);
+      },
+      complete:() => {
+        console.log(this.execQuery);
+      },
+
+    });
+
   }
 
 }

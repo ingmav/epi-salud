@@ -1,18 +1,18 @@
 <section class="login" >
+  
   <form fxLayout fxLayoutAlign="center center" [formGroup]="loginForm" fxFlex="100" (ngSubmit)="onSubmit()">
-    <mat-card fxFlex.xs="100%" fxFlex="450px">
+    <mat-card fxFlex.xs="100%" fxFlex="60" style="padding: 0;">
       <mat-card-title fxLayoutAlign="center"> <span *ngIf="!isLoading">Bienvenido</span> <span *ngIf="isLoading">Conectando...</span></mat-card-title>
-      <!-- <div><img style="width:60%"src="assets/icons/cetra.png" alt=""></div> -->
+      <!-- <div><img style="width:100%"src="assets/profile-icon.svg" alt=""></div> -->
       <mat-divider></mat-divider>
-      <mat-card-content fxLayout="column">
-          <br>
+      <mat-progress-bar mode="indeterminate" *ngIf="isLoading" ></mat-progress-bar>
+      <mat-card-content fxLayout="column" style="background-color: whitesmoke; margin:0px; padding-bottom:10px; padding-top:10px;">
           <section fxFlex fxLayout="row" fxLayoutAlign="space-evenly center">
-            <section fxFlex="30" class="mat-elevation-z1">
+            <section fxFlex="30" class="mat-elevation-z1" style="background-color: white; padding-top: 5px;">
                 <img style="width:100%"src="{{avatarPlaceholder}}" alt="">
             </section>
             <section fxFlex="65" fxLayout="column">
-              <mat-spinner *ngIf="isLoading"  [diameter]="90" fxFlexAlign="center" ></mat-spinner>
-              <mat-form-field fxFlex *ngIf="!isLoading" appearance="outline">
+              <mat-form-field fxFlex appearance="outline">
                 <mat-label>Usuario</mat-label>
                   <input 
                     type="text"
@@ -20,15 +20,17 @@
                     #username
                     placeholder="Usuario"
                     formControlName="usuario"
+                    autocomplete="off"
                     (blur)="checkAvatar(username.value)">
                   <mat-error>El usuario es inválido</mat-error>
                   <mat-icon matSuffix>person</mat-icon>
               </mat-form-field>
-              <mat-form-field fxFlex *ngIf="!isLoading" appearance="outline">
+              <mat-form-field fxFlex appearance="outline">
                   <mat-label>Contraseña</mat-label>
                   <input 
                     type="password" 
-                    matInput 
+                    matInput
+                    #password
                     placeholder="Tu contraseña" 
                     formControlName="password">
                   <mat-error>La contraseña es requerida.</mat-error>
@@ -37,10 +39,10 @@
             </section>
           </section>
       </mat-card-content>
-      
-      <mat-card-actions fxLayout="column" fxAlignItems="center" fxLayoutGap="10px" *ngIf="!isLoading">
-          <button  type="submit" mat-raised-button color="primary" [disabled]="loginForm.invalid">Entrar</button>
-          <a mat-button  routerLink="/forgot-password" >Olvidé mi contraseña</a>            
+      <mat-divider></mat-divider>
+      <mat-card-actions fxLayout="column" fxAlignItems="center" style="margin:0pc; padding:10px;">
+          <button fxFlex type="submit" mat-raised-button color="primary" [disabled]="loginForm.invalid || isLoading"><mat-icon>login</mat-icon>  Acceder</button>
+          <!--a mat-button  routerLink="/forgot-password" >Olvidé mi contraseña</a-->
       </mat-card-actions>
     </mat-card>
   </form>
