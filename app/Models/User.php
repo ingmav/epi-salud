@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Traits\ModelEventLogger;
+
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -12,6 +14,13 @@ class User extends Authenticatable implements JWTSubject{
     use Notifiable;
     use SoftDeletes;
     protected $keyType = 'string';
+
+    use ModelEventLogger;
+    protected static $recordEvents = [
+        'created',
+        'updated',
+        'deleted'
+    ];
 
     /**
      * The attributes that are mass assignable.

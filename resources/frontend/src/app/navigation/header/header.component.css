@@ -14,9 +14,8 @@ a:active {
 }
 
 a + a::before {
-    content: " > ";
+    content: "| ";
 }
-
 
 .navigation-items {
     list-style: none;
@@ -76,4 +75,15 @@ a + a::before {
 
 .bg-dark {
     background-color: #343a40!important;
+}
+
+.font-header-elements{
+
+    font-size: 12pt;
+    margin-left:10px;
+}
+.zise-avatar{
+
+    width:71%;
+    margin:auto;
 }

@@ -1,14 +1,14 @@
-<mat-toolbar class="bg-dark">
+<mat-toolbar class="bg-dark" style="height: 52px !important;">
     <!--button mat-icon-button aria-label="Ir al inicio" routerLink="/" fxShow.xs fxHide.gt-sm>
       <mat-icon>home</mat-icon>
     </button-->
     <!--img src="{{(headerIcon)?headerIcon:'assets/logo-icon.svg'}}" alt="" style="height: 60%; width:auto;" fxHide.xs="true"-->
-    <img src="{{(headerIcon)?headerIcon:'assets/icons/users.svg'}}" alt="" style="height: 60%; width:auto;" >
-    <span style="margin-left:10px" *ngIf="!selectedApp"><a routerLink="/">App</a></span> 
-    <span class="header-links" *ngIf="selectedApp"><a *ngFor="let link of appHeaderLinks" routerLink="{{link.route}}">{{link.name}}</a></span>
+    <img src="{{(headerIcon)?headerIcon:'assets/icons/users.svg'}}" alt="" style="height: 60%; width:auto;" fxHide.xs="true">
+    <span class="font-header-elements" *ngIf="!selectedApp"><a routerLink="/">App</a></span> 
+    <span class="header-links, font-header-elements" *ngIf="selectedApp"><a *ngFor="let link of appHeaderLinks" routerLink="{{link.route}}">{{link.name}}</a></span>
 
     <span class="spacer"></span>
-    <span style="color:whitesmoke;">Plataforma</span>
+    <span  class="font-header-elements" style="color:whitesmoke;">Plataforma</span>
     <span class="spacer"></span>
 
     <ng-template [ngIf]="isAuthenticated">
@@ -17,13 +17,13 @@
       </button-->
 
       <button mat-icon-button aria-label="Mostrar Sidenav" (click)="toggleSidenav()" fxShow.xs fxHide.gt-xs>
-        <img src="{{user.avatar}}" alt="" style="width:auto; margin:auto">
+        <img src="{{user.avatar}}" alt="" class="zise-avatar">
         <!--mat-icon>menu</mat-icon-->
       </button>
 
       <button mat-icon-button [matMenuTriggerFor]="menuAccount" fxHide.xs="xs">
         <!--mat-icon svgIcon="user-icon" aria-label="Avatar"></mat-icon-->
-        <img src="{{user.avatar}}" alt="" style="width:auto; margin:auto">
+        <img src="{{user.avatar}}" alt="" class="zise-avatar">
       </button>
 
       <!--mat-menu #menuApps="matMenu">

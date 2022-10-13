@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use App\Models\Activity;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 /**
  * Class ModelEventLogger
@@ -24,12 +25,13 @@ trait ModelEventLogger {
                 try {
                     $reflect = new \ReflectionClass($model);
                     return Activity::create([
-                        'user_id'     => \Auth::user()->id,
-                        'contentId'   => $model->id,
-                        'contentType' => get_class($model),
-                        'action'      => static::getActionName($eventName),
-                        'description' => static::getActionName(ucfirst($eventName)) . " un " . $reflect->getShortName(),
-                        'details'     => json_encode(array_values($model->getDirty()))
+                        'fecha_hora'            => Carbon::now(),
+                        'usuario_id'            => \Auth::user()->id,
+                        'registro_id'           => $model->id,
+                        'path_modelo'           => get_class($model),
+                        'accion'                => static::getActionName($eventName),
+                        'descripcion'           => static::getActionName(ucfirst($eventName)) . " un " . $reflect->getShortName(),
+                        'detalles_registro'     => json_encode(array_values($model->getDirty()))
                     ]);
                 } catch (\Exception $e) {
                     return true;
@@ -76,7 +78,7 @@ trait ModelEventLogger {
                 return 'Elimino';
                 break;
             default:
-                return 'unknown';
+                return 'Desconocido';
         }
     }
 } 
