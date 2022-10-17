@@ -13,17 +13,16 @@ class CreateActivityTable extends Migration
      */
     public function up()
     {
-        Schema::create('logs_movimientos', function (Blueprint $table) {
+        Schema::create('activity_logs', function (Blueprint $table) {
             //logger
             $table->id();
-            $table->date('fecha');
+            $table->date('fecha_hora');
             $table->bigInteger('usuario_id');
-            $table->bigInteger('registro_tabla_id');
+            $table->bigInteger('registro_id');
             $table->string('path_modelo');
             $table->string('accion');
-            $table->string('estatus')->nullable();
             $table->string('descripcion');
-            $table->jsonb('registro');
+            $table->jsonb('detalles_registro');
 
             $table->timestamps();
             $table->softDeletes();
@@ -37,6 +36,6 @@ class CreateActivityTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('logs_movimientos');
+        Schema::dropIfExists('activity_logs');
     }
 }

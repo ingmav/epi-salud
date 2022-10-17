@@ -1,3 +1,6 @@
+/* ::ng-deep .mat-card{
+    padding:5px !important;
+} */
 .permissions-container {
     position: relative;
     min-height: 200px;
@@ -5,7 +8,8 @@
 
 .permissions-table-container {
     position: relative;
-    max-height: 400px;
+    max-height: 650px;
+    min-height:100px;
     overflow: auto;
 }
 
@@ -26,13 +30,30 @@ table {
     width: 100%;
 }
 
+table th {
+    padding:0 5px;
+}
+
+.data-table th:first-child{
+    border-radius: 4px 0px 0px 0px;
+}
+
+.data-table th:last-child{
+    border-radius: 0px 4px 0px 0px;
+}
+
+table tr:hover{
+  background-color: whitesmoke;
+  cursor: default;
+}
+
 .no-results-found{
     text-align: center;
     font-style: italic;
 }
 
 .loading-results{
-    width: 100%;
+    width:100%;
     top: 0;
     left: 0;
     right: 0;
@@ -46,16 +67,24 @@ table {
 }
 
 .mat-form-field {
-font-size: 14px;
-width: 100%;
+    font-size: 14px;
+    width: 100%;
 }
 
 /* Column Widths */
 .mat-column-actions{
-  max-width: 60px;
-  min-width: 60px;
+    max-width: 75px;
+    min-width: 60px;
 }
 
 .hide{
     display: none;
+}
+
+.search-button {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    height: 60px;
+    margin: 0 10px;
 }

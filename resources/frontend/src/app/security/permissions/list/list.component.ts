@@ -83,10 +83,7 @@ export class ListComponent implements OnInit {
         }
         this.isLoading = false;
         
-      },
-      complete:() => {
-        this.sharedService.showSnackBar('¡Permisos Cargados!', 'Cerrar', 3000);
-      },
+      }
 
     });
 
@@ -100,8 +97,12 @@ export class ListComponent implements OnInit {
 
   openDialogForm(id:string = ''){
     const dialogRef = this.dialog.open(FormComponent, {
-      width: '500px',
-      data: {id: id}
+      width: '90%',
+      height: '50%',
+      maxWidth: '50%',
+      disableClose: true,
+      data:{id: id},
+      panelClass: 'no-padding-dialog'
     });
 
     dialogRef.afterClosed().subscribe(reponse => {
@@ -127,6 +128,12 @@ export class ListComponent implements OnInit {
         );
       }
     });
+  }
+
+  cleanSearch(){
+    this.searchQuery = '';
+    this.paginator.pageIndex = 0;
+    this.loadPermissionsData(null);
   }
 
 }

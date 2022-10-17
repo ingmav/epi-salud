@@ -25,6 +25,7 @@ export class FormComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: FormDialogData
   ) {}
 
+  isSaving:boolean;
   isLoading:boolean = false;
   permiso:any = {};
 
@@ -57,10 +58,7 @@ export class FormComponent implements OnInit {
               this.manageRepeatedIDError(error);
             }
           }
-        },
-        complete:() => {
-          this.sharedService.showSnackBar('¡Permiso Obtenido!', 'Cerrar', 3000);
-        },
+        }
       });
     }
   }
@@ -83,6 +81,9 @@ export class FormComponent implements OnInit {
               this.manageRepeatedIDError(error);
             }
           }
+        },
+        complete:() =>{
+          this.sharedService.showSnackBar('Permiso Actualizado con éxito!', 'Cerrar', 3000);
         }
       });
     }else{
@@ -102,7 +103,10 @@ export class FormComponent implements OnInit {
               this.manageRepeatedIDError(error);
             }
           }          
-        }
+        },
+        complete:() => {
+          this.sharedService.showSnackBar('¡Permiso Creado con éxito!', 'Cerrar', 3000);
+        },
       });
     }
   }
@@ -140,6 +144,22 @@ export class FormComponent implements OnInit {
         }
       }
     }
+  }
+
+  nuevoPermiso(){
+    this.permisoForm.reset();
+    this.data.id = null;
+    this.permiso = {};
+    this.provideID = false;
+    this.permisoForm.get('id').disable();
+  }
+
+  cancelarAccion(){
+    this.cerrar();
+  }
+
+  cerrar(){
+    this.dialogRef.close();
   }
 
 }
