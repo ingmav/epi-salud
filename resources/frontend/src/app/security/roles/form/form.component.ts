@@ -29,7 +29,7 @@ export class FormComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: FormDialogData
   ) {}
   
-  
+  isSaving:boolean;
   isLoading:boolean = false;
   rol:any = {};
   
@@ -150,6 +150,35 @@ export class FormComponent implements OnInit {
   }
 
   onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  nuevoRol(){
+    this.rolForm.reset();
+    this.data.id = null;
+    this.rol = {};
+
+    this.catalogPermissions = [];
+    this.selectedPermissions.length = 0;
+
+    this.selectedPermissions.pop();
+    this.listOfPermissions$.subscribe();
+    this.selectedPermissions.slice(0);
+    this.selectedItems = {};
+
+    console.log(this.selectedPermissions);
+
+
+
+
+
+  }
+
+  cancelarAccion(){
+    this.cerrar();
+  }
+
+  cerrar(){
     this.dialogRef.close();
   }
 }

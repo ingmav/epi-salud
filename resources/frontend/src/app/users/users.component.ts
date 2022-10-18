@@ -107,4 +107,10 @@ export class UsersComponent implements OnInit {
       }
     });
   }
+
+  cleanSearch(){
+    this.searchQuery = '';
+    this.paginator.pageIndex = 0;
+    this.loadUsersData(null);
+  }
 }

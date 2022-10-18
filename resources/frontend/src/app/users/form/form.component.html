@@ -1,8 +1,8 @@
 <section fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="start" style="padding:10px; height: 100%; overflow: auto; flex: 1 1 0%;">
     <section fxFlex fxLayout="row" fxLayoutAlign="center">
-        <mat-card fxFlex.xs="100%" fxFlex="90%">
+        <mat-card class="edit-container" fxFlex.xs="100%" fxFlex="90%">
             <mat-card-content>
-                <div class="edit-container" [formGroup]="usuarioForm">
+                <div  [formGroup]="usuarioForm">
                     <div class="edit-loading-shade" *ngIf="isLoading">
                         <mat-spinner *ngIf="isLoading"></mat-spinner>
                     </div>

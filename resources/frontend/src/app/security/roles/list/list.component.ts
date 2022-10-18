@@ -91,7 +91,11 @@ export class ListComponent implements OnInit {
   openDialogForm(id:string = ''){
     const dialogRef = this.dialog.open(FormComponent, {
       width: '80%',
-      data: {id: id}
+      height: '50%',
+      maxWidth: '80%',
+      disableClose: true,
+      data:{id: id},
+      panelClass: 'no-padding-dialog'
     });
 
     dialogRef.afterClosed().subscribe(reponse => {
@@ -101,7 +105,7 @@ export class ListComponent implements OnInit {
     });
   }
 
-  confirmDeletePermission(id:string = ''){
+  confirmDeleteRol(id:string = ''){
     const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
       width: '500px',
       data: {dialogTitle:'Eliminar Permiso',dialogMessage:'Esta seguro de eliminar este permiso?',btnColor:'warn',btnText:'Eliminar'}
@@ -117,6 +121,12 @@ export class ListComponent implements OnInit {
         );
       }
     });
+  }
+  
+  cleanSearch(){
+    this.searchQuery = '';
+    this.paginator.pageIndex = 0;
+    this.loadRolesData(null);
   }
 
 }

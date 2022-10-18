@@ -1,3 +1,34 @@
+::ng-deep .no-padding-dialog > .mat-dialog-container{
+    padding:0px;
+}
+.rol-toolbar:not(.mat-button){
+    background-color: #4a4848;
+    color:whitesmoke;
+}
+
+.boton-accion{
+    border-left: 1px solid whitesmoke;
+    background-color: #787878;
+    border-radius: 0px;
+}
+
+.fondo-btn{
+    background-color: rgba(0,0,0,.04);
+}
+
+.label-info{
+    cursor: default;
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-right: 5px;
+}
+
+.boton-accion-medio{
+    border-radius: 0px;
+}
+
 .form-container {
     position: relative;
     min-height: 200px;
