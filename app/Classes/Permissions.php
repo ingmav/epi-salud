@@ -4,26 +4,21 @@ namespace App\Classes;
 
 class Permissions{
     //Permisos para Root
-    const CRUD_PERMISOS = 'RGMUpFAiRuv7UFoJroHP6CtvmpoFlQXl';
+    const CRUD_PERMISOS = 'tTVayONYIDylH9dk7jg5143h0FKoSpBi';
 
     //Permisos multi-modulos
-    const SELECCIONAR_PERMISO = 'G8aCoYYCgE8fAwegn0MvWjxMXhxIIrhy';
+    const SELECCIONAR_PERMISO = 'WEXPBavKv3I8O7qDWZFPJ8qSBJIOorxR';
 
     //Permisos para Modulo de Usuarios
-    const CREAR_USUARIO = 'lJFsnYJCnFcVPVBBUOQrmlv3b6Y2X2ZE';
-    const EDITAR_USUARIO = 'W8Xmv3hiIyIpkZfJMaL9MsRxxuSIiO5R';
-    const ELIMINAR_USUARIO = 'n5TraVIrRoioG1kqdHsIaZLYDvxO8MFD';
+    const CREAR_USUARIO = 'cbjMp9Nyvrn6496Lr3A4AViQ4xfCuUGD';
+    const EDITAR_USUARIO = 'utOb2NFkCZAgWQY81Oh2h6GChMxDuMrz';
+    const ELIMINAR_USUARIO = 'TYApYivN480zKKZEciMIqXFd0P8ZB5cr';
     const VER_USUARIO = 'nTSk4Y4SFKMyQmRD4ku0UCiNWIDe8OEt';
 
     //Permisos para Modulo de Roles
-    const SELECCIONAR_ROL = 'm0D4LIsO7V79aDueMDjgWGOmp8mPW6c0';
-    const CREAR_ROL = '1z9Sv2fC1ALXdM80L0QHs9c3HLDoAOO8';
-    const EDITAR_ROL = 'v216XcAzgbt4mIjj6gZP2rdRTupXz0AO';
-    const ELIMINAR_ROL = 'QpKVz00WUbZVJMPFu3iBNGBTdMFYubQ2';
-    const VER_ROL = 'nrPqEhq2TX0mI7qT7glaOCJ7Iqx2QtPs';
-
-    //Permisos para Modulo de Personal Activo
-    const MODULO_PERSONAL_ACTIVO = '8QnE1cYkjjNAmM7qHSf1CSlPMJiQeqr5';
-    const ADMIN_PERSONAL_ACTIVO = 'dmcnXs5gK1qHzn30WvGXDzFimcrVJZ9Z';
-    const AGREGAR_EMPLEADO = 'KxDd9oPP1HNSGdqNM1bD9gexIxSXhkkm';
+    const SELECCIONAR_ROL = 'tQCBXc4vpAD7CXKIYefpMgTfpC6H7lht';
+    const CREAR_ROL = 'R9vq2ksTpI27zUNfl1BOZNu4nWaBEdzI';
+    const EDITAR_ROL = 'qo5BS6kfPEfLXSQy8eUjw1UJ85H8te64';
+    const ELIMINAR_ROL = 'XgQSNeHHCqMScU1EvNaKgv5ju2Tp32AS';
+    const VER_ROL = 'kouKswi19okTm61loGNOaJA8eYAd2RYB';
 }

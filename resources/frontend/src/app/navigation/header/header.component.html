@@ -1,11 +1,14 @@
-<mat-toolbar class="bg-dark" style="height: 52px !important;">
-    <!--button mat-icon-button aria-label="Ir al inicio" routerLink="/" fxShow.xs fxHide.gt-sm>
-      <mat-icon>home</mat-icon>
-    </button-->
-    <!--img src="{{(headerIcon)?headerIcon:'assets/logo-icon.svg'}}" alt="" style="height: 60%; width:auto;" fxHide.xs="true"-->
-    <img src="{{(headerIcon)?headerIcon:'assets/icons/users.svg'}}" alt="" style="height: 60%; width:auto;" fxHide.xs="true">
-    <span class="font-header-elements" *ngIf="!selectedApp"><a routerLink="/">App</a></span> 
-    <span class="header-links, font-header-elements" *ngIf="selectedApp"><a *ngFor="let link of appHeaderLinks" routerLink="{{link.route}}">{{link.name}}</a></span>
+<mat-toolbar class="bg-dark" style="height: 38px !important;">
+    <button mat-icon-button aria-label="Ir al inicio" routerLink="/">
+      <mat-icon style="color: white;">apps</mat-icon>
+    </button>
+    <span class="header-links, font-header-elements" *ngIf="selectedApp"><a *ngFor="let link of appHeaderLinks" routerLink="{{link.route}}">{{link.name | uppercase}}</a></span>
+
+    <button mat-button [matMenuTriggerFor]="animals" class="menu-plataforma">MODULOS</button>
+      <mat-menu #animals="matMenu">
+        <button mat-menu-item *ngFor="let item of menus" ><mat-icon>{{ item.icon }}</mat-icon> {{ item.name }}</button>
+      </mat-menu>
+
 
     <span class="spacer"></span>
     <span  class="font-header-elements" style="color:whitesmoke;">Plataforma</span>
@@ -26,20 +29,7 @@
         <img src="{{user.avatar}}" alt="" class="zise-avatar">
       </button>
 
-      <!--mat-menu #menuApps="matMenu">
-        <div class="apps" fxLayout="row" fxLayoutAlign="center center">
-          <ng-container *ngFor="let app of apps; let i = index">
-              <figure [routerLink]="['/'+app.route]" *ngIf="i<12" matTooltip="{{app.name}}">
-                  <img src="{{ app.icon }}" alt="Icon">
-                  <figcaption class="ellipsis">{{ app.name }}</figcaption>
-              </figure>
-          </ng-container>
-        </div>
-        <mat-divider></mat-divider>
-        <button mat-menu-item style="text-align:center" routerLink="/apps">
-          <mat-icon>more_horiz</mat-icon>
-        </button>
-      </mat-menu-->
+
 
       <mat-menu #menuAccount="matMenu">
         <div style="width:280px;" style="display:flex; justify-content: start center">

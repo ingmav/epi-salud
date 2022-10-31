@@ -27,6 +27,19 @@ class CreateActivityTable extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+        Schema::create('sys_log_errors', function (Blueprint $table) {
+            $table->id();
+            $table->timestamp('created_at')->useCurrent();
+            $table->bigInteger('logged_user_id')->index();
+            $table->string('ip')->nullable();
+            $table->string('method',10);
+            $table->text('browser_info')->nullable();
+            $table->integer('code')->nullable();
+            $table->string('file')->index();
+            $table->integer('line')->nullable();
+            $table->text('message')->nullable();
+            $table->text('trace')->nullable();
+        });
     }
 
     /**
@@ -37,5 +50,6 @@ class CreateActivityTable extends Migration
     public function down()
     {
         Schema::dropIfExists('activity_logs');
+        Schema::dropIfExists('sys_log_errors');
     }
 }

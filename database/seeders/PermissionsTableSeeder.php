@@ -12,18 +12,20 @@ class PermissionsTableSeeder extends Seeder
     public function run()
     {
         $basic_permissions = [
-            ['id'=>'1z9Sv2fC1ALXdM80L0QHs9c3HLDoAOO8','description'=>'Crear Roles',                 'group'=>'SEGURIDAD/ROLES',      'is_super'=>false ],
-            ['id'=>'G8aCoYYCgE8fAwegn0MvWjxMXhxIIrhy','description'=>'Seleccionar Permiso',         'group'=>'SEGURIDAD/PERMISOS',   'is_super'=>false ],
-            ['id'=>'lJFsnYJCnFcVPVBBUOQrmlv3b6Y2X2ZE','description'=>'Crear Usuarios',              'group'=>'ADMIN/USUARIOS',       'is_super'=>false ],
-            ['id'=>'m0D4LIsO7V79aDueMDjgWGOmp8mPW6c0','description'=>'Seleccionar Rol',             'group'=>'SEGURIDAD/ROLES',      'is_super'=>false ],
-            ['id'=>'n5TraVIrRoioG1kqdHsIaZLYDvxO8MFD','description'=>'Eliminar Usuarios',           'group'=>'ADMIN/USUARIOS',       'is_super'=>false ],
-            ['id'=>'nrPqEhq2TX0mI7qT7glaOCJ7Iqx2QtPs','description'=>'Ver Roles',                   'group'=>'SEGURIDAD/ROLES',      'is_super'=>false ],
-            ['id'=>'nTSk4Y4SFKMyQmRD4ku0UCiNWIDe8OEt','description'=>'Ver Usuarios',                'group'=>'ADMIN/USUARIOS',       'is_super'=>false ],
-            ['id'=>'QpKVz00WUbZVJMPFu3iBNGBTdMFYubQ2','description'=>'Eliminar Roles',              'group'=>'SEGURIDAD/ROLES',      'is_super'=>false ],
-            ['id'=>'RGMUpFAiRuv7UFoJroHP6CtvmpoFlQXl','description'=>'CRUD Permisos',               'group'=>'SEGURIDAD/PERMISOS',   'is_super'=>true  ],
-            ['id'=>'v216XcAzgbt4mIjj6gZP2rdRTupXz0AO','description'=>'Editar Roles',                'group'=>'SEGURIDAD/ROLES',      'is_super'=>false ],
-            ['id'=>'W8Xmv3hiIyIpkZfJMaL9MsRxxuSIiO5R','description'=>'Editar Usuarios',             'group'=>'ADMIN/USUARIOS',       'is_super'=>false ],
-            ['id'=>'6ARHQGj1N8YPkr02DY04K1Zy7HjIdDcj','description'=>'Herramientas Dev',            'group'=>'DEV-TOOLS',            'is_super'=>false ],
+            ['id'=>'R9vq2ksTpI27zUNfl1BOZNu4nWaBEdzI','description'=>'Crear Roles',                 'group'=>'SEGURIDAD/ROLES',      'is_super'=>false ],
+            ['id'=>'WEXPBavKv3I8O7qDWZFPJ8qSBJIOorxR','description'=>'Seleccionar Permiso',         'group'=>'SEGURIDAD/PERMISOS',   'is_super'=>false ],
+            ['id'=>'cbjMp9Nyvrn6496Lr3A4AViQ4xfCuUGD','description'=>'Crear Usuarios',              'group'=>'ADMIN/USUARIOS',       'is_super'=>false ],
+            ['id'=>'tQCBXc4vpAD7CXKIYefpMgTfpC6H7lht','description'=>'Seleccionar Rol',             'group'=>'SEGURIDAD/ROLES',      'is_super'=>false ],
+            ['id'=>'TYApYivN480zKKZEciMIqXFd0P8ZB5cr','description'=>'Eliminar Usuarios',           'group'=>'ADMIN/USUARIOS',       'is_super'=>false ],
+            ['id'=>'kouKswi19okTm61loGNOaJA8eYAd2RYB','description'=>'Ver Roles',                   'group'=>'SEGURIDAD/ROLES',      'is_super'=>false ],
+            ['id'=>'XgQSNeHHCqMScU1EvNaKgv5ju2Tp32AS','description'=>'Eliminar Roles',              'group'=>'SEGURIDAD/ROLES',      'is_super'=>false ],
+            ['id'=>'tTVayONYIDylH9dk7jg5143h0FKoSpBi','description'=>'CRUD Permisos',               'group'=>'SEGURIDAD/PERMISOS',   'is_super'=>true  ],
+            ['id'=>'qo5BS6kfPEfLXSQy8eUjw1UJ85H8te64','description'=>'Editar Roles',                'group'=>'SEGURIDAD/ROLES',      'is_super'=>false ],
+            ['id'=>'utOb2NFkCZAgWQY81Oh2h6GChMxDuMrz','description'=>'Editar Usuarios',             'group'=>'ADMIN/USUARIOS',       'is_super'=>false ],
+            ['id'=>'hr5UhgMTDmF9EiLYeq5x0cz0e281IWRU','description'=>'Modulo Usuarios',             'group'=>'MODULOS',              'is_super'=>false ],
+            ['id'=>'tOJt3Tw42CjDT8Ob5164lwm2i3FCxJCR','description'=>'Modulo Permisos',             'group'=>'MODULOS',              'is_super'=>false ],
+            ['id'=>'gzA7BboE1BpzXZmko6OIDT3EOQRn4otm','description'=>'Modulo Roles',                'group'=>'MODULOS',              'is_super'=>false ],
+            
         ];
 
         foreach ($basic_permissions as $permission) {

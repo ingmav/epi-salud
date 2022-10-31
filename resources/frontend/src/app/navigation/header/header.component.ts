@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 import { App } from 'src/app/apps-list/apps';
 import { AppsListService } from 'src/app/apps-list/apps-list.service';
-import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { SharedService } from '../../shared/shared.service';
 
@@ -23,8 +23,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   appHeaderLinks: any[];
   headerIcon: string;
   user: User;
-  apps: App[];
+  apps: App[]; 
+  menus:any; 
   breakpoint = 6;
+  selectedChild: any;
 
   constructor(
     private authService:AuthService,
@@ -42,7 +44,33 @@ export class HeaderComponent implements OnInit, OnDestroy {
       let routes = event.url.split('/');
       let selected_route = routes[1];
 
-      let currentApp = this.sharedService.getCurrentApp();
+      let selected_child = '';
+
+      routes.forEach(element => {
+        selected_child = element;
+      });
+      /*if(routes.length > 2){
+        selected_child = routes[2];
+      }*/
+      
+
+      this.apps.forEach(element => {
+        console.log(element.name+" "+selected_route)
+      
+        if(element.name.toUpperCase() == selected_route.toUpperCase())
+        {
+          console.log(element);
+          if(element.menu)
+          {
+            element.menu.forEach(element2 => {
+              this.menus = element2.children;
+            });
+            //this.menus = element.menu;
+          }
+          
+        }
+      });
+      /*let currentApp = this.sharedService.getCurrentApp();
       if(currentApp.name != selected_route ){
         this.sharedService.newCurrentApp(selected_route);
       }
@@ -71,7 +99,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
             this.appHeaderLinks.push({name:selectedChildApp.name,route:selectedChildApp.route});
           }
         }
-      }
+      }*/
+     
     });
   }
 
@@ -95,6 +124,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   getApps():void{
     this.apps = this.appsService.getApps();
+    
   }
 
   onResize(event) {

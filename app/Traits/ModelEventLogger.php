@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-use App\Models\Activity;
+use App\Models\ActivityLogs;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
@@ -24,7 +24,7 @@ trait ModelEventLogger {
             static::$eventName(function (Model $model) use ($eventName) {
                 try {
                     $reflect = new \ReflectionClass($model);
-                    return Activity::create([
+                    return ActivityLogs::create([
                         'fecha_hora'            => Carbon::now(),
                         'usuario_id'            => \Auth::user()->id,
                         'registro_id'           => $model->id,

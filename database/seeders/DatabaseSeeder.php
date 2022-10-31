@@ -15,14 +15,13 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::create([
             'name' => 'Usuario Root',
             'username' => 'root',
-            'password' => Hash::make('ssa.plataforma'),
+            'password' => Hash::make('ssa.asistencia#$'),
             'email' => 'root@localhost',
             'is_superuser' => 1,
             'avatar' => '/assets/avatars/50-king.svg'
         ]);
 
         $this->call(PermissionsTableSeeder::class);
-        $this->call(EntidadesFederativasTableSeeder::class);
-        $this->call(SegurosTableSeeder::class);
+        
     }
 }
