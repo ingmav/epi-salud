@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, OnDestroy, ViewChild } from '@angular/core';
 import { User } from 'src/app/auth/models/user';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
@@ -7,6 +7,7 @@ import { AppsListService } from 'src/app/apps-list/apps-list.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { SharedService } from '../../shared/shared.service';
+import { MatMenu } from '@angular/material/menu';
 
 @Component({
   selector: 'app-header',
@@ -17,6 +18,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   @Output() onSidenavToggle = new EventEmitter<void>();
 
+  @ViewChild('navmenu', {static:true}) navMenu:MatMenu;
+
   public isAuthenticated:boolean;
   authSubscription: Subscription;
   selectedApp: any;
@@ -25,6 +28,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   user: User;
   apps: App[]; 
   menus:any; 
+  modulos:any;
   breakpoint = 6;
   selectedChild: any;
 
@@ -59,18 +63,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
       
         if(element.name.toUpperCase() == selected_route.toUpperCase())
         {
-          console.log(element);
+          console.log(element.menu);
           if(element.menu)
           {
+            this.menus = element.menu;
             element.menu.forEach(element2 => {
-              this.menus = element2.children;
+              this.modulos = element2.children;
             });
             //this.menus = element.menu;
           }
           
         }
       });
-      /*let currentApp = this.sharedService.getCurrentApp();
+
+     let currentApp = this.sharedService.getCurrentApp();
       if(currentApp.name != selected_route ){
         this.sharedService.newCurrentApp(selected_route);
       }
@@ -99,7 +105,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
             this.appHeaderLinks.push({name:selectedChildApp.name,route:selectedChildApp.route});
           }
         }
-      }*/
+      }
      
     });
   }
@@ -120,6 +126,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
       }
     );
     this.breakpoint = (window.innerWidth <= 599) ? 3 : 6;
+  }
+
+  getMenuName(menu)
+  {
+    return this.navMenu;
   }
 
   getApps():void{

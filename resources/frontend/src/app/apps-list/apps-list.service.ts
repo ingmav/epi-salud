@@ -24,9 +24,10 @@ export class AppsListService {
 
     userApps = JSON.parse(JSON.stringify(APPS));
 
+    
     for (let i = 0; i < userApps.length; i++) {
       let app = userApps[i];
-
+      
       if(app.children && app.children.length > 0){
         for (let j = 0; j < app.children.length; j++) {
           let child = app.children[j];
@@ -35,6 +36,24 @@ export class AppsListService {
             j -= 1;
           }
         }
+      }
+      
+
+      if(app.menu && app.menu.length > 0){
+        
+        for (let z = 0; z < app.menu.length; z++) {
+          if(app.menu[z].children && app.menu[z].children.length > 0){
+            for (let j = 0; j < app.menu[z].children.length; j++) {
+              let child = app.menu[z].children[j];
+              if(child.permission && !permissions[child.permission]){
+                console.log();
+                userApps[i].menu[z].children.splice(j,1);
+                j -= 1;
+              }
+            }
+          }
+        }
+        
       }
 
       if((app.permission && !permissions[app.permission]) || (app.isHub && app.children && app.children.length == 0)){

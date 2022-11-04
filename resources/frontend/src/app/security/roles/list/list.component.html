@@ -14,22 +14,28 @@
                         </button>
                     </mat-form-field>
                 </div>
-                <div fxFlex="none" fxFlex.xs="100">
+                <!--<div fxFlex="none" fxFlex.xs="100">
                     <div fxFlex></div>
                     <section class="search-button">
                         <button mat-raised-button color="accent" (click)="applyFilter()">
                             <mat-icon>search</mat-icon> Buscar
                         </button>
                     </section>
+                </div>-->
+                <div fxFlex="none" fxFlex.xs="100">
+                    <button mat-raised-button [matMenuTriggerFor]="menu" style="margin-left: 5px; padding: 10px; font-size: 14pt;"><mat-icon>more_horiz</mat-icon></button>
+                    <mat-menu #menu="matMenu">
+                        <button  mat-menu-item  (click)="openDialogForm()"><mat-icon>add_circle</mat-icon> Crear Rol</button>
+                    </mat-menu>
                 </div>
             </div>
 
-            <div fxFlex="none" fxLayoutAlign="end center">
+            <!--<div fxFlex="none" fxLayoutAlign="end center">
                 <div fxFlex="none" fxLayout="row" style="padding-bottom:10px;">
                     <div fxFlex></div>
                     <button mat-raised-button color="primary" (click)="openDialogForm()"><mat-icon>add_circle</mat-icon> Crear Rol</button>
                 </div>
-            </div>
+            </div>-->
 
             <mat-divider [inset]="true"></mat-divider>
             <br>
@@ -48,17 +54,17 @@
                             <td mat-cell *matCellDef="let row"> {{row.name}} </td>
                         </ng-container>
 
-
-                        <ng-container matColumnDef="opciones">
-                            <th mat-header-cell *matHeaderCellDef>Opciones</th>
+                        <ng-container matColumnDef="opciones" >
+                            <th mat-header-cell *matHeaderCellDef><mat-icon>more_verti</mat-icon></th>
                             <td mat-cell *matCellDef="let row; let i = index">
-                                <button mat-button mat-stroked-button [matMenuTriggerFor]="menu">Opciones</button>
+                                <button mat-button [matMenuTriggerFor]="menu"><mat-icon>more_verti</mat-icon></button>
                                 <mat-menu #menu="matMenu">
                                     <button mat-menu-item matTooltip="Editar Rol"    (click)="openDialogForm(row.id)"><mat-icon color="primary">edit</mat-icon>Editar</button>
                                     <button mat-menu-item matTooltip="Eliminar Rol"  (click)="confirmDeleteRol(row.id)"><mat-icon color="warn">delete</mat-icon>Eliminar</button>
                                 </mat-menu>
                                 
                             </td>
+                           
                         </ng-container>
 
                         <ng-container matColumnDef="noResultsFound">

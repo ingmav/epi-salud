@@ -1,5 +1,6 @@
 export class App {
     name:string;
+    
     route: string;
     icon: string;
     permission?: string; //Si tiene permisos se motrara/oculatara dependiendo de los permisos que el usuario tenga asignado
@@ -12,50 +13,31 @@ export class App {
 
 export class Menu {
     name:string;
+    identificador?:string;
     icon?: string;
     permission?: string; //Si tiene permisos se motrara/oculatara dependiendo de los permisos que el usuario tenga asignado
     children:App[]
 }
 
 export const APPS:App [] = [
-    { name:"Usuarios",      route: "usuarios",          icon: "assets/icons/users.svg",              permission:"hr5UhgMTDmF9EiLYeq5x0cz0e281IWRU" },
-    { name:'Permisos',      route: "permisos",          icon: "assets/icons/security-shield.svg",    permission:"tOJt3Tw42CjDT8Ob5164lwm2i3FCxJCR" },
-    { name:'Roles',         route: "roles",             icon: "assets/icons/users-roles.svg",        permission:"gzA7BboE1BpzXZmko6OIDT3EOQRn4otm" },
-    { name:'Prueba',         route: "prueba",           icon: "assets/icons/users-roles.svg",    
-    menu:[
+    { name:"Usuarios",      route: "usuarios",          icon: "assets/icons/users.png",              permission:"hr5UhgMTDmF9EiLYeq5x0cz0e281IWRU" },
+    { name:'Permisos',      route: "permisos",          icon: "assets/icons/permisos.png",    permission:"tOJt3Tw42CjDT8Ob5164lwm2i3FCxJCR" },
+    { name:'Roles',         route: "roles",             icon: "assets/icons/roles.png",        permission:"gzA7BboE1BpzXZmko6OIDT3EOQRn4otm" },
+    { name:'Prueba',         route: "prueba",           icon: "assets/icons/catalogos.png",    
+    /*menu:[
         {
-            name:'Tramites',
+            name:'MODULO',
+            identificador:'primero',
             children:
             [
-                { name:'Comisión Interna',              route:'tramites/comision',        icon:'call_merge' },
-                { name:'Adscripción',                   route:'tramites/adscripcion',     icon:'call_made' },
-                { name:'Adscripción Ext.',              route:'tramites/adscripcion-externa',icon:'call_made' }, 
-                { name:'Reincorporación',               route:'tramites/reincorporacion',  icon:'call_received' },
-                { name:'Documentacion',                 route:'tramites/documentacion',   icon:'insert_drive_file' },
-                { name:'Comisión Sindical',             route:'tramites/comision-sindical',   icon:'supervised_user_circle' }
+                { name:'Comisión Interna',              route:'tramites/comision',              icon:'call_merge'},
+                { name:'Adscripción',                   route:'tramites/adscripcion',           icon:'call_made',               permission:"2"  },
+                { name:'Adscripción Ext.',              route:'tramites/adscripcion-externa',   icon:'call_made',               permission:"2"  }, 
+                { name:'Reincorporación',               route:'tramites/reincorporacion',       icon:'call_received',           permission:"2"  },
+                { name:'Documentacion',                 route:'tramites/documentacion',         icon:'insert_drive_file',       permission:"2"  },
+                { name:'Comisión Sindical',             route:'tramites/comision-sindical',     icon:'supervised_user_circle',  permission:"2"  }
             ]
-        }/*,
-        {
-            name:'Tramites',
-            children:
-            [
-                { name:'Comisión Interna',              route:'tramites/comision',        icon:'call_merge' },
-                { name:'Adscripción',                   route:'tramites/adscripcion',     icon:'call_made' },
-                { name:'Adscripción Ext.',              route:'tramites/adscripcion-externa',icon:'call_made' }, 
-                { name:'Reincorporación',               route:'tramites/reincorporacion',  icon:'call_received' },
-                { name:'Documentacion',                 route:'tramites/documentacion',   icon:'insert_drive_file' },
-                { name:'Comisión Sindical',             route:'tramites/comision-sindical',   icon:'supervised_user_circle' }
-            ]
-        }*/
-    ]
-    
-        /*[
-            { name:'Comisión Interna',              route:'tramites/comision',        icon:'call_merge' },
-            { name:'Adscripción',                   route:'tramites/adscripcion',     icon:'call_made' },
-            { name:'Adscripción Ext.',              route:'tramites/adscripcion-externa',icon:'call_made' }, 
-            { name:'Reincorporación',               route:'tramites/reincorporacion',  icon:'call_received' },
-            { name:'Documentacion',                 route:'tramites/documentacion',   icon:'insert_drive_file' },
-            { name:'Comisión Sindical',             route:'tramites/comision-sindical',   icon:'supervised_user_circle' }
-        ]*/
+        }
+    ]*/
     },
 ]

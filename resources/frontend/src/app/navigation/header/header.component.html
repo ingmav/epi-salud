@@ -3,15 +3,17 @@
       <mat-icon style="color: white;">apps</mat-icon>
     </button>
     <span class="header-links, font-header-elements" *ngIf="selectedApp"><a *ngFor="let link of appHeaderLinks" routerLink="{{link.route}}">{{link.name | uppercase}}</a></span>
+    <span class="header-links, font-header-elements" *ngIf="!selectedApp"  style="color:whitesmoke;">PLATAFORMA BASE</span>
 
-    <button mat-button [matMenuTriggerFor]="animals" class="menu-plataforma">MODULOS</button>
-      <mat-menu #animals="matMenu">
-        <button mat-menu-item *ngFor="let item of menus" ><mat-icon>{{ item.icon }}</mat-icon> {{ item.name }}</button>
+    <button mat-button *ngFor="let item of menus" [matMenuTriggerFor]="getMenuName(item.identificador)" class="menu-plataforma">{{ item.name }}</button>
+      
+      <mat-menu #navmenu="matMenu">
+        <button mat-menu-item *ngFor="let item of modulos"  routerLink="{{item.route}}"><mat-icon>{{ item.icon }}</mat-icon> {{ item.name }}</button>
       </mat-menu>
 
 
     <span class="spacer"></span>
-    <span  class="font-header-elements" style="color:whitesmoke;">Plataforma</span>
+    <!--span  class="font-header-elements" style="color:whitesmoke;">Plataforma</span-->
     <span class="spacer"></span>
 
     <ng-template [ngIf]="isAuthenticated">

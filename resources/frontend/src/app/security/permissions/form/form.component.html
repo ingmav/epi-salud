@@ -1,9 +1,9 @@
 <section fxLayout="column" style="height: 100%; overflow: hidden; flex: 1 1 0%;" (document:keydown.escape)="cancelarAccion()"> <!-- Main Body <<<<<<< -->
     <section fxFlex="none" class="permiso-toolbar"> <!-- Toolbar Menu <<<<<<< -->
         <div fxLayout="row">
-            <button fxFlex="none" mat-button color="default" [matMenuTriggerFor]="menuPermiso" aria-label="Menu de Permisos">
+            <!--<button fxFlex="none" mat-button color="default" [matMenuTriggerFor]="menuPermiso" aria-label="Menu de Permisos">
                 <mat-icon>settings</mat-icon> Opciones <mat-icon>arrow_drop_down</mat-icon>
-            </button>
+            </button>-->
             <button fxFlex="none" mat-button [disabled]="isSaving || !permisoForm.valid" (click)="savePermission()" [class.button-spinner]="isSaving">
                 <mat-icon>save</mat-icon> Guardar
             </button>
