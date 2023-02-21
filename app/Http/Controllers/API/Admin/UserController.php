@@ -6,17 +6,31 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
 
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 use Validator;
 
+use Illuminate\Support\Facades\Mail;
+use App\Mail\EmailConfirmation;
+
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\Grupo;
+use App\Models\Permission;
+use App\Models\Role;
 
 use DB;
 
-class UserController extends Controller
-{
+class UserController extends Controller{
+
+    /**
+     * Create a new AuthController instance.
+     *
+     * @return void
+     */
+    public function __construct(){
+        //$this->middleware('valid.session'); //Se agrego Middleware para checar datos guardados en el token
+    }
+
 
     public function getCatalogs(Request $request){
         try{
@@ -24,13 +38,17 @@ class UserController extends Controller
             $parametros = $request->all();
             $return_data = [];
 
-            //if(isset($parametros['grupos']) && $parametros['grupos']){
-            $return_data['grupos'] = Grupo::all();
-            //}
+            $return_data['roles'] = Role::with('permissions')->get();
 
+            $permisos = Permission::getModel();
+            if(!$loggedUser->is_superuser){
+                $permisos = $permisos::where(DB::raw('IFNULL(is_super,0)'),0);
+            }
+            $return_data['permisos'] = $permisos->get();
+            
             return response()->json(['data'=>$return_data],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
-            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+            throw new \App\Exceptions\LogError('Ocurrio un error al obtener los catalogos',null,$e);
         }
     }
 
@@ -59,6 +77,12 @@ class UserController extends Controller
                 });
             }
 
+            if((isset($parametros['sort']) && $parametros['sort']) && (isset($parametros['direction']) && $parametros['direction'])){
+                $usuarios = $usuarios->orderBy($parametros['sort'],$parametros['direction']);
+            }else{
+                $usuarios = $usuarios->orderBy('updated_at','desc');
+            }
+
             if(isset($parametros['page'])){
                 $resultadosPorPagina = isset($parametros["per_page"])? $parametros["per_page"] : 20;
     
@@ -67,9 +91,34 @@ class UserController extends Controller
                 $usuarios = $usuarios->get();
             }
 
-            return response()->json(['data'=>$usuarios,'parametros'=>$parametros],HttpResponse::HTTP_OK);
+            return response()->json(['data'=>$usuarios],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
-            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+            throw new \App\Exceptions\LogError('Ocurrio un error al intentar obtener la lista de usuarios',null,$e);
+        }
+    }
+
+    public function changeUserStatus(Request $request, $id){
+        try{
+            $parametros = $request->all();
+
+            $user = User::find($id);
+
+            if(!$user){
+                return response()->json(['message' => 'El Usuario seleccionado no esta disponible o no fue encontrado'], HttpResponse::HTTP_CONFLICT);
+            }
+
+            if($user->status != $parametros['status']){
+                if($parametros['status'] == 2 && !$user->last_login_at){
+                    $parametros['status'] = 1;
+                }
+                $user->status = $parametros['status'];
+                $user->save();
+            }
+
+            return response()->json(['message'=>'Usuario actualizado con éxito','status'=>$parametros['status']],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            DB::rollback();
+            throw new \App\Exceptions\LogError('Ocurrio un error al intentar guardar los datos del usuario',null,$e);
         }
     }
 
@@ -79,17 +128,18 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request){
         try{
             $validation_rules = [
                 'name' => 'required',
-                'email' => 'required'                
+                'email' => 'required',
+                'username' => 'required',
             ];
         
             $validation_eror_messages = [
                 'name.required' => 'El nombre es obligatorio',
-                'email.required' => 'Es correo electronico es obligatorio'
+                'email.required' => 'Es correo electronico es obligatorio',
+                'username.required' => 'El nombre de usuario es obligatorio',
             ];
 
             $parametros = $request->all();
@@ -99,57 +149,107 @@ class UserController extends Controller
             if($resultado->passes()){
                 DB::beginTransaction();
 
-                $usuario = new User();
-                $usuario->name = $parametros['name'];
-                $usuario->email = $parametros['email'];
-                $usuario->username = $parametros['username'];
-                $usuario->password = Hash::make($parametros['password']);
-                $usuario->is_superuser = $parametros['is_superuser'];
-                $usuario->avatar = $parametros['avatar'];
-                
-                $usuario->save();
+                $nuevo_user = false;
+
+                $valid_user = User::where(function($subWhere)use($parametros){
+                                    $subWhere->where('username',$parametros['username'])->orWhere('email',$parametros['email']);
+                                });
+                if($parametros['id']){
+                    $valid_user->where('id','!=',$parametros['id']);
+                }
+                $valid_user = $valid_user->get();
+
+                if($valid_user){
+                    $response_validator = [];
+                    foreach ($valid_user as $user) {
+                        if($user->email == $parametros['email']){
+                            $response_validator['email'] = 'duplicated';
+                        }
+                        
+                        if($user->username == $parametros['username']){
+                            $response_validator['username'] = 'duplicated';
+                        }
+                    }
+
+                    if(count($response_validator) > 0){
+                        DB::rollback();
+                        return response()->json(['message' => 'Algunos datos del formulario se encuentran repetidos','error_type'=>'form_validation','data'=>$response_validator], HttpResponse::HTTP_CONFLICT);
+                    }
+                }
+
+                $user_data = [
+                    'name'          => $parametros['name'],
+                    'email'         => $parametros['email'],
+                    'username'      => $parametros['username'],
+                    'avatar'        => $parametros['avatar'],
+                ];
+
+                if(isset($parametros['password'])){
+                    $user_data['password'] = Hash::make($parametros['password']);
+                }
+
+                if($parametros['id']){
+                    $usuario = User::find($parametros['id']);
+                    if(!$usuario){
+                        DB::rollback();
+                        return response()->json(['message' => 'No se encontró el usuario seleccionado'], HttpResponse::HTTP_CONFLICT);
+                    }
+
+                    if($usuario->status != $parametros['status']){
+                        if($parametros['status'] == 2){
+                            if(!$usuario->last_login_at){
+                                $user_data['status'] = 1;
+                            }else{
+                                $user_data['status'] = 2;
+                            }
+                        }else{
+                            $user_data['status'] = $parametros['status'];
+                        }
+                    }
+
+                    $usuario->update($user_data);
+                }else{
+                    $user_data['status'] = 1;
+                    if($parametros['mail_password']){
+                        //$password_temp = Str::random(8);
+                        //$user_data['password'] = Hash::make($password_temp);
+                        $user_data['password'] = 'Enviado por correo electronico';
+                        //Enviar correo de activación
+                    }
+                    $usuario = User::create($user_data);
+                    $nuevo_user = true;
+                }
 
                 if(!$usuario->is_superuser){
                     $roles = $parametros['roles'];
                     $permisos = $parametros['permissions'];
-                    //$direcciones_proyectos = $parametros['direcciones'];
-                    //$direcciones = [];
-                    //$proyectos = [];
                 }else{
                     $roles = [];
                     $permisos = [];
-                    //$direcciones_proyectos = [];
-                    //$direcciones = [];
-                    //$proyectos = [];
                 }
 
-                // if(count($direcciones_proyectos)){
-                //     foreach ($direcciones_proyectos as $direccion_id => $datos) {
-                //         if(!$datos['todos']){
-                //             foreach ($datos['proyectos'] as $proyecto) {
-                //                 $proyectos[$proyecto['id']] = ['direccion_id'=>$direccion_id];
-                //             }
-                //         }else{
-                //             $direcciones[$direccion_id] = ['todos_proyectos'=>true];
-                //         }
-                //     }
-                // }
-                
-                //$usuario->direcciones()->sync($direcciones);
-                //$usuario->proyectos()->sync($proyectos);
                 $usuario->roles()->sync($roles);
                 $usuario->permissions()->sync($permisos);
 
+                $usuario->touch();
+
                 DB::commit();
 
-                return response()->json(['data'=>$usuario],HttpResponse::HTTP_OK);
-            }else{
-                return response()->json(['mensaje' => 'Error en los datos del formulario', 'validacion'=>$resultado->passes(), 'errores'=>$resultado->errors()], HttpResponse::HTTP_CONFLICT);
-            }
+                $return_data = ['data'=>$usuario];
 
+                if($nuevo_user && $parametros['mail_password']){
+                    $token = $usuario->createActionToken();
+                    Mail::to($usuario->email)->send(new EmailConfirmation($usuario,$token));
+                    $return_data['mail_sent'] = (count(Mail::failures()) == 0)?1:0;
+                }
+
+                return response()->json($return_data,HttpResponse::HTTP_OK);
+            }else{
+                return response()->json(['message' => 'Error en los datos del formulario', 'error_type'=>'form_validation', 'data'=>$resultado->errors()], HttpResponse::HTTP_CONFLICT);
+            }
         }catch(\Exception $e){
             DB::rollback();
-            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+            throw new \App\Exceptions\LogError('Ocurrio un error al intentar guardar los datos del usuario',null,$e);
         }
     }
 
@@ -159,95 +259,16 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        return response()->json(['data'=>User::with('roles','permissions')->find($id)],HttpResponse::HTTP_OK);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
+    public function show($id){
         try{
-            $validation_rules = [
-                'name' => 'required',
-                'email' => 'required'                
-            ];
-        
-            $validation_eror_messages = [
-                'name.required' => 'El nombre es obligatorio',
-                'email.required' => 'Es correo electronico es obligatorio'
-            ];
-
-            $usuario = User::find($id);
-
-            $parametros = $request->all();
-
-            $resultado = Validator::make($parametros,$validation_rules,$validation_eror_messages);
-
-            if($resultado->passes()){
-                DB::beginTransaction();
-
-                $usuario->name = $parametros['name'];
-                $usuario->email = $parametros['email'];
-                $usuario->username = $parametros['username'];
-                $usuario->is_superuser = $parametros['is_superuser'];
-                $usuario->avatar = $parametros['avatar'];
-                
-                if($parametros['password']){
-                    $usuario->password = Hash::make($parametros['password']);
-                }
-
-                $usuario->save();
-
-                if(!$usuario->is_superuser){
-                    $roles = $parametros['roles'];
-                    $permisos = $parametros['permissions'];
-                    //$direcciones_proyectos = $parametros['direcciones'];
-                    //$direcciones = [];
-                    //$proyectos = [];
-                }else{
-                    $roles = [];
-                    $permisos = [];
-                    //$direcciones_proyectos = [];
-                    //$direcciones = [];
-                    //$proyectos = [];
-                }
-
-                // if(count($direcciones_proyectos)){
-                //     foreach ($direcciones_proyectos as $direccion_id => $datos) {
-                //         if(!$datos['todos']){
-                //             foreach ($datos['proyectos'] as $proyecto) {
-                //                 $proyectos[$proyecto['id']] = ['direccion_id'=>$direccion_id];
-                //             }
-                //         }else{
-                //             $direcciones[$direccion_id] = ['todos_proyectos'=>true];
-                //         }
-                //     }
-                // }
-
-                //$usuario->direcciones()->sync($direcciones);
-                //$usuario->proyectos()->sync($proyectos);
-                $usuario->roles()->sync($roles);
-                $usuario->permissions()->sync($permisos);
-
-                DB::commit();
-
-                return response()->json(['guardado'=>true,'usuario'=>$usuario],HttpResponse::HTTP_OK);
-            }else{
-                return response()->json(['mensaje' => 'Error en los datos del formulario', 'validacion'=>$resultado->passes(), 'errores'=>$resultado->errors()], HttpResponse::HTTP_CONFLICT);
+            $usuario = User::with('roles','permissions')->find($id);
+            if(!$usuario){
+                return response()->json(['mensaje' => 'No se encontró el usuario seleccionado'], HttpResponse::HTTP_CONFLICT);
             }
-
+            return response()->json(['data'=>$usuario],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
-            DB::rollback();
-            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+            throw new \App\Exceptions\LogError('Ocurrio un error al intentar obtener los datos del usuario',null,$e);
         }
-        
     }
 
     /**
@@ -256,11 +277,16 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id){
         try{
             $usuario = User::find($id);
 
+            if(!$usuario){
+                return response()->json(['mensaje' => 'No se encontró el usuario seleccionado'], HttpResponse::HTTP_CONFLICT);
+            }
+
+            $usuario->roles()->sync([]);
+            $usuario->permissions()->sync([]);
             $usuario->delete();
 
             return response()->json(['eliminado'=>true],HttpResponse::HTTP_OK);

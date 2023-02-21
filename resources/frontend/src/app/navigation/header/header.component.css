@@ -47,6 +47,10 @@ a + a::before {
     flex-flow: row wrap;
 }
 
+.apps .ellipsis{
+    line-height: normal;
+}
+
 .apps figure {
     display: block;
     flex-direction: column;
@@ -57,8 +61,16 @@ a + a::before {
     cursor: pointer; 
 }
 
- 
-.apps figure img {
+.apps figure:hover{
+    background-color: rgba(0,0,0,0.15);
+}
+
+.apps figure:hover figcaption{
+    color: black;
+}
+
+.apps figure img,
+.apps figure .mat-icon {
     display: block;
     width:50px;
     height: 50px;
@@ -67,10 +79,38 @@ a + a::before {
     margin-bottom:15px;  
 }
 
+.apps figure .mat-icon{
+    font-size: 50px;
+    line-height: normal;
+}
+
 .apps figcaption{
     font-size: 0.75em;
-    color: #555;    
-    margin-bottom:15px;  
+    color: #555;
+    margin-bottom:10px;  
+}
+
+.session-info{
+    font-size: small;
+    cursor: default;
+    padding-bottom: 5px;
+}
+
+.session-info .title{
+    font-weight: 600;
+    font-size: medium;
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: rgba(84, 84, 84,0.15);
+}
+
+.session-info .data{
+    font-weight: 400;
+}
+
+.session-info .data span{
+    font-weight: 500;
 }
 
 .bg-dark {
@@ -78,18 +118,10 @@ a + a::before {
 }
 
 .font-header-elements{
-
     font-size: 12pt;
     margin-left:10px;
 }
-.zise-avatar{
 
-    width:71%;
-    margin:auto;
-}
-
-
-.menu-plataforma
-{
+.menu-plataforma{
     color: white;
 }

@@ -1,6 +1,5 @@
 export class App {
     name:string;
-    
     route: string;
     icon: string;
     permission?: string; //Si tiene permisos se motrara/oculatara dependiendo de los permisos que el usuario tenga asignado
@@ -20,24 +19,38 @@ export class Menu {
 }
 
 export const APPS:App [] = [
-    { name:"Usuarios",      route: "usuarios",          icon: "assets/icons/users.png",              permission:"hr5UhgMTDmF9EiLYeq5x0cz0e281IWRU" },
-    { name:'Permisos',      route: "permisos",          icon: "assets/icons/permisos.png",    permission:"tOJt3Tw42CjDT8Ob5164lwm2i3FCxJCR" },
-    { name:'Roles',         route: "roles",             icon: "assets/icons/roles.png",        permission:"gzA7BboE1BpzXZmko6OIDT3EOQRn4otm" },
-    { name:'Prueba',         route: "prueba",           icon: "assets/icons/catalogos.png",    
-    /*menu:[
+    { name:'Herramientas Dev', route: "dev-tools",  icon: "assets/icons/dev-tools.svg", isHub:true, hideHome:true, permission:"6ARHQGj1N8YPkr02DY04K1Zy7HjIdDcj",
+      menu:[
         {
-            name:'MODULO',
-            identificador:'primero',
-            children:
-            [
-                { name:'Comisión Interna',              route:'tramites/comision',              icon:'call_merge'},
-                { name:'Adscripción',                   route:'tramites/adscripcion',           icon:'call_made',               permission:"2"  },
-                { name:'Adscripción Ext.',              route:'tramites/adscripcion-externa',   icon:'call_made',               permission:"2"  }, 
-                { name:'Reincorporación',               route:'tramites/reincorporacion',       icon:'call_received',           permission:"2"  },
-                { name:'Documentacion',                 route:'tramites/documentacion',         icon:'insert_drive_file',       permission:"2"  },
-                { name:'Comisión Sindical',             route:'tramites/comision-sindical',     icon:'supervised_user_circle',  permission:"2"  }
+            name:'Tools',
+            icon:'settings',
+            identificador:'tools',
+            children:[
+                {name:'Log de Excepciones',   route:'dev-tools/sys-log-errors', icon:'report'               },
+                {name:'Reportes MySQL',       route:'dev-tools/mysql-reportes', icon:'insert_drive_file'    },
             ]
-        }
-    ]*/
+        },
+      ],
+    },
+    { name:'Control de Acceso', route: "control-acceso",  icon: "assets/icons/roles.png", 
+        menu:[
+            {
+                name:'Administrar',
+                icon: 'menu_open',
+                identificador:'administracion',
+                children:[
+                    { name:"Usuarios",      route: "control-acceso/usuarios",          icon: "manage_accounts",        permission:"hr5UhgMTDmF9EiLYeq5x0cz0e281IWRU" },
+                    { name:'Roles',         route: "control-acceso/roles",             icon: "groups_2",               permission:"gzA7BboE1BpzXZmko6OIDT3EOQRn4otm" },
+                ]
+            },
+            {
+                name:'Config',
+                icon: 'admin_panel_settings',
+                identificador:'configuracion',
+                children:[
+                    { name:'Permisos',      route: "control-acceso/permisos",          icon: "key",                    permission:"tTVayONYIDylH9dk7jg5143h0FKoSpBi" },
+                ]
+            }
+        ] 
     },
 ]

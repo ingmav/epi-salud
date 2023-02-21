@@ -1,11 +1,19 @@
-import { AbstractControl } from '@angular/forms';
+import { AbstractControl, ValidationErrors } from '@angular/forms';
 
 export class CustomValidator {
 
     static notEqualToValidator(formControlName:string){
         return (control: AbstractControl): { [key:string]:any } | null =>{
-            if(control.value != null){
+            if(control.value != null && control.value){
                 return control.value == control.parent.get(formControlName).value ? { notEqualTo:true } : null; 
+            }
+        };
+    }
+
+    static fieldMatchValidator(formControlName:string){
+        return (control: AbstractControl): { [key:string]:any } | null =>{
+            if(control.value != null && control.value){
+                return control.value != control.parent.get(formControlName).value ? { fieldMatch:true } : null; 
             }
         };
     }

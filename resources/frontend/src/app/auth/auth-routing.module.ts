@@ -2,12 +2,13 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { LoginComponent } from './login/login.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { GuessGuard } from './guess.guard';
-import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [GuessGuard] },
-  { path: 'forgot-password', component: ForgotPasswordComponent, canActivate: [GuessGuard] }
+  { path: 'restablecer-contrasena/:token', component: ResetPasswordComponent, canActivate: [GuessGuard] },
+  { path: 'establecer-contrasena/:token', component: ResetPasswordComponent, canActivate: [GuessGuard] },
 ];
 
 @NgModule({

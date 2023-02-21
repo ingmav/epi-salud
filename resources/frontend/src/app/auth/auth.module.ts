@@ -5,11 +5,14 @@ import { SharedModule } from '../shared/shared.module';
 import { AuthRoutingModule } from './auth-routing.module';
 
 import { LoginComponent } from './login/login.component';
-import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { DialogForgotPasswordComponent } from './dialog-forgot-password/dialog-forgot-password.component';
+import { DialogActivateUserComponent } from './dialog-activate-user/dialog-activate-user.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
+//import { StrengthCheckerComponent } from '../utils/components/strength-checker/strength-checker.component';
 
 
 @NgModule({
-  declarations: [LoginComponent, ForgotPasswordComponent],
+  declarations: [LoginComponent, DialogForgotPasswordComponent, DialogActivateUserComponent, ResetPasswordComponent],
   imports: [
     ReactiveFormsModule,
     HttpClientModule,

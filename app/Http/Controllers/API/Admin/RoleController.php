@@ -23,13 +23,19 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
-        if (\Gate::denies('has-permission', \Permissions::VER_ROL) && \Gate::denies('has-permission', \Permissions::SELECCIONAR_ROL)){
+        if (\Gate::denies('has-permission', \Permissions::CRUD_ROLES)){
             return response()->json(['message'=>'No esta autorizado para ver este contenido'],HttpResponse::HTTP_FORBIDDEN);
         }
         
         try{
             $parametros = $request->all();
-            $roles = Role::getModel();
+            $usuario = auth()->userOrFail();
+            
+
+            $roles = Role::select('roles.*', DB::raw("COUNT(DISTINCT role_user.user_id) as total_users"), DB::raw("COUNT(DISTINCT permission_role.permission_id) as total_permissions"))
+                            ->leftjoin('role_user','role_user.role_id','=','roles.id')
+                            ->leftjoin('permission_role','permission_role.role_id','=','roles.id')
+                            ->groupBy('roles.id');
             
             //Filtros, busquedas, ordenamiento
             if(isset($parametros['query']) && $parametros['query']){
@@ -39,17 +45,16 @@ class RoleController extends Controller
             }
 
             if(isset($parametros['page'])){
+                $roles = $roles->orderBy('updated_at','DESC');
                 $resultadosPorPagina = isset($parametros["per_page"])? $parametros["per_page"] : 20;
-    
                 $roles = $roles->paginate($resultadosPorPagina);
             } else {
-
-                $roles = $roles->with('permissions')->get();
+                $roles = $roles->with('nivel','permissions')->orderBy('name')->get();
             }
 
             return response()->json(['data'=>$roles],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
-            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+            throw new \App\Exceptions\LogError('Ocurrio un error al intentar obtener la lista de roles',null,$e);
         }
     }
 
@@ -60,7 +65,7 @@ class RoleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
-        $this->authorize('has-permission',\Permissions::CREAR_ROL);
+        $this->authorize('has-permission',\Permissions::CRUD_ROLES);
         try{
             $validation_rules = [
                 'name' => 'required',
@@ -82,7 +87,8 @@ class RoleController extends Controller
 
                 $rol = Role::create($parametros);
 
-                $permissions = array_map(function($n){ return $n['id']; },$parametros['permissions']);
+                //$permissions = array_map(function($n){ return $n['id']; },$parametros['permissions']);
+                $permissions = $parametros['permissions'];
 
                 if($rol){
                     $rol->permissions()->sync($permissions);
@@ -99,7 +105,7 @@ class RoleController extends Controller
             }
         }catch(\Exception $e){
             DB::rollback();
-            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+            throw new \App\Exceptions\LogError('Ocurrio un error al intentar guardar el rol',null,$e);
         }
     }
 
@@ -111,13 +117,16 @@ class RoleController extends Controller
      */
     public function show($id)
     {
-        $this->authorize('has-permission',\Permissions::VER_ROL);
+        $this->authorize('has-permission',\Permissions::CRUD_ROLES);
         try{
-            $rol = Role::with('permissions')->find($id);
+            $rol = Role::with(['permissions','users'=>function($users){
+                                                        $users->select('id','username','name','avatar','status');
+                                                    }])->find($id);
+            $rol->users->makeHidden('pivot');
             $rol->permissions->makeHidden('pivot');
             return response()->json(['data'=>$rol],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
-            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+            throw new \App\Exceptions\LogError('Ocurrio un error al intentar obtener los datos del rol',null,$e);
         }
     }
 
@@ -130,7 +139,7 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->authorize('has-permission',\Permissions::EDITAR_ROL);
+        $this->authorize('has-permission',\Permissions::CRUD_ROLES);
         try{
             $validation_rules = [
                 'name' => 'required',
@@ -153,9 +162,10 @@ class RoleController extends Controller
 
                 $rol = Role::with('permissions')->find($id);
 
-                $rol->name = $parametros['name'];
+                $rol->name      = $parametros['name'];
                 
-                $permissions = array_map(function($n){ return $n['id']; },$parametros['permissions']);
+                //$permissions = array_map(function($n){ return $n['id']; },$parametros['permissions']);
+                $permissions = $parametros['permissions'];
 
                 if($rol){
                     $rol->permissions()->sync($permissions);
@@ -171,7 +181,7 @@ class RoleController extends Controller
             }
         }catch(\Exception $e){
             DB::rollback();
-            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+            throw new \App\Exceptions\LogError('Ocurrio un error al intentar modificar el rol',null,$e);
         }
     }
 
@@ -183,15 +193,16 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        $this->authorize('has-permission',\Permissions::ELIMINAR_ROL);
+        $this->authorize('has-permission',\Permissions::CRUD_ROLES);
         try{
             $rol = Role::find($id);
             $rol->permissions()->detach();
+            $rol->users()->detach();
             $rol->delete();
 
             return response()->json(['data'=>'Rol eliminado'], HttpResponse::HTTP_OK);
         }catch(\Exception $e){
-            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+            throw new \App\Exceptions\LogError('Ocurrio un error al intentar eliminar el rol',null,$e);
         }
     }
 }

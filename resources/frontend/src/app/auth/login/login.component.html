@@ -1,49 +1,44 @@
-<section class="login" >
-  
-  <form fxLayout fxLayoutAlign="center center" [formGroup]="loginForm" fxFlex="100" (ngSubmit)="onSubmit()">
-    <mat-card class="boder_card" fxFlex.xs="100%" fxFlex="35">
-      <mat-card-title fxLayoutAlign="center" class="welcome"> <span *ngIf="!isLoading">Bienvenido</span> <span *ngIf="isLoading">Conectando...</span></mat-card-title>
+<section class="login flex-column">
+  <div class="flex-fill" style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;" [formGroup]="loginForm">
+    <mat-card class="boder-card" style="margin:10px;">
+      <div class="welcome"> 
+        <span *ngIf="!isLoading">Bienvenido</span>
+        <span *ngIf="isLoading">Conectando...</span>
+      </div>
       <!-- <div><img style="width:100%"src="assets/profile-icon.svg" alt=""></div> -->
       <mat-divider></mat-divider>
       <mat-progress-bar mode="indeterminate" *ngIf="isLoading" ></mat-progress-bar>
-      <mat-card-content fxLayout="column" style="background-color: whitesmoke; margin:0px; padding-bottom:10px; padding-top:10px;">
-          <section fxFlex fxLayout="row" fxLayoutAlign="space-evenly center">
-            <section fxFlex="30" class="mat-elevation-z1" style="background-color: white; padding-top: 5px;">
-                <img style="width:100%"src="{{avatarPlaceholder}}" alt="">
+      <mat-card-content class="flex-column" style="background-color: whitesmoke; margin:0px; padding-bottom:10px; padding-top:10px;">
+          <section class="flex-row flex-xs-column flex-fill flex-gap">
+            <section class="mat-elevation-z1" style="background-color: white; padding-top: 5px; width: auto;">
+                <img style="width:150px" src="{{avatarPlaceholder}}" alt="">
             </section>
-            <section fxFlex="65" fxLayout="column">
+            <section class="flex-column flex-fill">
               <mat-form-field fxFlex appearance="outline">
                 <mat-label>Usuario</mat-label>
-                  <input 
-                    type="text"
-                    matInput 
-                    #username
-                    placeholder="Usuario"
-                    formControlName="usuario"
-                    autocomplete="off"
-                    (blur)="checkAvatar(username.value)">
+                  <input type="text" matInput #username placeholder="Usuario" formControlName="usuario" autocomplete="off" (blur)="checkAvatar(username.value)">
                   <mat-error>El usuario es inválido</mat-error>
                   <mat-icon matSuffix>person</mat-icon>
               </mat-form-field>
               <mat-form-field fxFlex appearance="outline">
                   <mat-label>Contraseña</mat-label>
-                  <input 
-                    type="password" 
-                    matInput
-                    #password
-                    placeholder="Tu contraseña" 
-                    formControlName="password">
+                  <input type="password" matInput #inputPassword placeholder="Tu contraseña" formControlName="password" (keyup.enter)="onSubmit()">
                   <mat-error>La contraseña es requerida.</mat-error>
                   <mat-icon matSuffix>vpn_key</mat-icon>
               </mat-form-field>
             </section>
           </section>
       </mat-card-content>
+      <div style="margin-bottom: 0;" *ngIf="errorMessage">
+        <div class="error-message">
+          <mat-icon>warning</mat-icon>&nbsp;{{errorMessage}}
+        </div>
+      </div>
       <mat-divider></mat-divider>
-      <mat-card-actions fxLayout="column" fxAlignItems="center" style="margin:0pc; padding:10px;">
-          <button fxFlex type="submit" mat-raised-button color="primary" [disabled]="loginForm.invalid || isLoading"><mat-icon>login</mat-icon>  Acceder</button>
-          <!--a mat-button  routerLink="/forgot-password" >Olvidé mi contraseña</a-->
-      </mat-card-actions>
+      <div class="flex-column flex-gap" fxAlignItems="center" style="margin:0pc; padding:10px;">
+          <button fxFlex (click)="onSubmit()" mat-raised-button color="primary" [disabled]="loginForm.invalid || isLoading"><mat-icon>login</mat-icon>  Acceder</button>
+          <button mat-flat-button (click)="showResetPassword()"><mat-icon>password</mat-icon> Restablecer mi contraseña</button>
+      </div>
     </mat-card>
-  </form>
+  </div>
 </section>

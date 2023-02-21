@@ -9,8 +9,8 @@ import { map } from 'rxjs/operators';
 })
 export class ReporterService {
 
-  url_execute_reporter = `${environment.base_url}/ejecutar-query`;
-  url_export_reporter =  `${environment.base_url}/exportar-query`;
+  url_execute_reporter = `${environment.base_url}/dev-tools/ejecutar-query`;
+  url_export_reporter =  `${environment.base_url}/dev-tools/exportar-query`;
 
   constructor(private http: HttpClient) { }
 

@@ -1,3 +1,16 @@
+.side-nav-items{
+    overflow: auto;
+}
+
+.side-nav-items .mat-mdc-button{
+    width: 100%; 
+    height: 48px;
+}
+
+.side-nav-item{
+    border-bottom:1px solid rgba(0, 0, 0,0.25);
+}
+
 .apps {    
     display: flex;
     flex:1;
@@ -11,6 +24,10 @@
     flex-flow: row wrap;
 }
 
+.apps .ellipsis{
+    line-height: normal;
+}
+
 .apps figure {
     display: block;
     flex-direction: column;
@@ -21,13 +38,19 @@
     cursor: pointer; 
 }
  
-.apps figure img {
+.apps figure img,
+.apps figure .mat-icon {
     display: block;
     width:50px;
     height: 50px;
     margin:auto;
-    margin-top:15px;      
+    margin-top:15px;
     margin-bottom:15px;  
+}
+
+.apps figure .mat-icon{
+    font-size: 50px;
+    line-height: normal;
 }
 
 .apps figcaption{
@@ -41,4 +64,28 @@
 
 .bg-text {
     color: #ffffff!important;
+}
+
+.session-info{
+    font-size: small;
+    cursor: default;
+    padding-bottom: 5px;
+}
+
+.session-info .title{
+    font-weight: 600;
+    font-size: medium;
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: rgba(84, 84, 84,0.15);
+}
+
+.session-info .data{
+    font-weight: 400;
+    padding: 5px 5px 0 5px;
+}
+
+.session-info .data span{
+    font-weight: 500;
 }

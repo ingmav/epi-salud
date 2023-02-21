@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 
 const routes: Routes = [
-  {path:'dev-tools', redirectTo:'dev-tools/mysql-reportes',pathMatch:'full'}
+  {path:'dev-tools', redirectTo:'dev-tools/sys-log-errors',pathMatch:'full'}
 ];
 
 @NgModule({

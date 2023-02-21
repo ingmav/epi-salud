@@ -22,6 +22,7 @@ Route::get('images/{filename}', function ($filename)
     return response($file, 200)->header('Content-Type', 'image/svg+xml');
 });
 
-Route::get('/mailable', function () {
-    return new App\Mail\RecoverPassword;
-});
+//Usar esta ruta para diseñar el mensaje de correo a enviar, modificar dependiendo de lo que se necesite
+/*Route::get('/mail/reset-password/html', function () {
+    return view('mails.recover-password',['token'=>'token-generado-por-el-sistema','name'=>'Nombre del Usuario']);
+});*/

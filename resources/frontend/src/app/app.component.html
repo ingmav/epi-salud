@@ -1,21 +1,13 @@
 <mat-sidenav-container fullscreen>
-  <mat-sidenav #sidenav role="navigation" position="end">
+  <mat-sidenav #sidenav role="navigation" position="end" [autoFocus]="false" >
       <app-sidenav-list (onCloseSidenav)="sidenav.close()"></app-sidenav-list>
   </mat-sidenav>
-  <mat-sidenav-content fxLayout="column" fxFlexFill>
-      <app-header (onSidenavToggle)="sidenav.toggle()" fxFlex.gt-xs="64px" fxFlex.xs="56px"></app-header>
-      <main fxFlex style="overflow:auto">
-
-          <mat-drawer-container class="app-children-container" autosize>
-              <mat-drawer #drawer class="app-children-sidenav"  mode="side" opened>
-                  <drawer-list></drawer-list>
-              </mat-drawer>
-
-              <main fxFlex style="height: 100%; overflow: auto;">
-                  <router-outlet></router-outlet>
-              </main>
-          </mat-drawer-container>
-
-      </main>
+  <mat-sidenav-content class="flex-column flex-fill" style="height: 100vh;">
+    <app-header (onSidenavToggle)="sidenav.toggle()" style="width:100%;"></app-header> <!--fxFlex.xs="56px"-->
+    <main class="flex-fill" style="overflow: hidden; height: calc(100% - 38px);">
+        <mat-drawer-container class="module-container" autosize>
+            <router-outlet></router-outlet>
+        </mat-drawer-container>
+    </main>
   </mat-sidenav-content>
 </mat-sidenav-container>

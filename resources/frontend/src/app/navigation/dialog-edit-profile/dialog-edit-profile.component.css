@@ -1,0 +1,52 @@
+@media(max-width: 599.98px){
+    .avatars-list .avatars-container .avatar{
+        width: calc((100% / 3) - 8px) !important;
+        padding: 4px;
+    }
+}
+
+.created-at{
+    padding-right: 5px;
+    padding-top: 4px;
+}
+
+.created-at span{
+    display: block;
+    font-size: small;
+}
+
+.created-at .label{
+    color: lightgrey;
+}
+
+.toggle-button{
+    height: 56px;
+}
+
+.toggle-button.active{
+    background-color: rgb(190, 190, 190);
+}
+
+.avatars-list{
+    padding:5px;
+}
+
+.avatars-list .avatars-container{
+    width: 100%;
+}
+
+.avatars-list .avatars-container .avatar{
+    width: calc((100% / 6) - 8px);
+    padding: 4px;
+}
+
+.avatars-list .avatars-container .avatar:hover{
+    background-color: cadetblue;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.avatars-list .avatars-container .avatar.selected .mat-icon{
+    outline:1px solid cadetblue;
+    border-radius: 10px;
+}

@@ -1,23 +1,32 @@
 .login {
-    min-height: 100%;
     background: url('../../../assets/bk.jpg') no-repeat center center fixed; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-    color: white;
     text-align: center;
-    padding: 30px;
-    max-height: 100px !important;
+    position: absolute;
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
 }
-.boder_card {
 
+.boder-card {
     border-radius: 10px !important;
     box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
     border: #000 !important;
     margin:0px;
-    padding-bottom:10px;
-    padding-top:10px;
+    padding: 10px 0;
+}
+
+.error-message{
+    background-color: hsl(0, 100%, 60%);
+    color: hsl(63, 100%, 45%);
+    padding: 8px;
+    text-align: left;
+    display: flex;
+    align-items: center;
 }
 
 .welcome {

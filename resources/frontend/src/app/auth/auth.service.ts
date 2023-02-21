@@ -33,6 +33,16 @@ export class AuthService {
     this.authChange.next(true);
   }
 
+  getProfileData(){
+    const url = `${environment.base_url}/perfil-usuario`;
+    return this.http.get<any>(url, {});
+  }
+
+  updateProfileData(id:number,payload){
+    const url = `${environment.base_url}/perfil-usuario/`+id;
+    return this.http.put<any>(url, payload);
+  }
+
   isAuth(): boolean {
     return !!this.getToken();
   }
@@ -70,6 +80,35 @@ export class AuthService {
     ));
   }
 
+  getUnidadesUsuario():Observable<any>{
+    const url = `${environment.base_url}/lista-unidades-usuario`;
+    return this.http.get<any>(url, {});
+  }
+
+  changeSession(payload:any):Observable<any>{
+    const url = `${environment.base_url}/change-session`;
+    return this.http.post<any>(url, payload).pipe(
+      map( (response) => {
+        if(response.access_token){
+          localStorage.setItem('token', response.access_token);
+          this.authChange.next(true);
+        }
+        return response;
+      }
+    ));
+  }
+
+  getUnidadActual(){
+    let unidad:any;
+    unidad = JSON.parse(localStorage.getItem('unidadActual'));
+    return unidad;
+  }
+
+  setUnidadActual(unidad){
+    localStorage.setItem('unidadActual', JSON.stringify(unidad));
+    this.authChange.next(true);
+  }
+
   signUp(payload) {
     const url = `${environment.base_url}/signup`;
     return this.http.post<any>(url,payload).pipe(
@@ -90,17 +129,24 @@ export class AuthService {
     ));
   }
 
-  forgotPassword(email: string):Observable<any> {
-    const url = `${environment.base_url}/forgot-password`;
-    return this.http.post<any>(url, { email });
+  sendResetPassword(payload:any):Observable<any> {
+    const url = `${environment.base_url}/send-reset-password`;
+    return this.http.post<any>(url, payload);
   }
 
-  resetPassword(email:string, password: string, token: string):Observable<any> {
+  resetPassword(payload:any):Observable<any> {
     const url = `${environment.base_url}/reset-password`;
-    return this.http.post<any>(url, {email, password, token}).pipe(
+    return this.http.post<any>(url, payload).pipe(
       map( (response) => {
-        if(response.token){
-          localStorage.setItem('token', response.token);
+        if(response.access_token){
+          localStorage.setItem('token', response.access_token);
+
+          let user = JSON.stringify(response.user_data);
+          localStorage.setItem('user', user);
+
+          let permissions = JSON.stringify(response.permissions);
+          localStorage.setItem('permissions', permissions);
+
           this.authChange.next(true);
         }
         return response;
@@ -113,6 +159,7 @@ export class AuthService {
     localStorage.removeItem('token');
     localStorage.removeItem('userApps');
     localStorage.removeItem('permissions');
+    localStorage.removeItem('unidadActual');
     this.authChange.next(false);
     this.router.navigate(['/login']);
   }

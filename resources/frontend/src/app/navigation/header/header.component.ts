@@ -8,6 +8,8 @@ import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { SharedService } from '../../shared/shared.service';
 import { MatMenu } from '@angular/material/menu';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogEditProfileComponent } from '../dialog-edit-profile/dialog-edit-profile.component';
 
 @Component({
   selector: 'app-header',
@@ -23,11 +25,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public isAuthenticated:boolean;
   authSubscription: Subscription;
   selectedApp: any;
-  appHeaderLinks: any[];
+  selectedAppLink: any;
+  selectedUnidad:any;
   headerIcon: string;
   user: User;
   apps: App[]; 
-  menus:any; 
+  menus: any[]; 
   modulos:any;
   breakpoint = 6;
   selectedChild: any;
@@ -36,43 +39,33 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private authService:AuthService,
     private appsService: AppsListService,
     private sharedService: SharedService,
+    public dialog: MatDialog,
     private router: Router
   ) {
     router.events.pipe(
       filter(event => event instanceof NavigationEnd)  
     ).subscribe((event: NavigationEnd) => {
       this.headerIcon = undefined;
-      this.appHeaderLinks = [];
+      this.selectedAppLink = {};
 
       this.getApps();
       let routes = event.url.split('/');
       let selected_route = routes[1];
 
-      let selected_child = '';
-
-      routes.forEach(element => {
-        selected_child = element;
-      });
-      /*if(routes.length > 2){
-        selected_child = routes[2];
-      }*/
+      this.modulos = {};
+      this.menus = [];
       
-
       this.apps.forEach(element => {
-        console.log(element.name+" "+selected_route)
-      
-        if(element.name.toUpperCase() == selected_route.toUpperCase())
-        {
-          console.log(element.menu);
-          if(element.menu)
-          {
-            this.menus = element.menu;
-            element.menu.forEach(element2 => {
-              this.modulos = element2.children;
+        
+        if(element.route.toUpperCase() == selected_route.toUpperCase()){
+          if(element.menu){
+            element.menu.forEach(menu => {
+              if(menu.children.length){
+                this.menus.push(menu);
+                this.modulos[menu.identificador] = menu.children;
+              }
             });
-            //this.menus = element.menu;
           }
-          
         }
       });
 
@@ -91,7 +84,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       
       if(this.selectedApp){
         this.headerIcon = this.selectedApp.icon;
-        this.appHeaderLinks.push({name:this.selectedApp.name,route:this.selectedApp.route});
+        this.selectedAppLink = {name:this.selectedApp.name,route:this.selectedApp.route};
 
         if(this.selectedApp.apps && routes[2]){
           
@@ -101,9 +94,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           });
 
           if(selectedChildApp){
-            this.headerIcon = selectedChildApp.icon;
-            this.appHeaderLinks.push({name:selectedChildApp.name,route:selectedChildApp.route});
-          }
+            this.headerIcon = selectedChildApp.icon;          }
         }
       }
      
@@ -114,22 +105,28 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.isAuthenticated = this.authService.isAuth();
     if(this.isAuthenticated){
       this.user = this.authService.getUserData();
+      this.selectedUnidad = this.authService.getUnidadActual();
     }
     this.authSubscription = this.authService.authChange.subscribe(
       status => {
         this.isAuthenticated = status;
         if(status){
           this.user = this.authService.getUserData();
+          this.selectedUnidad = this.authService.getUnidadActual();
         }else{
           this.user = new User();
+          this.selectedUnidad = undefined;
         }
       }
     );
     this.breakpoint = (window.innerWidth <= 599) ? 3 : 6;
   }
 
-  getMenuName(menu)
-  {
+  openEditProfile(){
+    const dialogRef = this.dialog.open(DialogEditProfileComponent,{maxWidth: '100%',disableClose: true});
+  }
+
+  getMenuName(menu){
     return this.navMenu;
   }
 

@@ -4,6 +4,8 @@ return [
 
     'servidor_id' => env('SERVIDOR_ID'),
     'servidor_key' => env('SERVIDOR_KEY'),
+    'host_api'      => env('SIS_HOST_API', null),
+    'host_client'   => env('SIS_HOST_CLIENT', null),
 
     /*
     |--------------------------------------------------------------------------
@@ -18,6 +20,9 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+    'db_select' =>'prueba',
+    'clues_select' => '',
+    'name_clues_select' => '',
     /*
     |--------------------------------------------------------------------------
     | Application Environment
@@ -70,7 +75,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'America/Mexico_City',
 
     /*
     |--------------------------------------------------------------------------

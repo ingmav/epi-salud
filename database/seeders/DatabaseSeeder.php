@@ -10,18 +10,17 @@ class DatabaseSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
-    {
+    public function run(){
         \App\Models\User::create([
             'name' => 'Usuario Root',
             'username' => 'root',
-            'password' => Hash::make('ssa.asistencia#$'),
+            'password' => Hash::make('ssa.pl4t&B4s3'),
             'email' => 'root@localhost',
             'is_superuser' => 1,
-            'avatar' => '/assets/avatars/50-king.svg'
+            'avatar' => 'assets/avatars/50-king.svg',
+            'status' => 2,
         ]);
-
+           
         $this->call(PermissionsTableSeeder::class);
-        
     }
 }

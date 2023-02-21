@@ -2,15 +2,12 @@
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 
-import { ReporteCapturaDonantes } from './reporte-donantes';
+import { ReporteUsuarios } from './reporte-usuarios';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 const reportes = {
-
-  '/reporte-donantes' : new ReporteCapturaDonantes(),
-  
-
+  'control-acceso/usuarios' : new ReporteUsuarios(),
 };
 
 addEventListener('message', ({ data }) => {

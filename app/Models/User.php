@@ -8,7 +8,14 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use Carbon\Carbon;
+
 use Illuminate\Foundation\Auth\User as Authenticatable;
+
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+
+use App\Models\Catalogos\Unidad;
 
 class User extends Authenticatable implements JWTSubject{
     use Notifiable;
@@ -28,7 +35,7 @@ class User extends Authenticatable implements JWTSubject{
      * @var array
      */
     protected $fillable = [
-        'username', 'password', 'name', 'email', 'is_superuser', 'avatar' 
+        'username', 'password', 'name', 'email', 'avatar', 'status', 'action_token', 'token_expires_at'
     ];
 
     /**
@@ -37,7 +44,7 @@ class User extends Authenticatable implements JWTSubject{
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'action_token', 'token_expires_at'
     ];
 
     /**
@@ -55,11 +62,15 @@ class User extends Authenticatable implements JWTSubject{
      *
      * @return array
      */
-    public function getJWTCustomClaims()
-    {
-        return [];
+    public function getJWTCustomClaims(){
+        return [
+            'username' => $this->username,
+            'name' => $this->name,
+            'email' => $this->email,
+        ];
     }
 
+    /**********************************************************  Begin: Relationships Functions  **********************************************************/
     public function roles(){
         return $this->belongsToMany('App\Models\Role');
     }
@@ -67,56 +78,79 @@ class User extends Authenticatable implements JWTSubject{
     public function permissions(){
         return $this->belongsToMany('App\Models\Permission')->withPivot('status');
     }
+    /**********************************************************  End: Relationships Functions  **********************************************************/
 
-    public function direcciones(){
-        return $this->belongsToMany('App\Models\Direccion','usuarios_direcciones_proyectos','user_id','direccion_id')->withPivot('todos_proyectos')->wherePivot('todos_proyectos', 1);;
-    }
+    //Funciones para creación de token para envio de correo
+    public function createActionToken(){
+        $count = 0;
+        $token = '';
 
-    public function proyectos(){
-        return $this->belongsToMany('App\Models\Proyecto','usuarios_direcciones_proyectos','user_id','proyecto_id')->withPivot('direccion_id');
+        do{
+            $token = Str::random(100);
+            $count++;
+            $token_found = User::where('action_token',$token)->count();
+            if($count > 5){
+                break;
+            }
+        }while($token_found > 0); //Checa si la cadena esta repetida
+        
+        if(!$token){
+            return false;
+        }
+
+        $today = date("Y-m-d H:i:s");//Carbon::now();
+        $expires = date("Y-m-d H:i:s",strtotime($today." +1 day"));//Expira mañana
+
+        $this->update(['action_token'=>$token,'token_expires_at'=>$expires]);
+        
+        return $this->action_token;
     }
 
     //Funciones para validación y obtención de permisos del usuario.
-
     //Aplica sobre un objeto usuario
     public function hasPermission($permission){
-        $permissions = User::getPermissionsList($this);
+        $permissions = User::getPermissionsListForUser($this);
         if(isset($permissions[$permission])){
             return true;
         }else{
             return false;
         }
-    } 
+    }
+
+    public function getPermissionsList(){
+        $permissions = User::getPermissionsListForUser($this);
+        return $permissions;
+    }
 
     //Aplica desde la clase, y usa un objeto usuario como parametro
-    static function getPermissionsList($usuario){
-        $permisos = [];
+    static function getPermissionsListForUser($user){
+        $permissions = [];
 
-        if($usuario->is_superuser){
-            $permisos_raw = Permission::get();
-            foreach ($permisos_raw as $permiso) {
-                $permisos[$permiso->id] = true;
+        if($user->is_superuser){
+            $permissions_raw = Permission::get();
+            foreach ($permissions_raw as $permission) {
+                $permissions[$permission->id] = true;
             }
         }else{
-            $roles_permisos = User::with('roles.permissions','permissions')->find($usuario->id);
+            $user->load('roles.permissions','permissions');
 
-            foreach ($roles_permisos->roles as $rol) {
-                foreach ($rol->permissions as $permiso) {
-                    if(!isset($permisos[$permiso->id])){
-                        $permisos[$permiso->id] = true;
+            foreach ($user->roles as $rol) {
+                foreach ($rol->permissions as $permission) {
+                    if(!isset($permissions[$permission->id])){
+                        $permissions[$permission->id] = true;
                     }
                 }
             }
 
-            foreach ($roles_permisos->permissions as $permiso) {
-                if(!isset($permisos[$permiso->id])){
-                    $permisos[$permiso->id] = true;
-                }elseif(!$permiso->pivot->status){
-                    unset($permisos[$permiso->id]);
+            foreach ($user->permissions as $permission) {
+                if(!isset($permissions[$permission->id])){
+                    $permissions[$permission->id] = true;
+                }elseif(!$permission->pivot->status){
+                    unset($permissions[$permission->id]);
                 }
             }
         }
 
-        return $permisos;
+        return $permissions;
     }
 }

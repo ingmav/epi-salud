@@ -1,15 +1,32 @@
 <mat-toolbar class="bg-dark" style="height: 38px !important;">
     <button mat-icon-button aria-label="Ir al inicio" routerLink="/">
-      <mat-icon style="color: white;">apps</mat-icon>
+      <mat-icon style="color: white;">home</mat-icon>
     </button>
-    <span class="header-links, font-header-elements" *ngIf="selectedApp"><a *ngFor="let link of appHeaderLinks" routerLink="{{link.route}}">{{link.name | uppercase}}</a></span>
-    <span class="header-links, font-header-elements" *ngIf="!selectedApp"  style="color:whitesmoke;">PLATAFORMA BASE</span>
+    <span class="header-links, font-header-elements" *ngIf="selectedApp">
+      <a *ngIf="selectedAppLink" routerLink="{{selectedAppLink.route}}">
+        {{selectedAppLink.name | uppercase}}
+      </a>
+    </span>
+    <span class="header-links, font-header-elements" *ngIf="!selectedApp"  style="color:whitesmoke;">
+      SISTEMA DE ASISTENCIA
+    </span>
 
-    <button mat-button *ngFor="let item of menus" [matMenuTriggerFor]="getMenuName(item.identificador)" class="menu-plataforma">{{ item.name }}</button>
-      
-      <mat-menu #navmenu="matMenu">
-        <button mat-menu-item *ngFor="let item of modulos"  routerLink="{{item.route}}"><mat-icon>{{ item.icon }}</mat-icon> {{ item.name }}</button>
+    <div class="hide-gt-xs" *ngIf="menus && menus.length > 0" style="color: white;">
+      <button mat-icon-button [matMenuTriggerFor]="appMainMenu" xPosition="before"><mat-icon>arrow_drop_down</mat-icon></button>
+      <mat-menu #appMainMenu="matMenu">
+        <button mat-menu-item *ngFor="let item of menus" [matMenuTriggerFor]="navAppMenu" [matMenuTriggerData]="{identificador:item.identificador}"><mat-icon>{{ item.icon }}</mat-icon>{{ item.name }}</button>
       </mat-menu>
+    </div>
+
+    <div class="hide-xs" style="color: white;">
+      <button mat-button *ngFor="let item of menus" [matMenuTriggerFor]="navAppMenu" [matMenuTriggerData]="{identificador:item.identificador}" class="menu-plataforma"><mat-icon>{{ item.icon }}</mat-icon><span fxShow.lt-sm="false">{{ item.name }}</span></button>
+    </div>
+    
+    <mat-menu #navAppMenu="matMenu">
+      <ng-template matMenuContent let-identificador="identificador">
+        <button mat-menu-item *ngFor="let item of modulos[identificador]" routerLink="{{item.route}}"><mat-icon>{{ item.icon }}</mat-icon> {{ item.name }}</button>
+      </ng-template>
+    </mat-menu>
 
 
     <span class="spacer"></span>
@@ -17,66 +34,48 @@
     <span class="spacer"></span>
 
     <ng-template [ngIf]="isAuthenticated">
-      <!--button mat-icon-button color="white" [matMenuTriggerFor]="menuApps" fxHide.xs>
-        <mat-icon aria-label="Apps">apps</mat-icon>
-      </button-->
 
-      <button mat-icon-button aria-label="Mostrar Sidenav" (click)="toggleSidenav()" fxShow.xs fxHide.gt-xs>
-        <img src="{{user.avatar}}" alt="" class="zise-avatar">
-        <!--mat-icon>menu</mat-icon-->
+      <button mat-icon-button aria-label="Mostrar Sidenav" (click)="toggleSidenav()" class="hide-gt-xs">
+        <img src="{{user.avatar}}" alt="" style="width:auto; margin:auto">
       </button>
 
-      <button mat-icon-button [matMenuTriggerFor]="menuAccount" fxHide.xs="xs">
-        <!--mat-icon svgIcon="user-icon" aria-label="Avatar"></mat-icon-->
-        <img src="{{user.avatar}}" alt="" class="zise-avatar">
+      <button mat-icon-button [matMenuTriggerFor]="menuAccount" class="hide-xs">
+        <img src="{{user.avatar}}" alt=""  style="width:auto; margin:auto">
       </button>
 
-
-
-      <mat-menu #menuAccount="matMenu">
-        <div style="width:280px;" style="display:flex; justify-content: start center">
-          <img src="{{user.avatar}}" alt="" style="width:80px; margin:10px">
-          <div style="width:160px; margin:10px;  display: flex; flex-direction:column; justify-content: center; font-size:0.8em;">
-            <strong>{{user.name}}</strong>
-            <small style="color:#777">{{user.email}}</small>
-            <br>
-            <button mat-button mat-raised-button color="primary" routerLink="/profile">
+      <mat-menu #menuAccount="matMenu" class="account-menu">
+        <div style="width:280px; display:flex; justify-content: start center">
+          <img src="{{user.avatar}}" alt="" style="width:80px; margin:5px; background-color: whitesmoke;">
+          <div style="width:160px; margin:5px; padding-left: 5px;  display: flex; flex-direction:column; justify-content: center; font-size:0.9em; border-left: 1px solid rgba(0,0,0,.12);;">
+            <strong>{{user.username}}</strong>
+            <small style="font-weight: 500;">{{user.name}}</small>
+            <small>{{user.email}}</small>
+            <button mat-stroked-button color="accent" (click)="openEditProfile()" style="width: 100%;">
                 <mat-icon>account_circle</mat-icon> 
-                <span>&nbsp;Editar cuenta</span>
+                <span>&nbsp;Editar Perfil</span>
             </button>
           </div>
         </div>
         <mat-divider></mat-divider>
         <div>
-          <button mat-menu-item style="text-align:center" routerLink="/apps">
-            <mat-icon>settings</mat-icon> Configuración de Usuario
-          </button>
-        </div>
-        <mat-divider></mat-divider>
-        <div>
-          <div class="apps" fxLayout="row" fxLayoutAlign="center center">
+          <div class="apps" fxLayout="row">
+            <figure routerLink="/apps">
+              <mat-icon>home</mat-icon>
+              <figcaption class="ellipsis">Inicio</figcaption>
+            </figure>
             <ng-container *ngFor="let app of apps; let i = index">
-                <figure [routerLink]="['/'+app.route]" *ngIf="i<9">
+                <figure [routerLink]="['/'+app.route]">
                     <img src="{{ app.icon }}" alt="Icon">
                     <figcaption class="ellipsis">{{ app.name }}</figcaption>
                 </figure>
             </ng-container>
           </div>
-          <button mat-menu-item style="text-align:center" routerLink="/apps">
-            <mat-icon>apps</mat-icon>
-          </button>
         </div>
-
         <mat-divider></mat-divider>
-        <button mat-menu-item (click)="logout()">
+        <button mat-menu-item (click)="logout()" style="text-align: center;">
           <mat-icon>exit_to_app</mat-icon>
           <span>Cerrar sesión</span>
         </button>
       </mat-menu>
     </ng-template>
-
-    <ng-template [ngIf]="!isAuthenticated">
-      <a routerLink="/login"><mat-icon>account_circle</mat-icon></a>
-    </ng-template>
-    
   </mat-toolbar>

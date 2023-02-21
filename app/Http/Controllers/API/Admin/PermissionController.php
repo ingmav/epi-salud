@@ -25,11 +25,12 @@ class PermissionController extends Controller
     {
         //$this->authorize('has-permission','G8aCoYYCgE8fAwegn0MvWjxMXhxIIrhy');
         //if (\Gate::denies('has-permission', 'G8aCoYYCgE8fAwegn0MvWjxMXhxIIrhy')){
-        if (\Gate::denies('has-permission', \Permissions::SELECCIONAR_PERMISO)){
+        if (\Gate::denies('has-permission', \Permissions::CRUD_PERMISOS) && \Gate::denies('has-permission', \Permissions::SELECCIONAR_PERMISO)){
             return response()->json(['message'=>'No esta autorizado para ver este contenido'],HttpResponse::HTTP_FORBIDDEN);
         }
 
         try{
+            
             $parametros = $request->all();
             $permisos = Permission::orderBy('group')->orderBy('Description');
 
@@ -109,6 +110,7 @@ class PermissionController extends Controller
      */
     public function show($id)
     {
+        
         $this->authorize('has-permission',\Permissions::CRUD_PERMISOS);
         try{
             $permiso = Permission::find($id);

@@ -13,6 +13,10 @@
     text-align: center;
 }
 
+.info-results{
+    align-items: center;
+}
+
 .info-results .item{
     padding:10px;
 }
@@ -31,10 +35,6 @@
     font-style: italic;
 }
 
-.hide{
-    display: none;
-}
-
 table.results-table mat-spinner{
     margin: 0 auto;
   }
@@ -51,4 +51,9 @@ table.results-table mat-spinner{
 
 .loading-results mat-spinner{
     margin:0 auto;
+}
+
+.action-panel{
+    padding-top: 8px;
+    border-top: 1px solid rgba(0, 0, 0, 0.15);
 }

@@ -14,28 +14,20 @@ use App\Models\User;
 
 use DB;
 
-class ProfileController extends Controller
-{
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
+class ProfileController extends Controller{
+
+    public function getProfile(Request $request){
         try{
-            $auth_user = auth()->user();
+            $loggedUser = auth()->userOrFail();
+            $user = User::select('id','username','avatar','name','email','created_at')->find($loggedUser->id);
 
-            if($auth_user->id != $id){
-                throw new \Exception("El usuario requisitado no coincide con la sesion iniciada", 1);
+            if(!$user){
+                return response()->json(['message'=>'No fue posible recuperar los datos del usuario.'],HttpResponse::HTTP_CONFLICT);
             }
-
-            $user = User::with('roles.permissions','permissions')->find($id);
 
             return response()->json(['data'=>$user],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
-            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+            throw new \App\Exceptions\LogError('Ocurrio un error al intentar obtener los datos del perfil',null,$e);
         }
     }
 
@@ -46,20 +38,26 @@ class ProfileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+    public function updateProfile(Request $request, $id){
         try{
             $validation_rules = [
                 'name' => 'required',
-                'email' => 'required'
+                'email' => 'required',
+                'avatar' => 'required',
             ];
         
             $validation_eror_messages = [
                 'name.required' => 'El nombre es obligatorio',
-                'email.required' => 'Es correo electronico es obligatorio'
+                'email.required' => 'Es correo electronico es obligatorio',
+                'avatar.required' => 'Es necesario seleccionar un avatar',
             ];
 
             $usuario = User::find($id);
+            $loggedUser = auth()->userOrFail();
+
+            if($loggedUser->id != $usuario->id){
+                return response()->json(['message'=>'Los datos del usuario no coinciden con el de la sesión iniciada.'],HttpResponse::HTTP_CONFLICT);
+            }
 
             $parametros = $request->all();
 
@@ -70,10 +68,14 @@ class ProfileController extends Controller
 
                 $usuario->name = $parametros['name'];
                 $usuario->email = $parametros['email'];
-                $usuario->username = $parametros['username'];
                 $usuario->avatar = $parametros['avatar'];
                 
-                if($parametros['password']){
+                if(isset($parametros['password']) && $parametros['password']){
+                    $validHash = Hash::check($parametros['password'],$usuario->password);
+                    if($validHash){
+                        DB::rollback();
+                        return response()->json(['message' => 'La nueva contraseña no puede ser igual a la anterior'], HttpResponse::HTTP_CONFLICT);
+                    }
                     $usuario->password = Hash::make($parametros['password']);
                 }
 
@@ -81,14 +83,14 @@ class ProfileController extends Controller
 
                 DB::commit();
 
-                return response()->json(['guardado'=>true,'usuario'=>$usuario],HttpResponse::HTTP_OK);
+                return response()->json(['usuario'=>$usuario],HttpResponse::HTTP_OK);
             }else{
-                return response()->json(['mensaje' => 'Error en los datos del formulario', 'validacion'=>$resultado->passes(), 'errores'=>$resultado->errors()], HttpResponse::HTTP_CONFLICT);
+                return response()->json(['message' => 'Error en los datos del formulario', 'form_errors'=>$resultado->errors()], HttpResponse::HTTP_CONFLICT);
             }
 
         }catch(\Exception $e){
             DB::rollback();
-            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+            throw new \App\Exceptions\LogError('Ocurrio un error al intentar guardar los datos de perfil',null,$e);
         }
     }
 }

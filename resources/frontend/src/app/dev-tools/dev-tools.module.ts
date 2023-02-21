@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { DevToolsRoutingModule } from './dev-tools-routing.module';
 import { ReporterModule } from './reporter/reporter.module';
+import { SysLogErrorsModule } from './sys-log-errors/sys-log-errors.module';
 
 
 @NgModule({
@@ -12,7 +13,8 @@ import { ReporterModule } from './reporter/reporter.module';
     DevToolsRoutingModule
   ],
   exports:[
-    ReporterModule
+    ReporterModule,
+    SysLogErrorsModule
   ]
 })
 export class DevToolsModule { }
