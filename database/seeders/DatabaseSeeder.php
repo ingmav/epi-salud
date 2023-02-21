@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::create([
             'name' => 'Usuario Root',
             'username' => 'root',
-            'password' => Hash::make('ssa.pl4t&B4s3'),
+            'password' => Hash::make('ssa.pl4t-b4s3#$'),
             'email' => 'root@localhost',
             'is_superuser' => 1,
             'avatar' => 'assets/avatars/50-king.svg',
