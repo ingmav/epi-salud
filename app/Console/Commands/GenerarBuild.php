@@ -45,7 +45,8 @@ class GenerarBuild extends Command
         echo 'Cambio a ruta ' . $ruta_app . "\r\n \n";
 
         echo "----> Generando build producción \r\n";
-        exec('ng build --configuration development --base-href=', $output, $return);
+        exec('ng build --configuration production --optimization --base-href=', $output, $return);
+        //exec('ng build --configuration development --base-href=', $output, $return);
         //exec('ng build --prod --base-href=', $output, $return);
 
         
