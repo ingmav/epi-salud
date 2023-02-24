@@ -22,11 +22,11 @@
     flex-wrap: wrap;
 }
 
-.flex-h-center{
+.flex-justify-center{
     justify-content: center;
 }
 
-.flex-v-center{
+.flex-align-center{
     align-items: center;
 }
 
