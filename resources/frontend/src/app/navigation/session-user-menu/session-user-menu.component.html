@@ -1,9 +1,9 @@
 <section class="flex-column" style="height: 100%;" [ngClass]="{'sidenav-mode':isSideNav,'menu-mode':!isSideNav}">
     <div class="flex-column menu-card" style="height: 100%;">
         <div class="card-header">
-            Usuario: {{user.username}}
+            Usuario: {{user?.username}}
         </div>
-        <div [ngClass]="{'flex-row':!isSideNav, 'flex-column':isSideNav}">
+        <div [ngClass]="{'flex-row':!isSideNav, 'flex-column':isSideNav}" *ngIf="user">
             <div style="background-color: antiquewhite; display: flex; align-items: center; justify-content: center;">
               <img src="{{user.avatar}}" alt="user avatar" style="width:80px; margin:10px">
             </div>
