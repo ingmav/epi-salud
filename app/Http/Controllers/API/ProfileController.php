@@ -64,17 +64,44 @@ class ProfileController extends Controller{
             $resultado = Validator::make($parametros,$validation_rules,$validation_eror_messages);
 
             if($resultado->passes()){
+                $test_user = User::where(function($subWhere)use($parametros){
+                    $subWhere->where('email',$parametros['email']);
+                })->where('id','!=',$usuario->id)->get();
+
+                if($test_user){
+                    $response_validator = [];
+                    foreach ($test_user as $user) {
+                        if($user->email == $parametros['email']){
+                            $response_validator['email'] = 'duplicated';
+                        }
+                    }
+
+                    if(count($response_validator) > 0){
+                        return response()->json(['message' => 'Algunos datos del formulario se encuentran duplicados','error_type'=>'form_validation','data'=>$response_validator], HttpResponse::HTTP_CONFLICT);
+                    }
+                }
+
                 DB::beginTransaction();
 
-                $usuario->name = $parametros['name'];
-                $usuario->email = $parametros['email'];
-                $usuario->avatar = $parametros['avatar'];
+                if($usuario->email != $parametros['email']){
+                    $usuario->email_verified_at = null;
+                }
+
+                $usuario->name      = $parametros['name'];
+                $usuario->email     = $parametros['email'];
+                $usuario->avatar    = $parametros['avatar'];
                 
                 if(isset($parametros['password']) && $parametros['password']){
+                    $validHash = Hash::check($parametros['old_password'],$usuario->password);
+                    if(!$validHash){
+                        DB::rollback();
+                        return response()->json(['message' => 'La contraseña actual es incorrecta','error_type'=>'form_validation','data'=>['old_password'=>'wrongpassword']], HttpResponse::HTTP_CONFLICT);
+                    }
+
                     $validHash = Hash::check($parametros['password'],$usuario->password);
                     if($validHash){
                         DB::rollback();
-                        return response()->json(['message' => 'La nueva contraseña no puede ser igual a la anterior'], HttpResponse::HTTP_CONFLICT);
+                        return response()->json(['message' => 'La nueva contraseña no puede ser igual a la anterior','error_type'=>'form_validation','data'=>['password'=>'samepassword']], HttpResponse::HTTP_CONFLICT);
                     }
                     $usuario->password = Hash::make($parametros['password']);
                 }
@@ -83,11 +110,10 @@ class ProfileController extends Controller{
 
                 DB::commit();
 
-                return response()->json(['usuario'=>$usuario],HttpResponse::HTTP_OK);
+                return response()->json(['data'=>$usuario],HttpResponse::HTTP_OK);
             }else{
                 return response()->json(['message' => 'Error en los datos del formulario', 'form_errors'=>$resultado->errors()], HttpResponse::HTTP_CONFLICT);
             }
-
         }catch(\Exception $e){
             DB::rollback();
             throw new \App\Exceptions\LogError('Ocurrio un error al intentar guardar los datos de perfil',null,$e);

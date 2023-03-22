@@ -9,4 +9,6 @@ export class User {
     apellido_materno?: string;
     avatar?: string;
     is_superuser?: boolean;
+    email_verified_at?: Date;
+    last_login_at?: Date;
   }

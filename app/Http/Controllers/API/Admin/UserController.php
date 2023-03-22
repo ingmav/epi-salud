@@ -195,6 +195,14 @@ class UserController extends Controller{
                         return response()->json(['message' => 'No se encontró el usuario seleccionado'], HttpResponse::HTTP_CONFLICT);
                     }
 
+                    if(isset($parametros['password'])){
+                        $validHash = Hash::check($parametros['password'],$usuario->password);
+                        if($validHash){
+                            DB::rollback();
+                            return response()->json(['message' => 'La nueva contraseña no puede ser igual a la anterior','error_type'=>'form_validation','data'=>['password'=>'samepassword']], HttpResponse::HTTP_CONFLICT);
+                        }
+                    }
+                    
                     if($usuario->status != $parametros['status']){
                         if($parametros['status'] == 2){
                             if(!$usuario->last_login_at){

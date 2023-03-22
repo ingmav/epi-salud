@@ -13,7 +13,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { WildcardRoutingModule } from './wildcard-routing.module';
 
 import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.component';
-import { DrawerListComponent } from './navigation/drawer-list/drawer-list.component';
 import { HeaderComponent } from './navigation/header/header.component';
 
 import { AppComponent } from './app.component';
@@ -27,15 +26,17 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { ForbiddenComponent } from './forbidden/forbidden.component';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 
-import { DevToolsModule } from './dev-tools/dev-tools.module';
+import { DialogEditProfileComponent } from './navigation/dialog-edit-profile/dialog-edit-profile.component';
+import { SessionUserMenuComponent } from './navigation/session-user-menu/session-user-menu.component';
+
 
 //Importacion de modulos
+import { DevToolsModule } from './dev-tools/dev-tools.module';
 import { ControlAccesoModule } from './modulos/control-acceso/control-acceso.module';
 
 //Para el Lenguaje de las Fechas
 import { registerLocaleData } from '@angular/common';
 import locale from '@angular/common/locales/es-MX';
-import { DialogEditProfileComponent } from './navigation/dialog-edit-profile/dialog-edit-profile.component';
 registerLocaleData(locale);
 
 @NgModule({
@@ -44,9 +45,9 @@ registerLocaleData(locale);
     HeaderComponent,
     SidenavListComponent,
     NotFoundComponent,
-    DrawerListComponent,
     ForbiddenComponent,
-    DialogEditProfileComponent
+    DialogEditProfileComponent,
+    SessionUserMenuComponent
   ],
   imports: [
     BrowserModule,

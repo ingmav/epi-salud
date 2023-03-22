@@ -98,6 +98,7 @@
                             <mat-error *ngIf="formUsuario.get('password').hasError('minlength')">Debe contener al menos 8 caracteres</mat-error>
                             <mat-error *ngIf="formUsuario.get('password').hasError('required')">La Contraseña es obligatoria</mat-error>
                             <mat-error *ngIf="formUsuario.get('password').hasError('lowstrenght')">La Contraseña no es segura</mat-error>
+                            <mat-error *ngIf="formUsuario.get('password').hasError('samepassword')">La Contraseña debe ser diferente</mat-error>
                         </mat-form-field>
     
                         <mat-form-field class="flex-fill" appearance="fill">

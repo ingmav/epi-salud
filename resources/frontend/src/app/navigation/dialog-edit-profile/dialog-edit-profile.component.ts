@@ -26,11 +26,14 @@ export class DialogEditProfileComponent implements OnInit {
 
   isLoading:boolean;
   isSaving:boolean;
+  isSelectAvatarOpen:boolean;
+  verifiedEmail:boolean;
   changesDetected:boolean;
   savedData:boolean;
   dialogMaxSize:boolean;
-  changePass:boolean;
+  manualPass:boolean;
 
+  hideOldPassword:boolean;
   hidePassword:boolean;
   hideConfirmPassword:boolean;
 
@@ -47,7 +50,7 @@ export class DialogEditProfileComponent implements OnInit {
   ngOnInit(): void {
     this.isLoading = true;
     this.savedData = false;
-    this.dialogRef.updateSize('80%', 'auto');
+    this.dialogRef.updateSize('380px','auto');
 
     this.avatarsList = AVATARS;
 
@@ -64,6 +67,7 @@ export class DialogEditProfileComponent implements OnInit {
         this.formPerfil.patchValue(response.data);
         this.selectedAvatar = response.data.avatar;
         this.userName = response.data.username;
+        this.verifiedEmail = response.data.email_verified_at;
         this.isLoading = false;
         this.setConfigForm();
       },
@@ -75,19 +79,30 @@ export class DialogEditProfileComponent implements OnInit {
   }
 
   guardarPerfil(){
+    this.alertPanel.closePanel();
     if(this.formPerfil.valid){
       this.isSaving = true;
       let formData:any = this.formPerfil.value;
 
       this.authService.updateProfileData(formData.id,formData).subscribe({
         next: (response:any)=>{
-          this.authService.updateUserData(response.usuario);
+          this.authService.updateUserData(response.data);
           this.savedData = true;
           this.alertPanel.showSuccess('Datos guardados con éxito',3);
           this.changesDetected = false;
           this.isSaving = false;
         },
         error: (response:any)=>{
+          if(response.error.error_type == 'form_validation'){
+            for (const key in response.error.data) {
+              if (Object.prototype.hasOwnProperty.call(response.error.data, key)) {
+                const element = response.error.data[key];
+                let error:any = {};
+                error[element] = true;
+                this.formPerfil.get(key).setErrors(error);
+              }
+            }
+          }
           this.alertPanel.showError(response.error.message);
           this.isSaving = false;
         }
@@ -97,25 +112,28 @@ export class DialogEditProfileComponent implements OnInit {
 
   setAvatar(avatar:string){
     this.selectedAvatar = avatar;
-    this.showAvatarList = false;
+    this.isSelectAvatarOpen = false;
     this.formPerfil.get('avatar').patchValue(avatar);
   }
 
   toggleAvatarList(){
-    this.showAvatarList = !this.showAvatarList;
+    this.isSelectAvatarOpen = !this.isSelectAvatarOpen;
   }
 
-  toggleChangePass(){
-    if(this.changePass){
+  toggleManualPass(){
+    if(this.manualPass){
       if(this.formPerfil.get('password')){
+        this.formPerfil.removeControl('old_password');
         this.formPerfil.removeControl('confirm_password');
         this.formPerfil.removeControl('password');
         this.formPerfil.removeControl('valid_password');
       }
     }else{
       if(!this.formPerfil.get('password')){
+        this.hideOldPassword = true;
         this.hidePassword = true;
         this.hideConfirmPassword = true;
+        this.formPerfil.addControl('old_password',new FormControl('',[Validators.required, Validators.minLength(8)]));
         this.formPerfil.addControl('password',new FormControl('',[Validators.required, Validators.minLength(8)]));
         this.formPerfil.addControl('confirm_password',new FormControl('',[Validators.required, CustomValidator.fieldMatchValidator('password')]));
         this.formPerfil.addControl('valid_password',new FormControl(false,Validators.requiredTrue));
@@ -127,7 +145,7 @@ export class DialogEditProfileComponent implements OnInit {
         }, 10);
       }
     }
-    this.changePass = !this.changePass;
+    this.manualPass = !this.manualPass;
   }
 
   passwordValid(event){
@@ -149,10 +167,10 @@ export class DialogEditProfileComponent implements OnInit {
   }
 
   cancelarAccion(){
-    if(this.showAvatarList){
-      this.showAvatarList = false;
-    }else if(this.changePass){
-      this.changePass = false;
+    if(this.isSelectAvatarOpen){
+      this.isSelectAvatarOpen = false;
+    }else if(this.manualPass){
+      this.toggleManualPass();
     }else{
       this.cerrar();
     }

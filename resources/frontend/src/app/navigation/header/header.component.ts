@@ -32,8 +32,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   apps: App[]; 
   menus: any[]; 
   modulos:any;
-  breakpoint = 6;
   selectedChild: any;
+  showAccount:boolean;
 
   constructor(
     private authService:AuthService,
@@ -56,7 +56,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.menus = [];
       
       this.apps.forEach(element => {
-        
         if(element.route.toUpperCase() == selected_route.toUpperCase()){
           if(element.menu){
             element.menu.forEach(menu => {
@@ -105,29 +104,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.isAuthenticated = this.authService.isAuth();
     if(this.isAuthenticated){
       this.user = this.authService.getUserData();
-      this.selectedUnidad = this.authService.getUnidadActual();
     }
     this.authSubscription = this.authService.authChange.subscribe(
       status => {
         this.isAuthenticated = status;
         if(status){
           this.user = this.authService.getUserData();
-          this.selectedUnidad = this.authService.getUnidadActual();
         }else{
           this.user = new User();
-          this.selectedUnidad = undefined;
         }
       }
     );
-    this.breakpoint = (window.innerWidth <= 599) ? 3 : 6;
   }
 
   openEditProfile(){
     const dialogRef = this.dialog.open(DialogEditProfileComponent,{maxWidth: '100%',disableClose: true});
-  }
-
-  getMenuName(menu){
-    return this.navMenu;
   }
 
   getApps():void{
@@ -135,12 +126,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
     
   }
 
-  onResize(event) {
-    this.breakpoint = (event.target.innerWidth <= 599) ? 3 : 6;
-  }
-
   ngOnDestroy(){
     this.authSubscription.unsubscribe();
+  }
+
+  closeOverlay(){
+    this.showAccount = false;
   }
 
   toggleSidenav(){
