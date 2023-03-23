@@ -1,15 +1,18 @@
-body {
-    background:#333333;
+@media(max-width: 599.98px){
+    .apps-list .app{
+        width: calc(33.333% - 20px) !important;
+    }
+
+    .apps-list .app img {
+        width: 80% !important;
+        height: auto !important;
+    }
 }
 
-.app-toolbar {
-    position: sticky;
-    position: -webkit-sticky; /* For macOS/iOS Safari */
-    top: 0; /* Sets the sticky toolbar to be on top */
-    z-index: 1000; /* Ensure that your app's content doesn't overlap the toolbar */
-    background: white; 
-    color:#333;
-    border-bottom: 1px solid #DDD;
+@media(max-width: 959.98px) and (orientation: landscape){
+    .apps-list .app{
+        width: calc(15% - 20px) !important;
+    }
 }
 
 .container {
@@ -19,116 +22,38 @@ body {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-}
-.spacer {
-    flex: 1 1 auto;
+    justify-content: center;
 }
 
-.apps {    
+.apps-list{
+    width: 100%;
+}
+
+.apps-list .app{
     display: flex;
-    flex:1;
-    width:90%;
-    margin: auto;
-    height: auto;
-    flex-direction: row;
-    justify-content: flex-start;    
-    align-content: flex-start;
-    flex-wrap: wrap;
-    flex-flow: row wrap;
-}
-
-.apps figure {
-    display: block;
     flex-direction: column;
-    text-align: center; 
-    width: 33.33%;
-    margin:0;  
-    cursor: pointer; 
+    align-items: center;
+    width: 128px;
+    cursor: pointer;
+    padding: 10px;
 }
 
- 
-.apps figure img {
+.apps-list .app:hover{
+    background-color: rgba(0,0,0,0.10);
+    border-radius: 8px;
+}
+
+.apps-list .app img {
     display: block;
-    width:50px;
-    height: 50px;
+    width: 90%;
+    height: auto;
     margin:auto;
     margin-top:15px;      
     margin-bottom:15px;  
 }
 
-.apps figcaption{
-    font-size: 0.75em;
-    color: #555;    
-    margin-bottom:15px;  
+.apps-list .app figcaption{
+    text-align: center;
+    font-weight: 500;
+    color: #363636;
 }
-
-.grid {    
-    display: flex;
-    flex:1;
-    width:80%;
-    height: auto;
-    flex-direction: row;
-    justify-content: flex-start;    
-    align-content: flex-start;
-    flex-wrap: wrap;
-    flex-flow: row wrap;
-}
-
-.grid figure {
-    display: block;
-    flex-direction: column;
-    text-align: center; 
-    width: 33.33%;
-    margin:0;  
-    cursor: pointer; 
-}
-
-  
-.grid figure img {
-    display: block;
-    width:70px;
-    height: 70px;
-    margin:auto;
-    margin-top:15px;      
-    margin-bottom:15px;  
-}
-
-.grid figcaption{
-    font-size: 0.85em;
-    color: #555;    
-    margin-bottom:15px;  
-}
-.ellipsis {
-    text-overflow: ellipsis;  
-    /* Required for text-overflow to do anything */
-    white-space: nowrap;
-    overflow: hidden;
-  }
-
-
-  @media only screen and (min-width: 600px){
-    .grid {   
-        width: 80%;
-    }
-    .grid figure {
-        width: 16.66%;
-    }
-    .grid figure img {
-        width:80%;
-        height: auto;
-    }
-  }
-
-  @media only screen and (min-width: 1280px) {
-    .grid {   
-        width: 1080px;
-    }
-    .grid figure {
-        width: 180px;
-    }
-
-    .grid figure img {
-        width:128px;
-        height: 128px;
-    }
-  }

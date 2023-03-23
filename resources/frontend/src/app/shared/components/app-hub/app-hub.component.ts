@@ -11,13 +11,11 @@ export class AppHubComponent implements OnInit {
   @Input() appsList: App[];
 
   apps: App[];
-  breakpoint = 6;
 
   constructor(private router:Router) { }
 
   ngOnInit() {
     this.getApps();
-    this.breakpoint = (window.innerWidth <= 599) ? 3 : 6;
   }
 
   getApps():void{
@@ -28,10 +26,4 @@ export class AppHubComponent implements OnInit {
     let route = '/' + url;
     this.router.navigate([route]);
   }
-
-  onResize(event) {
-    this.breakpoint = (event.target.innerWidth <= 599) ? 3 : 6;
-  }
-
 }
-
