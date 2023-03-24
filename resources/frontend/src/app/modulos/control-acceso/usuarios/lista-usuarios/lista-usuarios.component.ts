@@ -35,6 +35,7 @@ export class ListaUsuariosComponent implements OnInit {
 
   statusDesc:any = USER_STATUS_CATALOG;
 
+  pageSize:number = 50;
   displayedColumns: string[] = ['status','username','name','email','last_login_at','updated_at'];
   resultsLength = 0;
   data:any;
@@ -42,12 +43,26 @@ export class ListaUsuariosComponent implements OnInit {
   ngOnInit(): void {
     this.data = [];
     this.searchQuery = '';
+
+    setTimeout(() => {
+      this.applySearch();
+    }, 10);
   }
 
   ngAfterViewInit(){
     // If the user changes the sort order, reset back to the first page.console.log('this.paginator.pageIndex = 0')
-    this.sort.sortChange.subscribe(() => (this.applySearch()));
-    this.applySearch();
+    this.sort.sortChange.subscribe(() => {
+      this.paginator.pageIndex = 0;
+      this.applySearch();
+    });
+
+    this.paginator.page.subscribe(()=>{
+      if(this.pageSize != this.paginator.pageSize){
+        this.paginator.pageIndex = 0;
+        this.pageSize = this.paginator.pageSize;
+      }
+      this.applySearch();
+    });
   }
 
   cleanSearch(){
@@ -59,11 +74,11 @@ export class ListaUsuariosComponent implements OnInit {
     let params:any = {
       sort: this.sort.active,
       direction: this.sort.direction,
-      page: this.paginator.pageIndex,
+      page: this.paginator.pageIndex+1,
+      per_page: this.paginator.pageSize,
       query: this.searchQuery,
     };
-
-    this.resultsLength = 0;
+    
     this.data = [];
 
     return this.usuariosService.obtenerUsuarios(params).subscribe({
