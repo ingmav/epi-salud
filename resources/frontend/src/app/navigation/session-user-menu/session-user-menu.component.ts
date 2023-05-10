@@ -27,10 +27,12 @@ export class SessionUserMenuComponent {
   user: User;
   apps: App[];
   authSubscription: Subscription;
+  fechaHoy: Date;
   
   ngOnInit(){
     this.isSideNav = false;
     this.isAuthenticated = this.authService.isAuth();
+    this.fechaHoy = new Date();
 
     if(this.isAuthenticated){
       this.user = this.authService.getUserData();

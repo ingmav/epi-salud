@@ -1,5 +1,20 @@
+/*XSmall*/
+@media(max-width: 599.98px){
+    .profile-button{
+        font-size: small !important;
+    }
+}
+
+/*HandsetLandscape*/
+@media(max-width: 959.98px) and (orientation: landscape){
+    .profile-button{
+        font-size: small !important;
+    }
+}
+
 .menu-card{
     background-color: whitesmoke;
+    cursor: default;
 }
 
 .menu-card > div:not(:last-child){
@@ -8,6 +23,10 @@
 
 .menu-mode{
     max-height: 600px;
+}
+
+.profile-button{
+    width: 100%;
 }
 
 .sidenav-mode{
@@ -80,4 +99,11 @@
     color: #555;    
     margin-bottom:15px;  
     padding:0 5px;
+}
+
+.copyright-legend{
+    text-align: center;
+    font-weight: 200;
+    font-size: x-small;
+    color: rgb(86, 86, 86);
 }

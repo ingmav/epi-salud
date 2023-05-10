@@ -2,24 +2,28 @@
   <button mat-icon-button aria-label="Ir al inicio" routerLink="/">
     <mat-icon style="color: white;">home</mat-icon>
   </button>
-  <span class="header-links, font-header-elements" *ngIf="selectedApp">
-    <a *ngIf="selectedAppLink" routerLink="{{selectedAppLink.route}}">
-      {{selectedAppLink.name | uppercase}}
-    </a>
-  </span>
-  <span class="header-links, font-header-elements" *ngIf="!selectedApp"  style="color:whitesmoke;">
-    PLATAFORMA BASE
-  </span>
 
   <div class="hide-gt-xs" *ngIf="menus && menus.length > 0" style="color: white;">
-    <button mat-icon-button [matMenuTriggerFor]="appMainMenu" xPosition="before"><mat-icon>arrow_drop_down</mat-icon></button>
+    <button mat-icon-button [matMenuTriggerFor]="appMainMenu" xPosition="before"><mat-icon>menu_open</mat-icon></button>
     <mat-menu #appMainMenu="matMenu">
       <button mat-menu-item *ngFor="let item of menus" [matMenuTriggerFor]="navAppMenu" [matMenuTriggerData]="{identificador:item.identificador}"><mat-icon>{{ item.icon }}</mat-icon>{{ item.name }}</button>
     </mat-menu>
   </div>
 
+  <span class="header-links, font-header-elements" *ngIf="selectedApp">
+    <a *ngIf="selectedAppLink" routerLink="{{selectedAppLink.route}}">
+      {{selectedAppLink.name | uppercase}}
+    </a>
+  </span>
+
+  <span class="header-links, font-header-elements" *ngIf="!selectedApp"  style="color:whitesmoke;">
+    PLATAFORMA BASE
+  </span>
+  
   <div class="hide-xs" style="color: white;">
-    <button mat-button *ngFor="let item of menus" [matMenuTriggerFor]="navAppMenu" [matMenuTriggerData]="{identificador:item.identificador}" class="menu-plataforma"><mat-icon>{{ item.icon }}</mat-icon><span fxShow.lt-sm="false">{{ item.name }}</span></button>
+    <button mat-button *ngFor="let item of menus" [matMenuTriggerFor]="navAppMenu" [matMenuTriggerData]="{identificador:item.identificador}" class="menu-plataforma">
+      <mat-icon>{{ item.icon }}</mat-icon><span>{{ item.name }}</span>
+    </button>
   </div>
   
   <mat-menu #navAppMenu="matMenu">
@@ -31,11 +35,11 @@
   <span class="spacer"></span>
   
   <ng-template [ngIf]="isAuthenticated">
-    <button mat-icon-button cdkOverlayOrigin #verInfoAccount="cdkOverlayOrigin" (click)="(!showAccount)?(showAccount = true):showAccount" class="hide-xs">
+    <button mat-icon-button cdkOverlayOrigin #verInfoAccount="cdkOverlayOrigin" (click)="(!showAccount)?(showAccount = true):showAccount" class="hide-xs hide-xs-landscape">
       <img src="{{user.avatar}}" alt=""  style="width:auto; margin:auto">
     </button>
     
-    <button mat-icon-button aria-label="Mostrar Sidenav" (click)="toggleSidenav()" class="hide-gt-xs">
+    <button mat-icon-button aria-label="Mostrar Sidenav" (click)="toggleSidenav()" style="display: none;" class="show-xs">
       <img src="{{user.avatar}}" alt="" style="width:auto; margin:auto">
     </button>
 

@@ -4,6 +4,10 @@
         display: none !important;
     }
 
+    .show-xs{
+        display: block !important;
+    }
+
     .flex-xs-column{
         flex-direction: column !important;
        -ms-flex-direction: column !important;
@@ -15,11 +19,40 @@
     }
 
     .flex-xs-fill{
-        flex-grow: 1;
+        flex-grow: 1 !important;
+    }
+
+    .flex-xs-100{
+        width: 100% !important;
     }
 
     .xs-unlock-height{
         height: unset !important;
+    }
+}
+
+/*HandsetLandscape*/
+@media(max-width: 959.98px) and (orientation: landscape){
+    .hide-xs-landscape{
+        display: none !important;
+    }
+
+    .show-xs{
+        display: block !important;
+    }
+
+    .show-xs-landscape{
+        display: inline !important;
+    }
+
+    .flex-xs-landscape-column{
+        flex-direction: column !important;
+       -ms-flex-direction: column !important;
+    }
+
+    .flex-xs-landscape-row{
+        flex-direction: row !important;
+       -ms-flex-direction: row !important;
     }
 }
 
