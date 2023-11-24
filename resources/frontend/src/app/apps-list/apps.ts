@@ -32,7 +32,7 @@ export const APPS:App [] = [
         },
       ],
     },
-    { name:'Control de Acceso', route: "control-acceso",  icon: "assets/icons/roles.png", 
+    { name:'Control de Acceso', route: "control-acceso",  icon: "assets/icons/control-acceso.svg", 
         menu:[
             {
                 name:'Administrar',
