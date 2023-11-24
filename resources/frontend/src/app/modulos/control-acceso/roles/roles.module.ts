@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../../shared/shared.module';
 import { RolesRoutingModule } from './roles-routing.module';
 import { ListComponent } from './list/list.component';
-import { MatLegacyPaginatorIntl as MatPaginatorIntl } from '@angular/material/legacy-paginator';
+import { MatPaginatorIntl } from '@angular/material/paginator';
 import { getEspPaginatorIntl } from 'src/app/esp-paginator-intl';
 import { FormComponent } from './form/form.component';
 
