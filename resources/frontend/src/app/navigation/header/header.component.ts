@@ -4,15 +4,20 @@ import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 import { App } from 'src/app/apps-list/apps';
 import { AppsListService } from 'src/app/apps-list/apps-list.service';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, RouterModule } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { SharedService } from '../../shared/shared.service';
 import { MatMenu } from '@angular/material/menu';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogEditProfileComponent } from '../dialog-edit-profile/dialog-edit-profile.component';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { SessionUserMenuComponent } from '../session-user-menu/session-user-menu.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-header',
+  standalone: true,
+  imports:[SharedModule, RouterModule, SessionUserMenuComponent, CommonModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
@@ -50,24 +55,29 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
       this.getApps();
       let routes = event.url.split('/');
-      let selected_route = routes[1];
+
+      let selected_route = this.getLink(routes);
 
       this.modulos = {};
       this.menus = [];
-      
-      this.apps.forEach(element => {
-        if(element.route.toUpperCase() == selected_route.toUpperCase()){
-          if(element.menu){
-            element.menu.forEach(menu => {
-              if(menu.children.length){
-                this.menus.push(menu);
-                this.modulos[menu.identificador] = menu.children;
-              }
-            });
+      if(selected_route != "")
+      {
+        this.apps.forEach(element => {
+          let seleccion = element.route.toUpperCase().split('/');
+  
+          if(seleccion[(seleccion.length -1 )] == selected_route.toUpperCase()){
+            if(element.menu){
+              element.menu.forEach(menu => {
+                if(menu.children.length){
+                  this.menus.push(menu);
+                  this.modulos[menu.identificador] = menu.children;
+                }
+              });
+            }
           }
-        }
-      });
-
+        });  
+      }
+      
      let currentApp = this.sharedService.getCurrentApp();
       if(currentApp.name != selected_route ){
         this.sharedService.newCurrentApp(selected_route);
@@ -122,8 +132,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   getApps():void{
-    this.apps = this.appsService.getApps();
-    
+    this.apps = this.appsService.getApps(); 
   }
 
   ngOnDestroy(){
@@ -140,5 +149,24 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   logout(){
     this.authService.logout();
+  }
+
+  getLink(arreglo:any):string{
+
+    let link_response = "";
+    
+    const primerFiltro = arreglo.filter(links => links!='');
+    const segundoFiltro = primerFiltro.filter(links => links!='backend');
+    let tamano = (segundoFiltro.length - 1);
+    let contador = 0;
+    
+    while (link_response == "" && contador<=tamano) {
+      if(!Number.isInteger(parseInt(segundoFiltro[contador])))
+      {
+        link_response = segundoFiltro[contador];
+      }
+      contador++;
+    }
+    return link_response;
   }
 }

@@ -1,0 +1,77 @@
+<div class="principal">
+    <div class="bloque-central-informacion">
+        <div class="informacion_default separacion">
+            <div class="texto_cabecera">
+                IMAGEN DE CABECERA
+            </div>
+            <div class="img_demo">
+                <div *ngIf="url_imagen==''">IMAGEN</div>
+                <img src="{{ url_imagen }}" height="200px" *ngIf="url_imagen!=''">
+            </div>
+            <div style="margin:10px;">
+                <button type="button" mat-raised-button (click)="fileInput.click()" style="margin-right: 10px;">ELEGIR IMAGEN</button>
+                <input hidden (change)="onFileSelected($event)" #fileInput type="file" id="file" accept="image/png, image/gif, image/jpeg">
+                <button mat-stroked-button color="warn" (click)="EliminarArchivo()" [disabled]="url_imagen==''" style="margin-right: 10px;">
+                    <mat-icon>delete</mat-icon>
+                    <div>ELIMINAR</div>
+                </button>
+                <button mat-stroked-button color="primary" (click)="GuardarArchivo()" [disabled]="(!archivo || url_imagen!='')">
+                    <mat-icon>save</mat-icon>
+                    <div>GUARDAR</div>
+                </button>
+            </div>
+            
+        </div>
+        
+        <div class="informacion_default">
+            <div class="botones">
+                <app-botones 
+                [botones]="botonesInicial"
+                [tipo_boton]="1"
+                [page]="id_pagina"
+                [texto_cabecera]="'BOTONES INICIALES'"
+                ></app-botones>
+                <app-botones 
+                [botones]="botonesPrimarios"
+                [tipo_boton]="2"
+                [page]="id_pagina"
+                (messageEvent)="receiveId($event)"
+                [texto_cabecera]="'BOTONES PRIMARIOS'"
+                ></app-botones>
+                <app-botones 
+                [botones]="botonesSecundarios"
+                [tipo_boton]="3"
+                [page]="id_pagina"
+                [texto_cabecera]="'BOTONES SECUNDARIOS'"
+                ></app-botones>
+            </div>
+        </div>
+        <div class="informacion_default"  [formGroup]="form">
+            <section class="flex-fill flex-column" style="padding:8px; overflow: auto; width: 100%;">
+                <div class="flex-fill flex-column flex-gap">
+                    <mat-card class="flex-column flex-gap xs-max-height-user-form" >
+                        <div class="flex-row flex-xs-column flex-fill flex-gap">
+                            <mat-form-field appearance="fill" class="flex-fill">
+                                <mat-label>DESCRIPCION: </mat-label>
+                                <input type="text" matInput autocomplete="off" formControlName="descripcion" placeholder="DESCRIPCION" required cdkFocusInitial>
+                                <mat-error *ngIf="form.get('descripcion').hasError('required')">Este campo es obligatorio</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="flex-row flex-xs-column flex-fill flex-gap">    
+                            <mat-form-field appearance="fill" class="flex-fill">
+                                <mat-label>IFRAME: </mat-label>
+                                <input type="text" matInput autocomplete="off" formControlName="iframe" placeholder="IFRAME" required>
+                                <mat-error *ngIf="form.get('iframe').hasError('required')">Este campo es obligatorio</mat-error>
+                            </mat-form-field>
+                            
+                            <button mat-stroked-button color="primary" style="padding: 30px;" (click)="guardaFrame()" [disabled]="!form.valid">
+                                <mat-icon>save</mat-icon>
+                                <div>GUARDAR</div>
+                            </button>
+                        </div>
+                    </mat-card>
+                </div>
+            </section>                
+        </div>
+    </div>
+</div>            

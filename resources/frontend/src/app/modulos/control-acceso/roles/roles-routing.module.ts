@@ -5,7 +5,7 @@ import { AuthGuard } from 'src/app/auth/auth.guard';
 import { ListComponent } from './list/list.component';
 
 const routes: Routes = [
-  { path: 'control-acceso/roles', component: ListComponent, canActivate: [AuthGuard] },
+  { path: 'roles', component: ListComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({

@@ -1,0 +1,17 @@
+.headbar
+{
+    background-color: var(--fondo-1);
+    color: var(--color-1);
+    max-height: 70px;
+    text-align: center;
+    font-size: 8pt;  
+}
+
+.centrar_contenido
+{
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    line-height: 14px;
+}

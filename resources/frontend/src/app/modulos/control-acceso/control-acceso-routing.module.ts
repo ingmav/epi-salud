@@ -5,8 +5,8 @@ import { IndexComponent } from './index/index.component';
 import { ListaUsuariosComponent } from './usuarios/lista-usuarios/lista-usuarios.component';
 
 const routes: Routes = [
-  { path: 'control-acceso',           component: IndexComponent,          canActivate: [AuthGuard] },
-  { path: 'control-acceso/usuarios',  component: ListaUsuariosComponent,  canActivate: [AuthGuard] },
+  { path: '',           component: IndexComponent,          canActivate: [AuthGuard] },
+  { path: 'usuarios',  component: ListaUsuariosComponent,  canActivate: [AuthGuard] },
 ];
 
 @NgModule({

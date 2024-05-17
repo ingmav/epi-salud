@@ -6,9 +6,13 @@ import { AlertPanelComponent } from 'src/app/shared/components/alert-panel/alert
 import { CustomValidator } from 'src/app/utils/classes/custom-validator';
 import { AVATARS } from 'src/app/avatars';
 import { DialogConfirmActionComponent } from 'src/app/shared/components/dialog-confirm-action/dialog-confirm-action.component';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-dialog-edit-profile',
+  standalone: true,
+  imports:[SharedModule, CommonModule],
   templateUrl: './dialog-edit-profile.component.html',
   styleUrls: ['./dialog-edit-profile.component.css']
 })

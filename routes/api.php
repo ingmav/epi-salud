@@ -25,7 +25,8 @@ Route::post('signin',               'API\Auth\AuthController@login');
 Route::post('refresh',              'API\Auth\AuthController@refresh');
 Route::post('reset-password',       'API\Auth\AuthController@resetPassword');
 Route::post('send-reset-password',  'API\Auth\AuthController@sendResetPassword');
-
+Route::get('subtema-font/{id}',     'API\Modulos\Indice\SubTemasController@getInformation');
+Route::get('tema-plataforma',       'API\Modulos\Indice\TemasController@temaPlataforma');
 /**
  *  Para envio de correos
  */
@@ -48,6 +49,18 @@ Route::group(['middleware'=>'auth'],function($router){
 
     Route::apiResource('permission',    'API\Admin\PermissionController');
     Route::apiResource('role',          'API\Admin\RoleController');
+
+    //Inicia el Sistema
+    Route::apiResource('tema',          'API\Modulos\Indice\TemasController');
+    Route::apiResource('subtema',       'API\Modulos\Indice\SubTemasController');
+    Route::apiResource('pagina',        'API\Modulos\Indice\PaginasController');
+    Route::apiResource('pagina-boton',  'API\Modulos\Indice\PaginasBotonController');
+    Route::post('importar-cabecera',    'API\Modulos\Indice\PaginasController@cabecera');
+    Route::post('iframe',               'API\Modulos\Indice\PaginasController@iframe');
+    Route::get('botones',               'API\Modulos\Indice\PaginasController@getButtons');
+    Route::get('botones-hijos',         'API\Modulos\Indice\PaginasController@getButtonsHijos');
+    Route::delete('del-cabecera/{id}',          'API\Modulos\Indice\PaginasController@deleteImagen');
+    
 });
 
 Route::middleware('auth')->get('/avatar-images', function (Request $request) {

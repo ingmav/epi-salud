@@ -1,0 +1,71 @@
+<section class="flex-column" style="height: 100%; overflow: hidden; flex: 1 1 0%;" (document:keydown.escape)="cancelarAccion()"> <!-- Main Body <<<<<<< -->
+    <section class="dialog-toolbar"> <!-- Toolbar Menu <<<<<<< -->
+        <div class="flex-row">
+            <div class="label-info status-label">
+                <mat-icon>star</mat-icon><span class="hide-xs">&nbsp;Tema</span>
+            </div>
+           
+            
+            <button mat-button (click)="guardar()" [disabled]="isLoading || isSaving || !form.valid">
+                <mat-icon>{{(changesDetected)?'save_as':'save'}}</mat-icon><span class="hide-xs">&nbsp;Guardar</span>
+            </button>
+            <div class="flex-fill"></div>
+            
+            <div class="label-info screen-size-icon" *ngIf="currentScreenSize == 'xs' || currentScreenSize == 'sm'">
+                <mat-icon>phone_iphone</mat-icon>
+            </div>
+           
+            <button mat-button class="boton-accion" (click)="resizeDialog()" [matTooltip]="(dialogMaxSize)?'Restaurar':'Maximizar'" [matTooltipPosition]="'left'" tabindex="-1" *ngIf="currentScreenSize != 'xs' && currentScreenSize != 'sm'">
+                <mat-icon>{{(dialogMaxSize)?'fit_screen':'fullscreen'}}</mat-icon>
+            </button>
+            <button class="boton-accion boton-cerrar" mat-button (click)="cerrar()" tabindex="-1"><mat-icon>close</mat-icon></button>
+        </div>
+    </section> <!-- <<<<<<< Toolbar Menu -->
+    <mat-progress-bar *ngIf="isLoading || isSaving || isSendingEmail" [mode]="(isSaving || isSendingEmail)?'indeterminate':'query'" [color]="(isSaving || isSendingEmail)?'accent':'primary'"></mat-progress-bar>
+    <section>
+        <alert-panel></alert-panel>
+    </section>
+    <section class="flex-fill flex-column" style="padding:8px; overflow: auto;">
+        <div class="flex-fill flex-column flex-gap">
+            <mat-card class="flex-column flex-gap xs-max-height-user-form" style="padding: 8px;" [formGroup]="form">
+                <div class="flex-row flex-xs-column flex-fill flex-gap">
+                    <mat-form-field appearance="fill">
+                        <mat-label>COLUMNA: </mat-label>
+                        <mat-select formControlName="columna_id">
+                            <mat-option [value]="1">COLUMNA 1</mat-option>
+                            <mat-option [value]="2">COLUMNA 2</mat-option>
+                            <mat-option [value]="3">COLUMNA 3</mat-option>
+                            <mat-option [value]="4">COLUMNA 4</mat-option>
+                            
+                        </mat-select>
+                        <mat-error *ngIf="form.get('columna_id').hasError('required')">Este campo es obligatorio</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>ORDEN: </mat-label>
+                        <input type="text" matInput autocomplete="off" formControlName="orden" placeholder="Orden" required>
+                       
+                        <mat-error *ngIf="form.get('orden').hasError('required')">El Nombre de Usuario es obligatorio</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill" class="flex-fill">
+                        <mat-label>ESTATUS: </mat-label>
+                        <mat-select formControlName="estatus_id">
+                            <mat-option [value]="1">ACTIVO</mat-option>
+                            <mat-option [value]="2">INACTIVO</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="form.get('estatus_id').hasError('required')">El Nombre de Usuario es obligatorio</mat-error>
+                    </mat-form-field>
+                    
+                </div>
+                <div class="flex-row flex-xs-column flex-fill flex-gap">
+                    <mat-form-field appearance="fill" class="flex-fill">
+                        <mat-label>TEMA: </mat-label>
+                        <input type="text" matInput autocomplete="off" formControlName="descripcion" placeholder="Tema" required>
+                        <mat-error *ngIf="form.get('descripcion').hasError('required')">El Correo Electrónico es obligatorio</mat-error>
+                    </mat-form-field>
+                    
+                </div>
+                
+            </mat-card>
+        </div>
+    </section>
+</section>

@@ -1,0 +1,31 @@
+.caja
+{
+    border: 1px dotted #CCCCCC;
+    min-height: 300px;
+    font-size: 10pt;
+}
+
+.botones-configuracion
+{
+    display: flex;
+    justify-content: end;
+    margin: 10px;
+}
+
+.botones-configuracion button
+{
+    margin: 0px 2px;
+}
+
+.texto_cabecera
+{
+    padding: 10pt;
+    background-color: rgba(200,200,200,0.5);
+    color: #000000;
+    font-weight: bold;
+}
+
+.lista
+{
+    text-align: left;
+}

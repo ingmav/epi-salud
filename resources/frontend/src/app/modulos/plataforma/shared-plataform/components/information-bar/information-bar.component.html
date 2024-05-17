@@ -1,0 +1,23 @@
+<div class="semana-epidemiologica">
+    <div class="texto">SEMANA<br>EPIDEMIOLOGICA</div>
+    <div class="semana">{{ semana_epidemiologica }}</div>
+</div>
+
+<div class="menu-information">
+    <div class="flex-container">
+        <div class="flex-item" *ngFor="let item of simulacroMenu">
+            <div *ngFor="let item_menu of item.columnas">
+                <div class='titulo'>{{ item_menu.title }}</div>
+                <ul class='lista-menu'>
+                    <li *ngFor="let subItem of item_menu.temas">
+                        <span style="padding: 0px 5px;">
+                            <i class="uil uil-capture"></i>
+                        </span>
+                        {{ subItem.titleSubtema }}
+                    </li>
+                </ul>
+            </div>
+            
+        </div>
+      </div>
+</div>

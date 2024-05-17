@@ -19,7 +19,7 @@ export class Menu {
 }
 
 export const APPS:App [] = [
-    { name:'Herramientas Dev', route: "dev-tools",  icon: "assets/icons/dev-tools.svg", isHub:true, hideHome:true, permission:"6ARHQGj1N8YPkr02DY04K1Zy7HjIdDcj",
+    { name:'Herramientas Dev', route: "backend/dev-tools",  icon: "assets/icons/dev-tools.svg", isHub:true, hideHome:true, permission:"6ARHQGj1N8YPkr02DY04K1Zy7HjIdDcj",
       menu:[
         {
             name:'Tools',
@@ -32,7 +32,7 @@ export const APPS:App [] = [
         },
       ],
     },
-    { name:'Control de Acceso', route: "control-acceso",  icon: "assets/icons/control-acceso.svg", 
+    { name:'Control de Acceso', route: "backend/control-acceso",  icon: "assets/icons/control-acceso.svg", 
         menu:[
             {
                 name:'Administrar',
@@ -49,6 +49,19 @@ export const APPS:App [] = [
                 identificador:'configuracion',
                 children:[
                     { name:'Permisos',      route: "control-acceso/permisos",          icon: "key",                    permission:"tTVayONYIDylH9dk7jg5143h0FKoSpBi" },
+                ]
+            }
+        ] 
+    },
+    { name:'Indice', route: "backend/indice",  icon: "assets/icons/control-acceso.svg", 
+        menu:[
+            {
+                name:'Control',
+                icon: 'menu_open',
+                identificador:'control',
+                children:[
+                    { name:"Temas / Subtemas",      route: "indice/temas",          icon: "star",        permission:"hr5UhgMTDmF9EiLYeq5x0cz0e281IWRU" },
+                    { name:'Paginas',               route: "indice/paginas",        icon: "pages",               permission:"gzA7BboE1BpzXZmko6OIDT3EOQRn4otm" },
                 ]
             }
         ] 

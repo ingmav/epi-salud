@@ -12,7 +12,7 @@ import { DialogConfirmActionComponent } from './components/dialog-confirm-action
 import { StrengthCheckerComponent } from '../utils/components/strength-checker/strength-checker.component';
 
 @NgModule({
-  declarations: [IfHasPermissionDirective, AppHubComponent, MascaraFechaDirective, AlertPanelComponent, DialogConfirmActionComponent, StrengthCheckerComponent],
+  declarations: [IfHasPermissionDirective, MascaraFechaDirective, AlertPanelComponent, DialogConfirmActionComponent, StrengthCheckerComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -31,7 +31,7 @@ import { StrengthCheckerComponent } from '../utils/components/strength-checker/s
     AlertPanelComponent,
     DialogConfirmActionComponent,
     StrengthCheckerComponent,
-    AppHubComponent,
+    
   ],
 })
 export class SharedModule { }

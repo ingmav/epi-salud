@@ -9,6 +9,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [GuessGuard] },
   { path: 'restablecer-contrasena/:token', component: ResetPasswordComponent, canActivate: [GuessGuard] },
   { path: 'establecer-contrasena/:token', component: ResetPasswordComponent, canActivate: [GuessGuard] },
+  { path: '', redirectTo:'login'}
 ];
 
 @NgModule({

@@ -1,0 +1,131 @@
+<section class="flex-column" style="height: 100%; overflow: hidden; flex: 1 1 0%;" (document:keydown.escape)="cancelarAccion()"> <!-- Main Body <<<<<<< -->
+    <section class="dialog-toolbar"> <!-- Toolbar Menu <<<<<<< -->
+        <div class="flex-row">
+            <div class="label-info status-label">
+                <mat-icon>star</mat-icon><span class="hide-xs">&nbsp;Tema</span>
+            </div>
+           
+            
+            <!-- <button mat-button (click)="guardar()" [disabled]="isLoading || isSaving || !form.valid">
+                <mat-icon>{{(changesDetected)?'save_as':'save'}}</mat-icon><span class="hide-xs">&nbsp;Guardar</span>
+            </button> -->
+            <div class="flex-fill"></div>
+            
+            <div class="label-info screen-size-icon" *ngIf="currentScreenSize == 'xs' || currentScreenSize == 'sm'">
+                <mat-icon>phone_iphone</mat-icon>
+            </div>
+           
+            <button mat-button class="boton-accion" (click)="resizeDialog()" [matTooltip]="(dialogMaxSize)?'Restaurar':'Maximizar'" [matTooltipPosition]="'left'" tabindex="-1" *ngIf="currentScreenSize != 'xs' && currentScreenSize != 'sm'">
+                <mat-icon>{{(dialogMaxSize)?'fit_screen':'fullscreen'}}</mat-icon>
+            </button>
+            <button class="boton-accion boton-cerrar" mat-button (click)="cerrar()" tabindex="-1"><mat-icon>close</mat-icon></button>
+        </div>
+    </section> <!-- <<<<<<< Toolbar Menu -->
+    <mat-progress-bar *ngIf="isLoading || isSaving " [mode]="(isSaving )?'indeterminate':'query'" [color]="(isSaving)?'accent':'primary'"></mat-progress-bar>
+    <section>
+        <alert-panel></alert-panel>
+    </section>
+    <section class="flex-fill flex-column" style="padding:8px; overflow: auto;">
+        <div class="flex-fill flex-column flex-gap">
+            <mat-card class="flex-column flex-gap xs-max-height-user-form" style="padding: 8px;" [formGroup]="form">
+                <div class="flex-row flex-xs-column flex-fill flex-gap">
+                    <mat-form-field appearance="fill"  class="flex-fill">
+                        <mat-label>DESCRIPCIÓN: </mat-label>
+                        <input type="text" matInput autocomplete="off" formControlName="descripcion" required #descripcion (blur)="verificaContenido(descripcion.value)">
+                       
+                        <mat-error *ngIf="form.get('descripcion').hasError('required')">La descripcion de Usuario es obligatorio</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>TIPO ENLACE: </mat-label>
+                        <mat-select formControlName='tipoSubtitulo' #tipo (selectionChange)="verificarEstatus(tipo.value)">
+                            <mat-option [value]="1">INTERNO</mat-option>
+                            <mat-option [value]="2">EXTERNO</mat-option>
+                        </mat-select>
+                       
+                        <mat-error *ngIf="form.get('tipoSubtitulo').hasError('required')">La descripcion de Usuario es obligatorio</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>ORDEN: </mat-label>
+                        <input type="number" matInput autocomplete="off" formControlName="orden" placeholder="Orden" required>
+                       
+                        <mat-error *ngIf="form.get('orden').hasError('required')">El Orden de Usuario es obligatorio</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill" class="flex-fill">
+                        <mat-label>ESTATUS: </mat-label>
+                        <mat-select formControlName="estatus_id">
+                            <mat-option [value]="1">ACTIVO</mat-option>
+                            <mat-option [value]="2">INACTIVO</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="form.get('estatus_id').hasError('required')">El Nombre de Usuario es obligatorio</mat-error>
+                    </mat-form-field>
+                    
+                </div>
+                <div class="flex-row flex-xs-column flex-fill flex-gap">
+                    
+                    <mat-form-field appearance="fill"  class="flex-fill" *ngIf="tipo.value == 2">
+                        <mat-label>ENLACE: </mat-label>
+                        <input type="text" matInput autocomplete="off" formControlName="enlace" required >
+                       
+                        <mat-error *ngIf="form.get('enlace').hasError('required')">La descripcion de Usuario es obligatorio</mat-error>
+                    </mat-form-field>
+                    <button mat-raised-button color="primary" style="padding: 28px;" [disabled]="!form.valid"  class="flex-fill" (click)="guardar()"><mat-icon>save</mat-icon>GUARDAR</button>
+                </div>
+                
+            </mat-card>
+        </div>
+        <div class="flex-column" style="height: 100%;">
+            <div class="main-list-table left-click-open flex-fill" style="height: 100%;">
+                <table mat-table [dataSource]="data" matSort matSortActive="updated_at" matSortDirection="desc">
+                    <ng-container matColumnDef="subtema">
+                        <th mat-header-cell *matHeaderCellDef>TEMA / SUBTEMA</th>
+                        <td mat-cell *matCellDef="let row">
+                            <div>{{ row.orden }} - {{ row.descripcion }}</div>
+                            <div>{{ row.enlace }}</div>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="estatus">
+                        <th mat-header-cell *matHeaderCellDef>ESTATUS</th>
+                        <td mat-cell *matCellDef="let row" >
+                        <div *ngIf="row.estatus_id == 1">
+                            <button mat-mini-fab>
+                                <mat-icon>check</mat-icon>
+                            </button>
+                        </div>
+                        <div *ngIf="row.estatus_id == 2">
+                            <button mat-mini-fab [disabled]="true">
+                                <mat-icon>check</mat-icon>
+                            </button>
+                        </div>
+                        </td>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="loadingResults">
+                        <td mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length" class="no-results-found">
+                            --| Cargando Registros |--
+                            <mat-progress-bar mode="query"></mat-progress-bar>
+                        </td>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="noResultsFound">
+                        <td mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length" class="no-results-found" >
+                            No se encontraron registros 
+                        </td>
+                    </ng-container>
+    
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"  [cdkContextMenuTriggerFor]="rowMenu" [cdkContextMenuTriggerData]="{row:row}"></tr>
+                    <tr mat-footer-row *matFooterRowDef="['loadingResults']" [ngClass]="{'hide':!isLoadingResults}"></tr>
+                    <tr mat-footer-row *matFooterRowDef="['noResultsFound']" [ngClass]="{'hide':!(data!=null && data.length==0 && !isLoadingResults)}"></tr>
+                </table>
+            </div>
+            
+        </div>
+    </section>
+</section>    
+
+<ng-template #rowMenu let-row="row">
+    <div class="context-menu mat-elevation-z2" cdkMenu>
+        <button class="context-menu-item" cdkMenuItem (click)="edit(row)"><mat-icon>edit</mat-icon>&nbsp;EDITAR</button>
+        <button class="context-menu-item" cdkMenuItem (click)="eliminar(row)" style="color: red;"><mat-icon>delete</mat-icon>&nbsp;ELIMINAR</button>
+    </div>
+</ng-template>

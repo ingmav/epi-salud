@@ -1,0 +1,12 @@
+.informacion
+{
+    color: var(--color-1);
+    text-align: center;
+    font-size: 1.5rem;
+    margin: 20px 0px;
+}
+
+.letras
+{
+    margin-top: 10px;
+}

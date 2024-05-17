@@ -1,0 +1,47 @@
+.principal
+{
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+}
+
+
+.informacion_default
+{
+    width: 100%;
+    text-align: center;
+}
+
+.img_demo
+{
+    width: 100%;
+    border: 3px dotted #CCCCCC;
+    height: 200px;
+    text-align: center;
+    color: #CCCCCC;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-content: center;
+}
+
+.botones
+{
+    column-count: 3;
+}
+
+.texto_cabecera
+{
+    padding: 10pt;
+    background-color: rgba(200,200,200,0.5);
+    color: #000000;
+    font-weight: bold;
+}
+
+.separacion
+{
+    margin-bottom: 30px;
+}

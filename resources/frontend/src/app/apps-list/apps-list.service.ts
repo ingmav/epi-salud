@@ -23,7 +23,6 @@ export class AppsListService {
     }
 
     userApps = JSON.parse(JSON.stringify(APPS));
-
     
     for (let i = 0; i < userApps.length; i++) {
       let app = userApps[i];

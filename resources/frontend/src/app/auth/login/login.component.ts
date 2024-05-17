@@ -97,7 +97,7 @@ export class LoginComponent implements OnInit {
     localStorage.setItem('loginHistory',JSON.stringify(loginHistory));
     //localStorage.setItem('DataServer',JSON.stringify(response.xDataServer));
 
-    this.router.navigate(['/apps']);
+    this.router.navigate(['/backend']);
   }
 
   showResetPassword(){

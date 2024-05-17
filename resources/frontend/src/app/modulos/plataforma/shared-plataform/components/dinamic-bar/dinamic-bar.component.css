@@ -1,0 +1,18 @@
+.principal, .informacion
+{
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+}
+
+.principal{
+    background-color: var(--fondo-2);
+}
+
+.ancho-completo
+{
+    width: 100%;
+}

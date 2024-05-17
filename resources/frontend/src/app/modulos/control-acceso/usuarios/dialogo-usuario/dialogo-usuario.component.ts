@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy, ViewChild, ElementRef, Input } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -32,6 +32,7 @@ export class DialogoUsuarioComponent implements OnInit, OnDestroy {
   @ViewChild(TabPermissionsComponent) tabPermissions: TabPermissionsComponent;
   @ViewChild(TabRolesComponent) tabRoles: TabRolesComponent;
 
+  
   constructor(
     public dialogRef: MatDialogRef<DialogoUsuarioComponent>,
     @Inject(MAT_DIALOG_DATA) public inData: DialogData,

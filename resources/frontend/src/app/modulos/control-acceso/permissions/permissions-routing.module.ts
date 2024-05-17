@@ -5,7 +5,7 @@ import { AuthGuard } from 'src/app/auth/auth.guard';
 import { ListComponent } from './list/list.component';
 
 const routes: Routes = [
-  { path: 'control-acceso/permisos', component: ListComponent, canActivate: [AuthGuard] },
+  { path: 'permisos', component: ListComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({

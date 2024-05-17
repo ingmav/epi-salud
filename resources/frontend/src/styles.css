@@ -3,6 +3,42 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: 'Roboto', sans-serif; }
 
+
+:root{
+    --fondo-1: #333333;
+    --fondo-2: #000000;
+    --fondo-3: #FFFFFF;
+    --fondo-4: #621132;
+    --fondo-5: #CCCCCC;
+
+    --color-1: white;
+    --color-2: #621132;
+    --color-3: #000000;
+
+    --shadow-1: rgb(0 0 0 / 35%) 0px 8px 24px;
+    --shadow-2: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
+    --font-size-1:1rem;
+    --border-radius-1: .25rem;
+    --border-radius-2: .5rem;
+    
+}
+
+.bloque-central, .bloque-central-informacion 
+{
+    height: 100%;
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;   
+}
+
+.bloque-central
+{
+    background-color: var(--fondo-4);
+    justify-content: center;
+}
+
 .module-container{
     height: 0;
     overflow: auto; 

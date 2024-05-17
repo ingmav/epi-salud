@@ -1,0 +1,94 @@
+.principal, .informacion_default
+{
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+}
+
+.area_trabajo
+{
+    width: 80vw;
+}
+
+.btn_inicial
+{
+    min-height: 40px;
+    min-width: 170px;
+    background: linear-gradient(180deg, #CCCCCC 0%, #EFEFEF 100%);
+    color: white;
+    
+}
+
+.btn_inicial div
+{
+    display: inline-block;
+}
+
+.texto_button
+{
+    padding: 10px;
+    font-size: 12pt;
+}
+.icono
+{
+    font-size: 20pt;
+}
+
+.title_actions
+{
+    font-size: 12pt;
+    font-weight: bold;
+    padding: 15px;
+}
+
+.iframe
+{
+    width: 100%;
+    border: 0px;
+    min-height: 600px;
+    margin: 20px 0px;
+}
+
+.regresar
+{
+    margin: 10px 0px;
+}
+
+.mat-mdc-menu-content
+{
+    overflow: hidden !important;
+}
+
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+.icon-menu
+{
+    
+    text-shadow:
+    1px 1px 1px white,
+    0 0 0.1em white,
+    0 0 0.2em white;
+ 
+}
+
+@media screen and (max-width: 500px) {
+    .btn_inicial
+    {
+        width: 100%;
+    }
+
+    .title_actions
+    {
+        font-size: 10pt;
+    }
+
+    .titulo_regresar
+    {
+        display: none;
+    }
+}

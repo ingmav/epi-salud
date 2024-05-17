@@ -6,9 +6,14 @@ import { AppsListService } from 'src/app/apps-list/apps-list.service';
 import { AuthService } from 'src/app/auth/auth.service';
 import { User } from 'src/app/auth/models/user';
 import { DialogEditProfileComponent } from '../dialog-edit-profile/dialog-edit-profile.component';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'session-user-menu',
+  standalone: true,
+  imports:[ SharedModule, RouterModule, CommonModule],
   templateUrl: './session-user-menu.component.html',
   styleUrls: ['./session-user-menu.component.css']
 })

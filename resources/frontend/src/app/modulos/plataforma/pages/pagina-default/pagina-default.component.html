@@ -1,0 +1,45 @@
+<div class="principal">
+    <div class="informacion_default informacion_cabecera">
+        <div class="area_trabajo" >
+            <div class="imagen"></div>
+            <div class="botones_accion">
+                <mat-toolbar>
+                    <span class="title_actions">{{ titulo_general }}</span>
+                    <span class="example-spacer"></span>
+                    <button mat-raised-button color="primary" (click)="goTo('')" style="background-color: #621132;">
+                        <i class="uil uil-home" style="font-size: 14pt;"></i>
+                        <span class="titulo_regresar">REGRESAR AL INICIO</span>
+                    </button>
+                    
+                </mat-toolbar>
+                <button mat-raised-button class="btn_inicial" *ngFor="let item of buttonsInicials" style="margin: 5px;" (click)="goToUrl(item.enlace)">
+                    <div class="icono"><i class="'uil uil-{{ item.icon_imagen }} icon-menu"></i></div>
+                    <div class="texto_button">{{ item.texto_boton }}</div>
+                </button>
+            </div>
+            <mat-divider></mat-divider>
+            
+            <div class="botones_accion">
+                <div class="title_actions">{{ subtitulo_general }}</div>
+                
+                    <button mat-raised-button class="btn_inicial" style="margin: 5px;" *ngFor="let item of buttonsPrimarios" [matMenuTriggerFor]="clickmenu" (click)="verificarContenido(item)">
+                        <div class="icono"><i class="uil uil-{{ item.icon_imagen}}  icon-menu"></i></div>
+                        <div class="texto_button">{{ item.texto_boton }}</div>
+                    </button>
+                    <mat-menu #clickmenu="matMenu">
+                        <button mat-menu-item class="btn_inicial"  *ngFor="let itemSecundario of buttonsSecundarios" (click)="goToUrl(itemSecundario.enlace)">
+                            <div class="icono"><i class="uil uil-{{ itemSecundario.icon_imagen}}"></i></div>
+                            <div class="texto_button">{{ itemSecundario.texto_boton }}</div>
+                        </button>
+                    </mat-menu>
+                
+           
+            </div>
+            <div class="iframe" *ngIf="iframe_bool">
+                <iframe  class="iframe" [src]="iframe"></iframe>
+            </div>
+            
+        </div>
+        
+    </div>
+</div>

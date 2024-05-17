@@ -1,0 +1,53 @@
+<div class="principal">
+    <div class="bloque-central">
+        <div class="informacion_default informacion_cabecera">
+            <img src="assets/EscudoChiapas.png" width="100px">
+            <div class="letras">SECRETARIA DE SALUD DEL ESTADO DE CHIAPAS</div>
+            <div class="letras">PLATAFORMA EPIDEMIOLÓGICA</div>
+        </div>
+    </div>
+</div>
+<div class="informacion_default">
+    <div class="bloque-central-informacion">
+        <div class="semana-epidemiologica" *ngIf="!loading">
+            <div class="texto">SEMANA<br>EPIDEMIOLÓGICA</div>
+            <div class="semana">{{ semana_epidemiologica }}</div>
+        </div>
+        <div class="semana-epidemiologica" *ngIf="loading">
+            <mat-progress-bar
+                color="warn"
+                mode="indeterminate"
+                style="margin: 10px 0px;">
+            </mat-progress-bar>
+            <div class="texto">CARGANDO</div>
+        </div>
+        <div class="menu-information" *ngIf="!loading">
+            <div class="flex-container">
+                <div class="flex-item" *ngFor="let item of simulacroMenu">
+                    <div *ngFor="let item_menu of item.columnas">
+                        <div class='titulo'>{{ item_menu.title }}</div>
+                        <ul class='lista-menu'>
+                            <li *ngFor="let subItem of item_menu.temas" (click) ="linkPage(subItem)">
+                                <span style="padding: 0px 5px;">
+                                    <i class="uil uil-capture"></i>
+                                </span>
+                                {{ subItem.titleSubtema }}
+                            </li>
+                        </ul>
+                    </div>
+                    
+                </div>
+              </div>
+        </div>
+        <div class="menu-information" *ngIf="loading">
+            <mat-progress-bar
+                color="warn"
+                mode="indeterminate"
+                style="margin: 10px 0px;">
+            </mat-progress-bar>
+            <div class="texto" style="color: black;">CARGANDO PÁGINA PRINCIPAL</div>
+            
+        </div>
+    </div>
+    
+</div>
