@@ -11,6 +11,8 @@ class Columna extends Model
     protected $table = 'columna';
 
     public function tema(){
-        return $this->hasMany('App\Models\Indice\Tema', 'columna_id');
+        return $this->hasMany('App\Models\Indice\Tema', 'columna_id')
+        ->orderBy("orden", "desc")
+        ->orderBy("created_at", "asc");
     }
 }

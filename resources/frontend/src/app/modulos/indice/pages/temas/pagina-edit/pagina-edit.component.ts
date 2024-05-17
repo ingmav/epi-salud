@@ -46,8 +46,8 @@ export class PaginaEditComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.formBuilder.group({
       'id':                           ['', Validators.required],
-      'iframe':                       ['', Validators.required],
-      'descripcion':                  ['', Validators.required],
+      'iframe':                       [''],
+      'descripcion':                  [''],
     }); 
     this.route.paramMap.subscribe(params => {
       if(params.get('id')){

@@ -18,6 +18,8 @@ class Tema extends Model
     }
 
     public function subtema(){
-        return $this->hasMany('App\Models\Indice\Subtema', 'catalogo_tema_id');
+        return $this->hasMany('App\Models\Indice\Subtema', 'catalogo_tema_id')
+        ->orderBy("orden", "desc")
+        ->orderBy("created_at", "asc");
     }
 }

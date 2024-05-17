@@ -85,7 +85,7 @@ export class BotonesEditComponent implements OnInit {
       'tipo':                       [''],
       'icon_imagen':                [''],
       'texto_boton':                ['',Validators.required],
-      'descripcion':                ['',Validators.required],
+      'descripcion':                [''],
       'enlace':                     ['',Validators.required],
       'pagina_boton_padre':         [''],
     });
