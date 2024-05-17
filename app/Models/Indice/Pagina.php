@@ -30,7 +30,7 @@ class Pagina extends Model
     }
     
     public function subtema(){
-        return $this->belongsTo('App\Models\Indice\Subtema', "catalogo_subtema_id");
+        return $this->belongsTo('App\Models\Indice\SubTema', "catalogo_subtema_id");
     }
 
     
