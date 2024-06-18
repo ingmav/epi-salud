@@ -22,8 +22,35 @@
             </div>
             
         </div>
+        <div id="contenedor">
+            <div>
+                <app-botones 
+                    [botones]="botonesInicial"
+                    [tipo_boton]="1"
+                    [page]="id_pagina"
+                    [texto_cabecera]="'BOTONES INICIALES'">
+                </app-botones>
+            </div>
+            <div>
+                <app-botones 
+                    [botones]="botonesPrimarios"
+                    [tipo_boton]="2"
+                    [page]="id_pagina"
+                    (messageEvent)="receiveId($event)"
+                    [texto_cabecera]="'BOTONES PRIMARIOS'">
+                </app-botones>
+            </div>
+            <div>
+                <app-botones 
+                    [botones]="botonesSecundarios"
+                    [tipo_boton]="3"
+                    [page]="id_pagina"
+                    [texto_cabecera]="'BOTONES SECUNDARIOS'">
+                </app-botones>
+            </div>
+        </div>
         
-        <div class="informacion_default">
+        <!-- <div class="informacion_default">
             <div class="botones">
                 <app-botones 
                 [botones]="botonesInicial"
@@ -45,7 +72,7 @@
                 [texto_cabecera]="'BOTONES SECUNDARIOS'"
                 ></app-botones>
             </div>
-        </div>
+        </div> -->
         <div class="informacion_default"  [formGroup]="form">
             <section class="flex-fill flex-column" style="padding:8px; overflow: auto; width: 100%;">
                 <div class="flex-fill flex-column flex-gap">

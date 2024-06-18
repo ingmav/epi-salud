@@ -170,8 +170,15 @@ class PaginasController extends Controller
             
             
             $obj = Pagina::find($parametros['id']);
-            $obj->iframe_boolean = 1;
-            $obj->iframe = $parametros['iframe'];
+            if($parametros['iframe'] == '' || $parametros['iframe'] == null)
+            {
+                $obj->iframe_boolean = 0; 
+                $obj->iframe = '';
+            }else{
+                $obj->iframe_boolean = 1;
+                $obj->iframe = $parametros['iframe'];
+            }
+            
             $obj->descripcion = strtoupper($parametros['descripcion']);
             $obj->save();
             return response()->json(['data'=>$obj],HttpResponse::HTTP_OK);
