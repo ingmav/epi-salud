@@ -20,7 +20,7 @@
             <mat-divider></mat-divider>
             
             <div class="botones_accion">
-                <div class="title_actions" *ngIf="iframe_bool">{{ subtitulo_general }}</div>
+                <div class="title_actions" *ngIf="iframe_bool || buttonsPrimarios.length > 0">{{ subtitulo_general }}</div>
                 
                     <button mat-raised-button class="btn_inicial" style="margin: 5px;" *ngFor="let item of buttonsPrimarios" [matMenuTriggerFor]="clickmenu" (click)="verificarContenido(item)">
                         <div class="icono"><i class="uil uil-{{ item.icon_imagen}}  icon-menu"></i></div>
