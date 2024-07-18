@@ -69,8 +69,7 @@ class BannerController extends Controller
     {
         try{
         
-            $obj = Banner::where("estatus_id",1);
-            //return response()->json(['images'=>$obj],HttpResponse::HTTP_OK);
+            $obj = Banner::where("estatus_id",1)->get();
             $image = [];
             for ($i=0; $i <count($obj) ; $i++) { 
                 $image[] = base64_encode(\Storage::get('public\\banners\\'.$obj[$i]['id'].'.'.$obj[$i]['extension']));    
