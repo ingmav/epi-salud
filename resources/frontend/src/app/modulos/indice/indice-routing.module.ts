@@ -3,11 +3,16 @@ import { RouterModule, Routes } from '@angular/router';
 import { TemaSubtemaComponent } from './pages/temas/tema-subtema/tema-subtema.component';
 import { PaginaComponent } from './pages/temas/pagina/pagina.component';
 import { PaginaEditComponent } from './pages/temas/pagina-edit/pagina-edit.component';
+import { BannersComponent } from './pages/temas/banners/banners.component';
 
 const routes: Routes = [
   {
     path: '',
     component: TemaSubtemaComponent
+  },
+  {
+    path: 'banners',
+    component: BannersComponent
   },
   {
     path: 'temas',

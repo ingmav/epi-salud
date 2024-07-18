@@ -6,13 +6,15 @@ import { PlataformaRoutingModule } from './plataforma-routing.module';
 import { SharedPlataformModule } from './shared-plataform/shared-plataform.module';
 import { IndexComponent } from '../plataforma/pages/index/index.component';
 import { PaginaDefaultComponent } from './pages/pagina-default/pagina-default.component';
-
+import { IgxCarouselModule, IgxSliderModule } from 'igniteui-angular';
 @NgModule({
   declarations: [PrincipalComponent, IndexComponent, PaginaDefaultComponent],
   imports: [
     CommonModule,
     PlataformaRoutingModule,
-    SharedPlataformModule
+    SharedPlataformModule,
+    IgxCarouselModule,
+    IgxSliderModule 
   ]
 })
 export class PlataformaModule { }

@@ -1,14 +1,14 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AlertModule } from '@coreui/angular';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
-import { LocationStrategy, HashLocationStrategy} from '@angular/common';
+import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 
 import { SharedModule } from './shared/shared.module';
 
 import { AppRoutingModule } from './app-routing.module';
-
 
 import { AppComponent } from './app.component';
 import { AuthService } from './auth/auth.service';
@@ -23,13 +23,14 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 //Para el Lenguaje de las Fechas
 import { registerLocaleData } from '@angular/common';
 import locale from '@angular/common/locales/es-MX';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 
 registerLocaleData(locale);
 
 @NgModule({
   declarations: [
     AppComponent,
-   
   ],
   imports: [
     BrowserModule,
@@ -37,9 +38,11 @@ registerLocaleData(locale);
     BrowserAnimationsModule,
     SharedModule,
     HttpClientModule,
+    AlertModule,
+    NgbModule
   ],
   providers: [
-    AuthService, 
+    AuthService,
     {
       provide: LocationStrategy,
       useClass: HashLocationStrategy
@@ -59,15 +62,16 @@ registerLocaleData(locale);
       useValue: { showError: true }
     },
     {
-      provide: MAT_DATE_LOCALE, 
+      provide: MAT_DATE_LOCALE,
       useValue: 'es-MX'
     },
-    { 
-      provide: LOCALE_ID, 
+    {
+      provide: LOCALE_ID,
       useValue: 'es-MX'
     },
     SharedService
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

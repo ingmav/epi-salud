@@ -60,6 +60,7 @@ export const APPS:App [] = [
                 icon: 'menu_open',
                 identificador:'control',
                 children:[
+                    { name:"Banners",               route: "indice/banners",        icon: "image",        permission:"hr5UhgMTDmF9EiLYeq5x0cz0e281IWRU" },
                     { name:"Temas / Subtemas",      route: "indice/temas",          icon: "star",        permission:"hr5UhgMTDmF9EiLYeq5x0cz0e281IWRU" },
                     { name:'Paginas',               route: "indice/paginas",        icon: "pages",               permission:"gzA7BboE1BpzXZmko6OIDT3EOQRn4otm" },
                 ]

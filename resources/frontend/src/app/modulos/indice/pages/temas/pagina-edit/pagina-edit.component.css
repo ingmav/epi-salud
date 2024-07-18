@@ -47,18 +47,18 @@
 }
 
 
-#contenedor {
+.contenedor {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     width: 100%;
   }
-  #contenedor>div {
+  .contenedor>div {
     width: 33%;
   }
 
   @media screen and (max-width: 500px) {
-    #contenedor>div {
+    .contenedor>div {
         width: 100%;
       }
   }

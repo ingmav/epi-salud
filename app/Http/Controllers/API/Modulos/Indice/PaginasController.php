@@ -137,7 +137,8 @@ class PaginasController extends Controller
             //actualiza la pagina, se describe que tiene imagen de cabecera
             $obj = PaginaBoton::where("catalogo_pagina_id",$parametros['id'])->where("tipo", 1)->get();
             $obj_primario = PaginaBoton::where("catalogo_pagina_id",$parametros['id'])->where("tipo", 2)->get();
-            return response()->json(['data'=>$obj, 'data_primario'=>$obj_primario],HttpResponse::HTTP_OK);
+            $obj_link_externo = PaginaBoton::where("catalogo_pagina_id",$parametros['id'])->where("tipo", 4)->get();
+            return response()->json(['data'=>$obj, 'data_primario'=>$obj_primario, 'data_externos'=> $obj_link_externo],HttpResponse::HTTP_OK);
             
         }catch(\Exception $e){
 
@@ -170,14 +171,14 @@ class PaginasController extends Controller
             
             
             $obj = Pagina::find($parametros['id']);
-            if($parametros['iframe'] == '' || $parametros['iframe'] == null)
+            /*if($parametros['iframe'] == '' || $parametros['iframe'] == null)
             {
                 $obj->iframe_boolean = 0; 
                 $obj->iframe = '';
             }else{
                 $obj->iframe_boolean = 1;
                 $obj->iframe = $parametros['iframe'];
-            }
+            }*/
             
             $obj->descripcion = strtoupper($parametros['descripcion']);
             $obj->save();

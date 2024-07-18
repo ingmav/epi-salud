@@ -4,7 +4,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { AlertPanelComponent } from 'src/app/shared/components/alert-panel/alert-panel.component';
 import { DialogConfirmActionComponent } from 'src/app/shared/components/dialog-confirm-action/dialog-confirm-action.component';
-import { AuthService } from 'src/app/auth/auth.service';
 import { TemasService } from '../../../services/temas.service';
 import { TemaDialogComponent } from '../tema-dialog/tema-dialog.component';
 import { SubtemaDialogComponent } from '../subtema-dialog/subtema-dialog.component';

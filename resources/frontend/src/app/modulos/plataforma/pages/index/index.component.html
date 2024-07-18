@@ -1,11 +1,23 @@
 <div class="principal">
-    <div class="bloque-central">
-        <div class="informacion_default informacion_cabecera">
+    <div class="bloque-central" *ngIf="cantidadBanners == 0">
+         <div class="informacion_default informacion_cabecera">
             <img src="assets/EscudoChiapas.png" width="100px">
             <div class="letras">SECRETARIA DE SALUD DEL ESTADO DE CHIAPAS</div>
             <div class="letras">PLATAFORMA EPIDEMIOLÓGICA</div>
         </div>
+       
     </div>
+</div>
+<div class="carousel-container" style="width: 100% !important;" *ngIf="cantidadBanners > 0">
+    <igx-carousel #carousel [navigation]="false" [pause]="false" animationType="fade" [interval]="4000" [gesturesSupport]="false" >
+        <igx-slide *ngFor="let slide of slides" style=" background-color: #000000 !important;">
+            <div class="image-container">
+                <img [src]="slide.src" width="100%">
+            </div>
+
+        </igx-slide>
+        <ng-template igxCarouselIndicator></ng-template>
+    </igx-carousel>
 </div>
 <div class="informacion_default">
     <div class="bloque-central-informacion">
@@ -13,6 +25,7 @@
             <div class="texto">SEMANA<br>EPIDEMIOLÓGICA</div>
             <div class="semana">{{ semana_epidemiologica }}</div>
         </div>
+        
         <div class="semana-epidemiologica" *ngIf="loading">
             <mat-progress-bar
                 color="warn"
@@ -21,6 +34,7 @@
             </mat-progress-bar>
             <div class="texto">CARGANDO</div>
         </div>
+        
         <div class="menu-information" *ngIf="!loading">
             <div class="flex-container">
                 <div class="flex-item" *ngFor="let item of simulacroMenu">

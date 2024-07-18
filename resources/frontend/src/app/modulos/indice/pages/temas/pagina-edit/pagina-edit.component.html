@@ -22,7 +22,7 @@
             </div>
             
         </div>
-        <div id="contenedor">
+        <div class="contenedor">
             <div>
                 <app-botones 
                     [botones]="botonesInicial"
@@ -49,30 +49,17 @@
                 </app-botones>
             </div>
         </div>
-        
-        <!-- <div class="informacion_default">
-            <div class="botones">
+        <div class="contenedor">
+            <div>
                 <app-botones 
                 [botones]="botonesInicial"
-                [tipo_boton]="1"
+                [tipo_boton]="4"
                 [page]="id_pagina"
-                [texto_cabecera]="'BOTONES INICIALES'"
-                ></app-botones>
-                <app-botones 
-                [botones]="botonesPrimarios"
-                [tipo_boton]="2"
-                [page]="id_pagina"
-                (messageEvent)="receiveId($event)"
-                [texto_cabecera]="'BOTONES PRIMARIOS'"
-                ></app-botones>
-                <app-botones 
-                [botones]="botonesSecundarios"
-                [tipo_boton]="3"
-                [page]="id_pagina"
-                [texto_cabecera]="'BOTONES SECUNDARIOS'"
-                ></app-botones>
+                [texto_cabecera]="'LINKS EXTERNOS'">
+            </app-botones>
             </div>
-        </div> -->
+        </div>
+        
         <div class="informacion_default"  [formGroup]="form">
             <section class="flex-fill flex-column" style="padding:8px; overflow: auto; width: 100%;">
                 <div class="flex-fill flex-column flex-gap">
@@ -84,7 +71,7 @@
                                 <mat-error *ngIf="form.get('descripcion').hasError('required')">Este campo es obligatorio</mat-error>
                             </mat-form-field>
                         </div>
-                        <div class="flex-row flex-xs-column flex-fill flex-gap">    
+                        <!--div class="flex-row flex-xs-column flex-fill flex-gap">    
                             <mat-form-field appearance="fill" class="flex-fill">
                                 <mat-label>IFRAME: </mat-label>
                                 <input type="text" matInput autocomplete="off" formControlName="iframe" placeholder="IFRAME">
@@ -95,7 +82,13 @@
                                 <mat-icon>save</mat-icon>
                                 <div>GUARDAR</div>
                             </button>
-                        </div>
+                        </div-->
+                        <div class="flex-row flex-xs-column flex-fill flex-gap">
+                            <button mat-stroked-button color="primary" style="padding: 30px;" (click)="guardaFrame()" [disabled]="!form.valid">
+                                <mat-icon>save</mat-icon>
+                                <div>GUARDAR</div>
+                            </button>
+                        </div> 
                     </mat-card>
                 </div>
             </section>                

@@ -40,6 +40,7 @@ export class BotonesEditComponent implements OnInit {
 
   isRoot:boolean;
   savedData:boolean;
+  visible:boolean = false;
 
   form:FormGroup;
   changesDetected:boolean;
@@ -99,7 +100,17 @@ export class BotonesEditComponent implements OnInit {
     {
       this.form.patchValue({pagina_boton_padre:this.inData.pagina_boton_padre}); 
     }
-    console.log(this.inData);
+    //console.log(this.inData);
+
+    this.verificarVisibilidad();
+  }
+
+  verificarVisibilidad()
+  {
+     if(this.inData.tipo_boton ==  4)
+      {
+        this.visible = false;
+      } 
   }
 
   ngAfterViewInit(){

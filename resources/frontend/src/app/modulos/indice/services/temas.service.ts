@@ -11,11 +11,20 @@ export class TemasService {
 
   url_tema            = `${environment.base_url}/tema`;
   url_tema_plataforma = `${environment.base_url}/tema-plataforma`;
+  url_slides          = `${environment.base_url}/slides`;
   
   constructor(private http: HttpClient) { }
   
   obtenerTemas(payload):Observable<any> {
     return this.http.get<any>(this.url_tema, {params: payload}).pipe(
+      map( response => {
+        return response;
+      })
+    );
+  }
+  
+  obtenerSlides():Observable<any> {
+    return this.http.get<any>(this.url_slides, {}).pipe(
       map( response => {
         return response;
       })

@@ -16,10 +16,12 @@ export class PaginaDefaultComponent implements OnInit {
   titulo_general:string = "";
   subtitulo_general:string = "";
   buttonsInicials:Array<any>;
-  buttonsPrimarios:Array<any>;
+  buttonsPrimarios:Array<any> = [];
   buttonsSecundarios:Array<any>;
+  buttonsLinks:Array<any> = [];
   iframe:SafeResourceUrl;
   iframe_bool:boolean = false;
+  loadpage:boolean = false;
 
   constructor(
     private router:Router,
@@ -36,21 +38,24 @@ export class PaginaDefaultComponent implements OnInit {
 
   cargarInformacion(id)
   {
+    this.loadpage = true;
     this.plataformaService.obtenerInformacion(id).subscribe({
       next: (response:any) => {
-        
+        this.loadpage =false;
         let { data } = response;
         let { pagina } = data;
         
-        this.iframe_bool  = pagina.iframe_boolean;
-        this.iframe       = this.sanitizer.bypassSecurityTrustResourceUrl(pagina.iframe);
-        //console.log(this.iframe);
         this.titulo_general = data.tema.descripcion;
         this.buttonsInicials = pagina.pagina_boton_inicial;
         this.buttonsPrimarios = pagina.pagina_boton_primario;
+        pagina.pagina_links_externos.map(element =>{
+          element.enlace = this.sanitizer.bypassSecurityTrustResourceUrl(element.enlace);
+        });
+        this.buttonsLinks     = pagina.pagina_links_externos;
         this.subtitulo_general =  pagina.descripcion;
       },
       error: (response:any) => {
+        this.loadpage =false;
       }
     });
   }

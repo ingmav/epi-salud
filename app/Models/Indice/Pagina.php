@@ -29,6 +29,14 @@ class Pagina extends Model
         return $this->hasMany('App\Models\Indice\PaginaBoton', "catalogo_pagina_id")->where("tipo",2);
     }
     
+    public function pagina_links_externos(){
+        return $this->hasMany('App\Models\Indice\PaginaBoton', "catalogo_pagina_id")->where("tipo",4);
+    }
+    
+    public function pagina_iframe(){
+        return $this->hasMany('App\Models\Indice\PaginaIframe', "catalogo_pagina_id");
+    }
+    
     public function subtema(){
         return $this->belongsTo('App\Models\Indice\SubTema', "catalogo_subtema_id");
     }

@@ -33,6 +33,8 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/minireset.css/minireset.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               {
                 "input": "node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
                 "inject": true
@@ -40,10 +42,16 @@
               "src/responsive-layout.css",
               "src/flex-grid-layout.css",
               "src/styles.css",
-              "src/estiloPlataforma.css"
+              "src/estiloPlataforma.css",
+              "node_modules/igniteui-angular/styles/igniteui-angular.css"
             ],
             "scripts": [],
-            "webWorkerTsConfig": "tsconfig.worker.json"
+            "webWorkerTsConfig": "tsconfig.worker.json",
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "node_modules"
+              ]
+            }
           },
           "configurations": {
             "production": {
@@ -108,9 +116,15 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/igniteui-angular/styles/igniteui-angular.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "node_modules"
+              ]
+            }
           }
         },
         "lint": {

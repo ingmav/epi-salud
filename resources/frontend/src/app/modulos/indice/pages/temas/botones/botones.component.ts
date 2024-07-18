@@ -99,7 +99,10 @@ export class BotonesComponent implements OnInit {
         }else if(this.tipo_boton == 2)
         {
           this.arreglo = response.data_primario;
-        }
+        }else if(this.tipo_boton == 4)
+          {
+            this.arreglo = response.data_externos;
+          }
         this.loading = false;
       },
       error:(response:any) => {

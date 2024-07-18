@@ -193,7 +193,7 @@ class SubTemasController extends Controller
     {
         try{
         
-            $obj = SubTema::with("tema","pagina.pagina_boton_inicial", "pagina.pagina_boton_primario.pagina_boton_secundario")->find($id);//with("subtema", "pagina_boton");
+            $obj = SubTema::with("tema","pagina.pagina_boton_inicial", "pagina.pagina_boton_primario.pagina_boton_secundario", "pagina.pagina_links_externos")->find($id);//with("subtema", "pagina_boton");
             $image =  '';
             if($obj['pagina']['imagen'] == 1)
             {

@@ -27,6 +27,8 @@ Route::post('reset-password',       'API\Auth\AuthController@resetPassword');
 Route::post('send-reset-password',  'API\Auth\AuthController@sendResetPassword');
 Route::get('subtema-font/{id}',     'API\Modulos\Indice\SubTemasController@getInformation');
 Route::get('tema-plataforma',       'API\Modulos\Indice\TemasController@temaPlataforma');
+Route::get('slides',                'API\Modulos\Indice\BannerController@Slides');
+
 /**
  *  Para envio de correos
  */
@@ -60,7 +62,7 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::get('botones',               'API\Modulos\Indice\PaginasController@getButtons');
     Route::get('botones-hijos',         'API\Modulos\Indice\PaginasController@getButtonsHijos');
     Route::delete('del-cabecera/{id}',          'API\Modulos\Indice\PaginasController@deleteImagen');
-    
+    Route::apiResource('banner',        'API\Modulos\Indice\BannerController');
 });
 
 Route::middleware('auth')->get('/avatar-images', function (Request $request) {

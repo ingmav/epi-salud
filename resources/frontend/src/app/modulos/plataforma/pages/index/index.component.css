@@ -3,6 +3,10 @@
     stroke: white;
 }
 
+.carousel-container{
+    /*width: 70vw;*/
+    height: 400px;
+}
 .principal, .informacion_default
 {
     width: 100vw;
@@ -135,6 +139,9 @@
      {
         font-size: 0.9rem;
      }
+     .carousel-container{
+        height: auto;
+    }
  }
 
  @media (min-width: 501px) and (max-width: 800px) {
@@ -159,4 +166,46 @@
     {
        font-size: 0.9rem;
     }
+    .carousel-container{
+        height: auto;
+    }
 }
+
+
+   
+    
+    :host ::ng-deep{
+    
+        .image-container{
+            max-width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    
+        .igx-carousel{
+            max-width: 100%;
+            width: unset;
+        }
+    
+        .igx-nav-dot{
+            background: black;
+            box-shadow: none;
+            width: 15px;
+            height: 15px;
+        }
+    
+        .igx-slide{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 100%;
+            width: unset;
+        }
+    
+        .igx-slide img{
+            object-fit: fill;
+            max-width: 100%;
+        }
+    
+    }

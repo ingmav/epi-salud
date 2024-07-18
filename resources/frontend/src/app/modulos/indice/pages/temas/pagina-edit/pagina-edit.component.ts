@@ -46,7 +46,7 @@ export class PaginaEditComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.formBuilder.group({
       'id':                           ['', Validators.required],
-      'iframe':                       [''],
+      //'iframe':                       [''],
       'descripcion':                  [''],
     }); 
     this.route.paramMap.subscribe(params => {
@@ -65,7 +65,7 @@ export class PaginaEditComponent implements OnInit {
         console.log(response);
         let {data} = response;
         let {imagen} = response;
-        this.form.patchValue({iframe:data.iframe, descripcion:data.descripcion});
+        this.form.patchValue({descripcion:data.descripcion});
         if(data.imagen == 1)
         {
           //this.archivo = new File();

@@ -58,6 +58,7 @@ class PaginasBotonController extends Controller
                 }else{
                     $obj = new PaginaBoton();
                 }
+
                 $obj->catalogo_pagina_id    = $inputs['page'];
                 $obj->tipo                  = $inputs['tipo'];
                 $obj->icon_imagen           = $inputs['icon_imagen'];
@@ -67,6 +68,21 @@ class PaginasBotonController extends Controller
                 if(isset($inputs['pagina_boton_padre']))
                 {
                     $obj->pagina_boton_padre    = $inputs['pagina_boton_padre'];
+                }
+
+                if($inputs['tipo'] == 4)
+                {
+                    if(str_contains($inputs['enlace'], 'drive')){
+                        $obj->icon_imagen = 'uil uil-google-drive';
+                    }
+                    if(str_contains($inputs['enlace'], 'docs.')){
+                        $obj->icon_imagen = 'uil uil-file-bookmark-alt';
+                    }else if(str_contains($inputs['enlace'], 'youtu'))
+                    {
+                        $obj->icon_imagen = 'uil uil-youtube';
+                    }else{
+                        $obj->icon_imagen = 'uil uil-globe';
+                    }
                 }
                 $obj->save();
                 DB::commit();

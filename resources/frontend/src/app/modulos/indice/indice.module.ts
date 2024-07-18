@@ -10,9 +10,11 @@ import { PaginaComponent } from './pages/temas/pagina/pagina.component';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { PaginaEditComponent } from './pages/temas/pagina-edit/pagina-edit.component';
 import { BotonesComponent } from './pages/temas/botones/botones.component';
+import { BannersComponent } from './pages/temas/banners/banners.component';
+import { BannersDialogComponent } from './pages/temas/banners-dialog/banners-dialog.component';
 
 @NgModule({
-  declarations: [TemaSubtemaComponent, TemaDialogComponent, SubtemaDialogComponent, PaginaComponent, PaginaEditComponent],
+  declarations: [TemaSubtemaComponent, TemaDialogComponent, SubtemaDialogComponent, PaginaComponent, PaginaEditComponent, BannersComponent, BannersDialogComponent],
   imports: [
     CommonModule,
     SharedModule,

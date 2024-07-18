@@ -28,6 +28,8 @@ export class IndexComponent implements OnInit {
   semana_epidemiologica:string = "--";
   simulacroMenu:Array<MenuGeneral> = [];
   loading:boolean = false;
+  slides: any[] = new Array(2).fill({ id: -1, src: '', title: '', subtitle: '' });
+  cantidadBanners:number =  0;
 
   constructor(
     private temaService:TemasService,
@@ -35,6 +37,43 @@ export class IndexComponent implements OnInit {
 
   ngOnInit(): void {
     this.obtenerMenu();
+    /*this.slides[0] = {
+      src: './assets/img/escudo.jpg'
+    };
+    this.slides[1] = {
+      src: './assets/img/angular.jpg'
+    };
+    this.slides[2] = {
+      src: './assets/img/escudo.jpg'
+    };*/
+
+    this.obtenerSlides();
+    
+  }
+
+  onItemChange($event: any): void {
+    console.log('Carousel onItemChange', $event);
+  }
+
+  obtenerSlides()
+  {
+    this.temaService.obtenerSlides().subscribe({
+      next:(response:any) => {
+        if(response.images.length > 0)
+        {
+          this.slides[0] = { src : 'assets/BannerChiapas.jpg'};
+        }
+        let index = 1;
+        response.images.forEach(element => {
+          this.slides[index] = { src :'data:image/jpeg;base64,'+element};
+          index++;
+          this.cantidadBanners++;
+        });
+      },
+      error:(response:any) => {
+        this.loading = false;
+      }
+    });
   }
 
   obtenerMenu()
